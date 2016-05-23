@@ -5,8 +5,6 @@ import com.game.logic.GameLogic;
 
 public class Main {
 
-    private static long windowHandler;
-
     public static void main(String[] args) {
         try {
             boolean vSync = true;

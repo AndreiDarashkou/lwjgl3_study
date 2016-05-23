@@ -5,49 +5,60 @@ import com.game.input.MouseHandler;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 @Getter
 @Setter
 public class Window {
 
-    private static final double MS_PER_UPDATE = 1000f/50;
-
-    private int width = 500;
-    private int height = 500;
+    private final String title;
+    private int width;
+    private int height;
     private long windowHandler;
+    private GLFWErrorCallback errorCallback;
+    private MouseHandler mouseCallback;
     private GLFWKeyCallback keyCallback;
-    private GLFWCursorPosCallback mouseCallback;
     private GLFWWindowSizeCallback windowSizeCallback;
     private boolean resized;
+    private boolean vSync;
 
-    public Window(String windowTitle, int width, int height, boolean vsSync) {
+    public Window(String title, int width, int height, boolean vSync) {
+        this.title = title;
         this.width = width;
         this.height = height;
-        windowHandler = init(windowTitle, vsSync);
+        this.vSync = vSync;
+        this.resized = false;
     }
 
-    public long init(String windowTitle, boolean vsSync) {
+    public void init() {
         GLFWErrorCallback.createPrint(System.err).set();
 
         if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
 
-        glfwDefaultWindowHints();
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-        windowHandler = glfwCreateWindow(width, height, windowTitle, NULL, NULL);
+        glfwDefaultWindowHints(); // optional, the current window hints are already the default
+        glfwWindowHint(GLFW_VISIBLE, GL_FALSE); // the window will stay hidden after creation
+        glfwWindowHint(GLFW_RESIZABLE, GL_TRUE); // the window will be resizable
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+        windowHandler = glfwCreateWindow(width, height, title, NULL, NULL);
         if (windowHandler == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
         glfwSetKeyCallback(windowHandler, keyCallback = new KeyboardHandler());
         glfwSetCursorPosCallback(windowHandler, mouseCallback = new MouseHandler());
-
         glfwSetWindowSizeCallback(windowHandler, windowSizeCallback = new GLFWWindowSizeCallback() {
             @Override
             public void invoke(long window, int width, int height) {
@@ -61,34 +72,31 @@ public class Window {
         glfwSetWindowPos(windowHandler, (videoMode.width() - width) / 2, (videoMode.height() - height) / 2);
 
         glfwMakeContextCurrent(windowHandler);
-        glfwSwapInterval(1);
+
+        if (this.isVSync()) {
+            glfwSwapInterval(1);
+        }
 
         glfwShowWindow(windowHandler);
 
-        return windowHandler;
+        GL.createCapabilities();
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
-    public void setClearColor(float red, float blue, float green, float alpha) {
-        
+    public void setClearColor(float r, float g, float b, float alpha) {
+        glClearColor(r, g, b, alpha);
     }
 
-    public boolean isResized() {
-        return resized;
+    public boolean isKeyPressed(int keyCode) {
+        return glfwGetKey(windowHandler, keyCode) == GLFW_PRESS;
     }
 
-    public void setResized(boolean resized) {
-        this.resized = resized;
+    public boolean windowShouldClose() {
+        return glfwWindowShouldClose(windowHandler);
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public long getWindowHandler() {
-        return windowHandler;
+    public void update() {
+        glfwSwapBuffers(windowHandler);
+        glfwPollEvents();
     }
 }

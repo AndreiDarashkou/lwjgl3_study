@@ -3,24 +3,25 @@ package com.game;
 import com.game.input.KeyboardHandler;
 import com.game.input.MouseHandler;
 import com.game.logic.GameLogic;
-import org.lwjgl.opengl.GL;
 
-import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 
 public class GameEngine implements Runnable {
 
-    private static final double MS_PER_UPDATE = 1000f/50;
+    public static final int TARGET_FPS = 75;
+    public static final int TARGET_UPS = 60;
 
     private final Thread gameLoopThread;
-    private GameLogic gameLogic;
-    Window window;
+    private final GameLogic gameLogic;
+    private final Window window;
+    private final Timer timer;
 
-    public GameEngine(String windowTitle, int width, int height, boolean vsSync, GameLogic gameLogic) {
+    public GameEngine(String windowTitle, int width, int height, boolean vSync, GameLogic gameLogic) throws Exception {
         gameLoopThread = new Thread(this, "GAME_LOOP_THREAD");
-        window = new Window(windowTitle, width, height, vsSync);
+        window = new Window(windowTitle, width, height, vSync);
         this.gameLogic = gameLogic;
+        timer = new Timer();
     }
 
     public void start() {
@@ -30,58 +31,67 @@ public class GameEngine implements Runnable {
     @Override
     public void run() {
         try {
-            //init();
+            init();
             gameLoop();
         } catch (Exception excp) {
             excp.printStackTrace();
         }
     }
 
+    protected void init() throws Exception {
+        window.init();
+        timer.init();
+        gameLogic.init();
+    }
 
-    private void gameLoop() {
-        GL.createCapabilities();
 
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+    protected void gameLoop() {
+        float elapsedTime;
+        float accumulator = 0f;
+        float interval = 1f / TARGET_UPS;
 
-        double previous = System.currentTimeMillis();
-        double steps = 0;
-        while (!glfwWindowShouldClose(window.getWindowHandler())) {
-            double current = System.currentTimeMillis();
-            double elapsed = current - previous;
-            previous = current;
-            steps += elapsed;
+        boolean running = true;
+        while (running && !window.windowShouldClose()) {
+            elapsedTime = timer.getElapsedTime();
+            accumulator += elapsedTime;
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glfwSwapBuffers(window.getWindowHandler()); //смена кадров (текущего и готового в буфере за прошлый пробег)
+            input();
 
-            glfwPollEvents();
-            while (steps >= MS_PER_UPDATE) {
-                updateGameState();
-                steps -= MS_PER_UPDATE;
+            while (accumulator >= interval) {
+                update(interval);
+                accumulator -= interval;
             }
 
-            //render();
-            sync(current);
+            render();
+
+            if (!window.isVSync()) {
+                sync();
+            }
         }
-
-    }
-    public static void updateGameState(){
-        if(KeyboardHandler.isKeyDown(GLFW_KEY_SPACE))
-            System.out.println("Space Key Pressed");
-        if(KeyboardHandler.isKeyDown(GLFW_KEY_A))
-            System.out.println("A Key Pressed");
-        System.out.println(MouseHandler.getPosition());
     }
 
+    protected void input() {
+        gameLogic.input();
+    }
 
-    //если быстрее чем надо притормаживаем (заменить на v_sync)
-    private static void sync(double loopStartTime) {
-        float loopSlot = 1000f / 50;
-        double endTime = loopStartTime + loopSlot;
-        while(System.currentTimeMillis() < endTime) {
+    protected void update(float interval) {
+        gameLogic.update(interval);
+    }
+
+
+    protected void render() {
+        gameLogic.render(window);
+        window.update();
+    }
+
+    private void sync() {
+        float loopSlot = 1f / TARGET_FPS;
+        double endTime = timer.getLastLoopTime() + loopSlot;
+        while (timer.getTime() < endTime) {
             try {
                 Thread.sleep(1);
-            } catch (InterruptedException ie) {}
+            } catch (InterruptedException ie) {
+            }
         }
     }
 
