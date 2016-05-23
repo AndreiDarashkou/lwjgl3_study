@@ -1,4 +1,4 @@
-package com.game;
+package com.game.engine;
 
 import com.game.input.KeyboardHandler;
 import com.game.input.MouseHandler;

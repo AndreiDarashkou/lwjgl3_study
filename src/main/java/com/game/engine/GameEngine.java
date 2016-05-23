@@ -1,11 +1,4 @@
-package com.game;
-
-import com.game.input.KeyboardHandler;
-import com.game.input.MouseHandler;
-import com.game.logic.GameLogic;
-
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
+package com.game.engine;
 
 public class GameEngine implements Runnable {
 
@@ -33,8 +26,8 @@ public class GameEngine implements Runnable {
         try {
             init();
             gameLoop();
-        } catch (Exception excp) {
-            excp.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -71,7 +64,7 @@ public class GameEngine implements Runnable {
     }
 
     protected void input() {
-        gameLogic.input();
+        gameLogic.input(window);
     }
 
     protected void update(float interval) {

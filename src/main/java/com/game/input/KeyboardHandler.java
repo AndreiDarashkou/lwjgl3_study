@@ -6,7 +6,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 
 public class KeyboardHandler extends GLFWKeyCallback {
 
-    public static boolean[] keys = new boolean[65536];
+    public boolean[] keys = new boolean[65536];
 
 
     // The GLFWKeyCallback class is an abstract method that
@@ -19,7 +19,7 @@ public class KeyboardHandler extends GLFWKeyCallback {
 
     // boolean method that returns true if a given key
     // is pressed.
-    public static boolean isKeyDown(int keycode) {
+    public boolean isKeyDown(int keycode) {
         return keys[keycode];
     }
 

@@ -1,7 +1,7 @@
 package com.game;
 
-import com.game.logic.DummyGame;
-import com.game.logic.GameLogic;
+import com.game.engine.GameEngine;
+import com.game.engine.GameLogic;
 
 public class Main {
 
@@ -16,20 +16,5 @@ public class Main {
             System.exit(-1);
         }
     }
-
-//    public static void main2(String[] args) {
-//        Window window = new Window();
-//        windowHandler = window.init();
-//
-//        try {
-//            loop();
-//
-//            glfwDestroyWindow(windowHandler);
-//            glfwFreeCallbacks(windowHandler);
-//        } finally {
-//            glfwTerminate();
-//            glfwSetErrorCallback(null).free();
-//        }
-//    }
 
 }

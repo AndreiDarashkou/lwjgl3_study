@@ -1,8 +1,8 @@
-package com.game.logic;
+package com.game;
 
 import com.game.Renderer;
-import com.game.Window;
-import com.game.input.KeyboardHandler;
+import com.game.engine.GameLogic;
+import com.game.engine.Window;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
@@ -22,10 +22,10 @@ public class DummyGame implements GameLogic {
     }
 
     @Override
-    public void input() {
-        if (KeyboardHandler.isKeyDown(GLFW_KEY_UP)) {
+    public void input(Window window) {
+        if (window.isKeyPressed(GLFW_KEY_UP)) {
             direction = 1;
-        } else if (KeyboardHandler.isKeyDown(GLFW_KEY_DOWN)) {
+        } else if (window.isKeyPressed(GLFW_KEY_DOWN)) {
             direction = -1;
         } else {
             direction = 0;
