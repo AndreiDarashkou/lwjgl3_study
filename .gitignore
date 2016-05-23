@@ -2,3 +2,4 @@
 target/
 .class
 lwjgl3.iml
+libs/doc/*
