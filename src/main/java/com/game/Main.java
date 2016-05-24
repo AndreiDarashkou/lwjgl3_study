@@ -2,6 +2,7 @@ package com.game;
 
 import com.game.engine.GameEngine;
 import com.game.engine.GameLogic;
+import com.game.model.DummyGame;
 
 public class Main {
 
@@ -9,8 +10,8 @@ public class Main {
         try {
             boolean vSync = true;
             GameLogic gameLogic = new DummyGame();
-            GameEngine gameEng = new GameEngine("GAME", 600, 480, vSync, gameLogic);
-            gameEng.start();
+            GameEngine gameEngine = new GameEngine("GAME", 600, 480, vSync, gameLogic);
+            gameEngine.start();
         } catch (Exception exception) {
             exception.printStackTrace();
             System.exit(-1);

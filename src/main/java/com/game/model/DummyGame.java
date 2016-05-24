@@ -1,6 +1,5 @@
-package com.game;
+package com.game.model;
 
-import com.game.Renderer;
 import com.game.engine.GameLogic;
 import com.game.engine.Window;
 
