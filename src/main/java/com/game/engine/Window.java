@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLCapabilities;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
@@ -79,7 +80,10 @@ public class Window {
 
         glfwShowWindow(windowHandler);
 
-        GL.createCapabilities();
+        GLCapabilities cap = GL.createCapabilities();
+        if(cap.OpenGL32) { //на работе только 3.2 поддерживается :)
+            System.out.println("openGL version: 3.2");
+        }
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     }
 

@@ -8,6 +8,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 import static org.lwjgl.opengl.GL11.glViewport;
 
 public class DummyGame implements GameLogic {
+
     private int direction = 0;
     private float color = 0.0f;
     private final Renderer renderer;
@@ -41,11 +42,12 @@ public class DummyGame implements GameLogic {
     }
     @Override
     public void render(Window window) {
-        if (window.isResized()) {
-            glViewport(0, 0, window.getWidth(), window.getHeight());
-            window.setResized(false);
-        }
         window.setClearColor(color, color, color, 0.0f);
-        renderer.clear();
+        renderer.render(window);
+    }
+
+    @Override
+    public void cleanup() {
+        renderer.cleanup();
     }
 }

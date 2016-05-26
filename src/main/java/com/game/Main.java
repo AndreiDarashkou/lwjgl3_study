@@ -3,6 +3,8 @@ package com.game;
 import com.game.engine.GameEngine;
 import com.game.engine.GameLogic;
 import com.game.model.DummyGame;
+import org.lwjgl.Version;
+import org.lwjgl.opengl.GL;
 
 public class Main {
 
