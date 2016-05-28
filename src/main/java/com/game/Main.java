@@ -2,16 +2,14 @@ package com.game;
 
 import com.game.engine.GameEngine;
 import com.game.engine.GameLogic;
-import com.game.model.DummyGame;
-import org.lwjgl.Version;
-import org.lwjgl.opengl.GL;
+import com.game.test_game.TestGameLogic;
 
 public class Main {
 
     public static void main(String[] args) {
         try {
             boolean vSync = true;
-            GameLogic gameLogic = new DummyGame();
+            GameLogic gameLogic = new TestGameLogic();
             GameEngine gameEngine = new GameEngine("GAME", 600, 480, vSync, gameLogic);
             gameEngine.start();
         } catch (Exception exception) {

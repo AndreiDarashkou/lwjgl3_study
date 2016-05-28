@@ -22,7 +22,7 @@ import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
- * Part of a model. Defines the vertices of a object.
+ * Part of a test_game. Defines the vertices of a object.
  */
 @Getter
 public class Mesh {

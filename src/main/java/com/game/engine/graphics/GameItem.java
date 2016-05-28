@@ -1,4 +1,4 @@
-package com.game.model;
+package com.game.engine.graphics;
 
 import com.game.engine.graphics.Mesh;
 import org.joml.Vector3f;
@@ -7,8 +7,8 @@ public class GameItem {
 
     private final Mesh mesh;
     private final Vector3f position;
-    private float scale;
     private final Vector3f rotation;
+    private float scale;
 
     public GameItem(Mesh mesh) {
         this.mesh = mesh;

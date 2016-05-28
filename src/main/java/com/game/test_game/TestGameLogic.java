@@ -1,13 +1,14 @@
-package com.game.model;
+package com.game.test_game;
 
 import com.game.engine.GameLogic;
 import com.game.engine.Window;
+import com.game.engine.graphics.GameItem;
 import com.game.engine.graphics.Mesh;
 import org.joml.Vector3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class DummyGame implements GameLogic {
+public class TestGameLogic implements GameLogic {
 
 
     private int displxInc = 0;
@@ -15,16 +16,16 @@ public class DummyGame implements GameLogic {
     private int displzInc = 0;
     private int scaleInc = 0;
 
-    private final Renderer renderer;
+    private final TestGameRenderer testGameRenderer;
     private GameItem[] gameItems;
 
-    public DummyGame() {
-        renderer = new Renderer();
+    public TestGameLogic() {
+        testGameRenderer = new TestGameRenderer();
     }
 
     @Override
-    public void init(Window window) throws Exception {
-        renderer.init(window);
+    public void init() throws Exception {
+        testGameRenderer.init();
 
         float[] vertices = new float[]{
                 -0.5f, 0.5f, -1.0f,
@@ -114,12 +115,12 @@ public class DummyGame implements GameLogic {
 
     @Override
     public void render(Window window) {
-        renderer.render(window, gameItems);
+        testGameRenderer.render(window, gameItems);
     }
 
     @Override
     public void cleanup() {
-        renderer.cleanup();
+        testGameRenderer.cleanup();
         for (GameItem gameItem : gameItems) {
             gameItem.getMesh().cleanUp();
         }
