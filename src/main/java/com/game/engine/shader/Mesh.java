@@ -25,26 +25,34 @@ public class Mesh {
     private final int vertexArrayId;
     private final int positionBufferId;
     private final int indexBufferId;
+    private final int colourBufferId;
     private final int vertexCount;
 
-    public Mesh(float[] vertices, int[] indices) {
+    public Mesh(float[] vertices, float[] colour, int[] indices) {
         vertexCount = indices.length;
-        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
-        verticesBuffer.put(vertices).flip();
 
         vertexArrayId = glGenVertexArrays();
         glBindVertexArray(vertexArrayId);
 
+        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
+        verticesBuffer.put(vertices).flip();
         positionBufferId = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, positionBufferId);
         glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
         glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
-        indexBufferId = glGenBuffers();
         IntBuffer intBuffer = BufferUtils.createIntBuffer(indices.length);
         intBuffer.put(indices).flip();
+        indexBufferId = glGenBuffers();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, intBuffer, GL_STATIC_DRAW);
+
+        FloatBuffer colourBuffer = BufferUtils.createFloatBuffer(colour.length);
+        colourBuffer.put(colour).flip();
+        colourBufferId = glGenBuffers();
+        glBindBuffer(GL_ARRAY_BUFFER, colourBufferId);
+        glBufferData(GL_ARRAY_BUFFER, colourBuffer, GL_STATIC_DRAW);
+        glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, 0);
 
         // Unbind the VBO and VAO
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -53,11 +61,13 @@ public class Mesh {
 
     public void cleanUp() {
         glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
 
         // Delete the VBO
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDeleteBuffers(positionBufferId);
         glDeleteBuffers(indexBufferId);
+        glDeleteBuffers(colourBufferId);
 
         // Delete the VAO
         glBindVertexArray(0);
