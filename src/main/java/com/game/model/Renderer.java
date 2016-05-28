@@ -4,6 +4,7 @@ import com.game.engine.Window;
 import com.game.engine.shader.Mesh;
 import com.game.engine.shader.ShaderProgram;
 import com.game.engine.util.Utils;
+import org.joml.Matrix4f;
 
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
@@ -20,17 +21,26 @@ public class Renderer {
 
     private ShaderProgram shaderProgram;
 
+    private static final float fieldOfView = (float) Math.toRadians(60.0f);
+    private static final float Z_NEAR = 0.01f;
+    private static final float Z_FAR = 1000.0f;
+    private Matrix4f projectionMatrix;
+
     public Renderer() {
     }
 
-    public void init() throws Exception {
+    public void init(Window window) throws Exception {
         shaderProgram = new ShaderProgram();
         shaderProgram.createVertexShader(Utils.loadResource("/vertex.vs"));
         shaderProgram.createFragmentShader(Utils.loadResource("/fragment.fs"));
         shaderProgram.link();
+
+        float aspectRatio = (float) window.getWidth() / window.getHeight();
+        projectionMatrix = new Matrix4f().perspective(fieldOfView, aspectRatio, Z_NEAR, Z_FAR);
+        shaderProgram.createUniform("projectionMatrix");
     }
 
-    public void clear() {
+    private void clear() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
@@ -43,6 +53,7 @@ public class Renderer {
         }
 
         shaderProgram.bind();
+        shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
         // Bind to the VAO
         glBindVertexArray(mesh.getVertexArrayId());
@@ -52,6 +63,7 @@ public class Renderer {
 
         // Restore state
         glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
         glBindVertexArray(0);
 
         shaderProgram.unbind();

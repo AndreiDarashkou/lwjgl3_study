@@ -2,8 +2,8 @@ package com.game.engine;
 
 public class GameEngine implements Runnable {
 
-    public static final int TARGET_FPS = 75;
-    public static final int TARGET_UPS = 60;
+    private static final int TARGET_FPS = 75;
+    private static final int TARGET_UPS = 60;
 
     private final Thread gameLoopThread;
     private final GameLogic gameLogic;
@@ -40,17 +40,16 @@ public class GameEngine implements Runnable {
     protected void init() throws Exception {
         window.init();
         timer.init();
-        gameLogic.init();
+        gameLogic.init(window);
     }
 
 
-    protected void gameLoop() {
+    private void gameLoop() {
         float elapsedTime;
         float accumulator = 0f;
         float interval = 1f / TARGET_UPS;
 
-        boolean running = true;
-        while (running && !window.windowShouldClose()) {
+        while (!window.windowShouldClose()) {
             elapsedTime = timer.getElapsedTime();
             accumulator += elapsedTime;
 
@@ -90,6 +89,7 @@ public class GameEngine implements Runnable {
             try {
                 Thread.sleep(1);
             } catch (InterruptedException ie) {
+                ie.printStackTrace();
             }
         }
     }

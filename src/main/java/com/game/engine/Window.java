@@ -1,17 +1,15 @@
 package com.game.engine;
 
-import com.game.input.KeyboardHandler;
-import com.game.input.MouseHandler;
 import lombok.Getter;
 import lombok.Setter;
-import org.lwjgl.glfw.*;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GLCapabilities;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL11.GL_TRUE;
-import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 @Getter
@@ -23,8 +21,6 @@ public class Window {
     private int height;
     private long windowHandler;
     private GLFWErrorCallback errorCallback;
-    private MouseHandler mouseCallback;
-    private GLFWKeyCallback keyCallback;
     private GLFWWindowSizeCallback windowSizeCallback;
     private boolean resized;
     private boolean vSync;
@@ -58,8 +54,6 @@ public class Window {
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
-        glfwSetKeyCallback(windowHandler, keyCallback = new KeyboardHandler());
-        glfwSetCursorPosCallback(windowHandler, mouseCallback = new MouseHandler());
         glfwSetWindowSizeCallback(windowHandler, windowSizeCallback = new GLFWWindowSizeCallback() {
             @Override
             public void invoke(long window, int width, int height) {
