@@ -1,4 +1,4 @@
-package com.game.engine.shader;
+package com.game.engine.graphics;
 
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
@@ -82,7 +82,7 @@ public class ShaderProgram {
     protected int createShader(String shaderCode, int shaderType) throws Exception {
         int shaderId = glCreateShader(shaderType);
         if (shaderId == 0) {
-            throw new Exception("Error creating shader. Code: " + shaderId);
+            throw new Exception("Error creating graphics. Code: " + shaderId);
         }
 
         glShaderSource(shaderId, shaderCode);
