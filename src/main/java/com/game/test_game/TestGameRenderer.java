@@ -11,12 +11,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class TestGameRenderer {
 
-    private ShaderProgram shaderProgram;
-
     private static final float fieldOfView = (float) Math.toRadians(60.0f);
     private static final float Z_NEAR = 0.01f;
     private static final float Z_FAR = 1000.0f;
+
     private Transformation transformation;
+    private ShaderProgram shaderProgram;
 
     public TestGameRenderer() {
         transformation = new Transformation();
@@ -24,12 +24,13 @@ public class TestGameRenderer {
 
     public void init() throws Exception {
         shaderProgram = new ShaderProgram();
-        shaderProgram.createVertexShader(Utils.loadResource("/vertex.glsl"));
-        shaderProgram.createFragmentShader(Utils.loadResource("/fragment.glsl"));
+        shaderProgram.createVertexShader(Utils.loadResource("/shaders/vertex.glsl"));
+        shaderProgram.createFragmentShader(Utils.loadResource("/shaders/fragment.glsl"));
         shaderProgram.link();
 
         shaderProgram.createUniform("projectionMatrix");
         shaderProgram.createUniform("worldMatrix");
+        shaderProgram.createUniform("texture_sampler");
     }
 
     private void clear() {
@@ -45,6 +46,8 @@ public class TestGameRenderer {
         }
 
         shaderProgram.bind();
+
+        shaderProgram.setUniform("texture_sampler", 0);
 
         Matrix4f projectionMatrix = transformation.getProjectionMatrix(fieldOfView, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR);
         shaderProgram.setUniform("projectionMatrix", projectionMatrix);

@@ -45,6 +45,10 @@ public class ShaderProgram {
         glUniformMatrix4fv(uniformsMap.get(uniformName), false, floatBuffer);
     }
 
+    public void setUniform(String uniformName, int value) {
+        glUniform1i(uniformsMap.get(uniformName), value);
+    }
+
     public void link() throws Exception {
         glLinkProgram(programId);
         if (glGetProgrami(programId, GL_LINK_STATUS) == 0) {

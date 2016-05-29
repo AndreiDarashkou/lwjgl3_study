@@ -79,6 +79,7 @@ public class Window {
             System.out.println("openGL version: 3.2");
         }
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glEnable(GL_DEPTH_TEST);
     }
 
     public void setClearColor(float r, float g, float b, float alpha) {
