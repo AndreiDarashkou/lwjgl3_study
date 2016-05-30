@@ -1,6 +1,7 @@
 package com.game.test_game;
 
 import com.game.engine.Window;
+import com.game.engine.graphics.Camera;
 import com.game.engine.graphics.GameItem;
 import com.game.engine.graphics.ShaderProgram;
 import com.game.engine.graphics.Transformation;
@@ -29,7 +30,7 @@ public class TestGameRenderer {
         shaderProgram.link();
 
         shaderProgram.createUniform("projectionMatrix");
-        shaderProgram.createUniform("worldMatrix");
+        shaderProgram.createUniform("modelViewMatrix");
         shaderProgram.createUniform("texture_sampler");
     }
 
@@ -37,7 +38,7 @@ public class TestGameRenderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Window window, GameItem[] gameItems) {
+    public void render(Window window, Camera camera, GameItem[] gameItems) {
         clear();
 
         if ( window.isResized() ) {
@@ -51,13 +52,12 @@ public class TestGameRenderer {
 
         Matrix4f projectionMatrix = transformation.getProjectionMatrix(fieldOfView, window.getWidth(), window.getHeight(), Z_NEAR, Z_FAR);
         shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+        
+        Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 
         for (GameItem gameItem : gameItems) {
-            Matrix4f worldMatrix = transformation.getWorldMatrix(
-                            gameItem.getPosition(),
-                            gameItem.getRotation(),
-                            gameItem.getScale());
-            shaderProgram.setUniform("worldMatrix", worldMatrix);
+            Matrix4f modelViewMatrix = transformation.getModelViewMatrix(gameItem, viewMatrix);
+            shaderProgram.setUniform("modelViewMatrix", modelViewMatrix);
             gameItem.getMesh().render();
         }
 

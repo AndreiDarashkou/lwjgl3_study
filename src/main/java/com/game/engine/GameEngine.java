@@ -1,5 +1,7 @@
 package com.game.engine;
 
+import com.game.engine.input.MouseInput;
+
 public class GameEngine implements Runnable {
 
     private static final int TARGET_FPS = 75;
@@ -9,10 +11,12 @@ public class GameEngine implements Runnable {
     private final GameLogic gameLogic;
     private final Window window;
     private final Timer timer;
+    private MouseInput mouseInput;
 
     public GameEngine(String windowTitle, int width, int height, boolean vSync, GameLogic gameLogic) throws Exception {
         gameLoopThread = new Thread(this, "GAME_LOOP_THREAD");
         window = new Window(windowTitle, width, height, vSync);
+        mouseInput = new MouseInput();
         this.gameLogic = gameLogic;
         timer = new Timer();
     }
@@ -41,6 +45,7 @@ public class GameEngine implements Runnable {
         window.init();
         timer.init();
         gameLogic.init();
+        mouseInput.init(window);
     }
 
 
@@ -69,11 +74,12 @@ public class GameEngine implements Runnable {
     }
 
     protected void input() {
-        gameLogic.input(window);
+        mouseInput.input(window);
+        gameLogic.input(window, mouseInput);
     }
 
     protected void update(float interval) {
-        gameLogic.update(interval);
+        gameLogic.update(interval, mouseInput);
     }
 
 

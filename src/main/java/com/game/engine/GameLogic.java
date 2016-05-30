@@ -1,10 +1,12 @@
 package com.game.engine;
 
+import com.game.engine.input.MouseInput;
+
 public interface GameLogic {
 
     void init() throws Exception;
-    void input(Window window);
-    void update(float interval);
+    void input(Window window, MouseInput mouseInput);
+    void update(float interval, MouseInput mouseInput);
     void render(Window window);
     void cleanup();
 }
