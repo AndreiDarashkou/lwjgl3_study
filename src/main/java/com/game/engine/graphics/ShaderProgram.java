@@ -1,6 +1,7 @@
 package com.game.engine.graphics;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -47,6 +48,10 @@ public class ShaderProgram {
 
     public void setUniform(String uniformName, int value) {
         glUniform1i(uniformsMap.get(uniformName), value);
+    }
+
+    public void setUniform(String uniformName, Vector3f value) {
+        glUniform3f(uniformsMap.get(uniformName), value.x, value.y, value.z );
     }
 
     public void link() throws Exception {

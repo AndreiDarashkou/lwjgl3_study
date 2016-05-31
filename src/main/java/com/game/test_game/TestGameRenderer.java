@@ -1,10 +1,7 @@
 package com.game.test_game;
 
 import com.game.engine.Window;
-import com.game.engine.graphics.Camera;
-import com.game.engine.graphics.GameItem;
-import com.game.engine.graphics.ShaderProgram;
-import com.game.engine.graphics.Transformation;
+import com.game.engine.graphics.*;
 import com.game.engine.util.Utils;
 import org.joml.Matrix4f;
 
@@ -32,6 +29,9 @@ public class TestGameRenderer {
         shaderProgram.createUniform("projectionMatrix");
         shaderProgram.createUniform("modelViewMatrix");
         shaderProgram.createUniform("texture_sampler");
+        // Create uniform for default colour and the flag that controls it
+        shaderProgram.createUniform("colour");
+        shaderProgram.createUniform("useColour");
     }
 
     private void clear() {
@@ -55,12 +55,17 @@ public class TestGameRenderer {
         
         Matrix4f viewMatrix = transformation.getViewMatrix(camera);
 
-        for (GameItem gameItem : gameItems) {
+        for(GameItem gameItem : gameItems) {
+            Mesh mesh = gameItem.getMesh();
+            // Set model view matrix for this item
             Matrix4f modelViewMatrix = transformation.getModelViewMatrix(gameItem, viewMatrix);
             shaderProgram.setUniform("modelViewMatrix", modelViewMatrix);
-            gameItem.getMesh().render();
-        }
+            // Render the mesh for this game item
+            shaderProgram.setUniform("colour", mesh.getColour());
+            shaderProgram.setUniform("useColour", mesh.isTextured() ? 0 : 1);
 
+            mesh.render();
+        }
         shaderProgram.unbind();
     }
 

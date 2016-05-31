@@ -1,6 +1,8 @@
 package com.game.engine.graphics;
 
 import lombok.Getter;
+import lombok.Setter;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
@@ -29,13 +31,32 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
  * Part of a test_game. Defines the vertices of a object.
  */
 @Getter
+@Setter
 public class Mesh {
+
+    private static final Vector3f DEFAULT_COLOUR = new Vector3f(1.0f, 1.0f, 1.0f);
 
     private int vertexArrayId;
     private int vertexCount;
 
     private List<Integer> bufferIdList = new ArrayList<>();
     private Texture texture;
+    private Vector3f colour;
+
+    public Mesh(float[] positions, float[] textCoords, float[] normals, int[] indices) {
+        colour = DEFAULT_COLOUR;
+        vertexCount = indices.length;
+        vertexArrayId = glGenVertexArrays();
+        glBindVertexArray(vertexArrayId);
+
+        initPositionBuffer(positions);
+        initTextureBuffer(textCoords);
+        initNormalsBuffer(normals);
+        initIndexBuffer(indices);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+    }
 
     public Mesh(float[] vertices, float[] colour, int[] indices) {
         vertexCount = indices.length;
@@ -63,6 +84,10 @@ public class Mesh {
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
+    }
+
+    public boolean isTextured() {
+        return this.texture != null;
     }
 
     private void initPositionBuffer(float[] positions) {
@@ -94,6 +119,14 @@ public class Mesh {
         glBindBuffer(GL_ARRAY_BUFFER, bufferId);
         glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(textureCoordinates), GL_STATIC_DRAW);
         glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
+    }
+
+    private void initNormalsBuffer(float[] normals) {
+        int bufferId = glGenBuffers();
+        bufferIdList.add(bufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, bufferId);
+        glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(normals), GL_STATIC_DRAW);
+        glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
     }
 
     private FloatBuffer createFloatBuffer(float[] colour) {
