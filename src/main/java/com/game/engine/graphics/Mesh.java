@@ -142,35 +142,44 @@ public class Mesh {
         return intBuffer;
     }
 
-    public void cleanUp() {
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-
-        // Delete the VBO
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        bufferIdList.forEach(bufferId -> glDeleteBuffers(bufferId));
-
-        // Delete the VAO
-        glBindVertexArray(0);
-        glDeleteVertexArrays(vertexArrayId);
-    }
-
     public void render() {
-        // Activate firs texture bank
-        glActiveTexture(GL_TEXTURE0);
-        // Bind the texture
-        glBindTexture(GL_TEXTURE_2D, texture.getId());
+
+        if (texture != null) {
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, texture.getId());
+        }
 
         // Bind to the VAO
         glBindVertexArray(getVertexArrayId());
         //draw mesh
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
+
         glDrawElements(GL_TRIANGLES, getVertexCount(), GL_UNSIGNED_INT, 0);
 
         // Restore state
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
         glBindVertexArray(0);
+
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
+
+    public void cleanUp() {
+        glDisableVertexAttribArray(0);
+
+        // Delete the VBO
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        bufferIdList.forEach(bufferId -> glDeleteBuffers(bufferId));
+
+        if (texture != null) {
+            texture.cleanup();
+        }
+        // Delete the VAO
+        glBindVertexArray(0);
+        glDeleteVertexArrays(vertexArrayId);
+    }
+
 }

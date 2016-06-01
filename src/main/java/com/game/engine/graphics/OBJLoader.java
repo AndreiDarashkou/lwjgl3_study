@@ -11,7 +11,7 @@ public class OBJLoader {
 
     public static Mesh loadMesh(String fileName) throws Exception {
         List<String> lines = Utils.readAllLines(fileName);
-
+        //TODO set initial size
         List<Vector3f> vertices = new ArrayList<>();
         List<Vector2f> textures = new ArrayList<>();
         List<Vector3f> normals = new ArrayList<>();

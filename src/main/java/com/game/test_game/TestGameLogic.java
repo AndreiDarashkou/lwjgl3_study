@@ -16,7 +16,7 @@ public class TestGameLogic implements GameLogic {
     private final TestGameRenderer testGameRenderer;
     private GameItem[] gameItems;
     private final Camera camera;
-    private float CAMERA_POS_STEP = 0.05f;
+    private float CAMERA_POS_STEP = 0.25f;
     private float MOUSE_SENSITIVITY = 0.2f;
 
     public TestGameLogic() {
@@ -27,13 +27,14 @@ public class TestGameLogic implements GameLogic {
     @Override
     public void init() throws Exception {
         testGameRenderer.init();
-        //Mesh mesh = OBJLoader.loadMesh("/models/bunny.obj");
-        Mesh mesh = OBJLoader.loadMesh("/models/cube.obj");
-        Texture texture = new Texture("/textures/grassblock.png");
-        mesh.setTexture(texture);
+        //Mesh mesh = OBJLoader.loadMesh("/models/cube.obj");
+        //Texture texture = new Texture("/textures/grassblock.png");
+        //mesh.setTexture(texture);
+        Mesh mesh = OBJLoader.loadMesh("/models/bunny.obj");
         GameItem gameItem = new GameItem(mesh);
         gameItem.setScale(0.5f);
-        gameItem.setPosition(0, 0, -2);
+        gameItem.setPosition(0, 0, -20);
+        gameItem.setRotation(90, 0, 0);
         gameItems = new GameItem[]{gameItem};
     }
 
