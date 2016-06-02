@@ -40,8 +40,8 @@ public class Mesh {
     private int vertexCount;
 
     private List<Integer> bufferIdList = new ArrayList<>();
-    private Texture texture;
     private Vector3f colour;
+    private Material material;
 
     public Mesh(float[] positions, float[] textCoords, float[] normals, int[] indices) {
         colour = DEFAULT_COLOUR;
@@ -72,7 +72,7 @@ public class Mesh {
     }
 
     public Mesh(float[] positions, float[] textureCoordinates, int[] indices, Texture texture) {
-        this.texture = texture;
+        material.setTexture(texture);
 
         vertexCount = indices.length;
         vertexArrayId = glGenVertexArrays();
@@ -84,10 +84,6 @@ public class Mesh {
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
-    }
-
-    public boolean isTextured() {
-        return this.texture != null;
     }
 
     private void initPositionBuffer(float[] positions) {
@@ -143,7 +139,7 @@ public class Mesh {
     }
 
     public void render() {
-
+        Texture texture = material.getTexture();
         if (texture != null) {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture.getId());
@@ -174,6 +170,7 @@ public class Mesh {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         bufferIdList.forEach(bufferId -> glDeleteBuffers(bufferId));
 
+        Texture texture = material.getTexture();
         if (texture != null) {
             texture.cleanup();
         }

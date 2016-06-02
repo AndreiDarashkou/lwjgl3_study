@@ -18,6 +18,8 @@ public class TestGameLogic implements GameLogic {
     private final Camera camera;
     private float CAMERA_POS_STEP = 0.25f;
     private float MOUSE_SENSITIVITY = 0.2f;
+    private Vector3f ambientLight;
+    private PointLight pointLight;
 
     public TestGameLogic() {
         testGameRenderer = new TestGameRenderer();
@@ -30,12 +32,33 @@ public class TestGameLogic implements GameLogic {
         //Mesh mesh = OBJLoader.loadMesh("/models/cube.obj");
         //Texture texture = new Texture("/textures/grassblock.png");
         //mesh.setTexture(texture);
-        Mesh mesh = OBJLoader.loadMesh("/models/bunny.obj");
+//        Mesh mesh = OBJLoader.loadMesh("/models/bunny.obj");
+//        GameItem gameItem = new GameItem(mesh);
+//        gameItem.setScale(0.5f);
+//        gameItem.setPosition(0, 0, -20);
+//        gameItem.setRotation(90, 0, 0);
+//        gameItems = new GameItem[]{gameItem};
+        float reflectance = 1f;
+        //Mesh mesh = OBJLoader.loadMesh("/models/bunny.obj");
+        //Material material = new Material(new Vector3f(0.2f, 0.5f, 0.5f), reflectance);
+
+        Mesh mesh = OBJLoader.loadMesh("/models/cube.obj");
+        Texture texture = new Texture("/textures/grassblock.png");
+        Material material = new Material(texture, reflectance);
+
+        mesh.setMaterial(material);
         GameItem gameItem = new GameItem(mesh);
         gameItem.setScale(0.5f);
-        gameItem.setPosition(0, 0, -20);
-        gameItem.setRotation(90, 0, 0);
+        gameItem.setPosition(0, 0, -2);
         gameItems = new GameItem[]{gameItem};
+
+        ambientLight = new Vector3f(0.3f, 0.3f, 0.3f);
+        Vector3f lightColour = new Vector3f(1, 1, 1);
+        Vector3f lightPosition = new Vector3f(0, 0, 1);
+        float lightIntensity = 1.0f;
+        pointLight = new PointLight(lightColour, lightPosition, lightIntensity);
+        PointLight.Attenuation att = new PointLight.Attenuation(0.0f, 0.0f, 1.0f);
+        pointLight.setAttenuation(att);
     }
 
     @Override
@@ -56,6 +79,12 @@ public class TestGameLogic implements GameLogic {
         } else if (window.isKeyPressed(GLFW_KEY_X)) {
             cameraInc.y = 1;
         }
+        float lightPos = pointLight.getPosition().z;
+        if (window.isKeyPressed(GLFW_KEY_N)) {
+            this.pointLight.getPosition().z = lightPos + 0.1f;
+        } else if (window.isKeyPressed(GLFW_KEY_M)) {
+            this.pointLight.getPosition().z = lightPos - 0.1f;
+        }
     }
 
     @Override
@@ -72,7 +101,7 @@ public class TestGameLogic implements GameLogic {
 
     @Override
     public void render(Window window) {
-        testGameRenderer.render(window, camera, gameItems);
+        testGameRenderer.render(window, camera, gameItems, ambientLight, pointLight);
     }
 
     @Override
