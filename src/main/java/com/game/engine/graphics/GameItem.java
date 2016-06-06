@@ -1,8 +1,11 @@
 package com.game.engine.graphics;
 
-import com.game.engine.graphics.Mesh;
+import lombok.Getter;
+import lombok.Setter;
 import org.joml.Vector3f;
 
+@Getter
+@Setter
 public class GameItem {
 
     private final Mesh mesh;
@@ -27,25 +30,10 @@ public class GameItem {
         this.position.z = z;
     }
 
-    public float getScale() {
-        return scale;
-    }
-
-    public void setScale(float scale) {
-        this.scale = scale;
-    }
-
-    public Vector3f getRotation() {
-        return rotation;
-    }
-
     public void setRotation(float x, float y, float z) {
         this.rotation.x = x;
         this.rotation.y = y;
         this.rotation.z = z;
     }
 
-    public Mesh getMesh() {
-        return mesh;
-    }
 }

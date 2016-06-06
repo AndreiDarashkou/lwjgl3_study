@@ -40,7 +40,6 @@ public class Window {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
 
-
         glfwDefaultWindowHints(); // optional, the current window hints are already the default
         glfwWindowHint(GLFW_VISIBLE, GL_FALSE); // the window will stay hidden after creation
         glfwWindowHint(GLFW_RESIZABLE, GL_TRUE); // the window will be resizable
@@ -74,10 +73,7 @@ public class Window {
 
         glfwShowWindow(windowHandler);
 
-        GLCapabilities cap = GL.createCapabilities();
-        if(cap.OpenGL40) { //на работе только 3.2 поддерживается :)
-            System.out.println("openGL version: 3.2");
-        }
+        GL.createCapabilities();
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glEnable(GL_DEPTH_TEST);
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

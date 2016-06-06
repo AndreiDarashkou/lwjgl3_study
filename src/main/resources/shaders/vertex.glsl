@@ -13,9 +13,10 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-    vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-    gl_Position = projectionMatrix * mvPos;
-    outTexCoord = texCoord;
-    mvVertexNormal = normalize(modelViewMatrix * vec4(vertexNormal, 0.0)).xyz;
-    mvVertexPos = mvPos.xyz;
+    vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0); //position in camera*
+    gl_Position = projectionMatrix * modelViewPosition;             //position on display
+    outTexCoord = texCoord;                                         //texture coodinates
+
+    mvVertexNormal = normalize(modelViewMatrix * vec4(vertexNormal, 0.0)).xyz;  //normal vertex in camera*
+    mvVertexPos = modelViewPosition.xyz;                                        //only vertex model view position
 }

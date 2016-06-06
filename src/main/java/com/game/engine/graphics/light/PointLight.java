@@ -1,4 +1,4 @@
-package com.game.engine.graphics;
+package com.game.engine.graphics.light;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,18 +9,15 @@ import org.joml.Vector3f;
 public class PointLight {
 
     private Vector3f color;
-
     private Vector3f position;
-
+    private Attenuation attenuation;
     protected float intensity;
 
-    private Attenuation attenuation;
-
     public PointLight(Vector3f color, Vector3f position, float intensity) {
-        attenuation = new Attenuation(1, 0, 0);
         this.color = color;
         this.position = position;
         this.intensity = intensity;
+        attenuation = new Attenuation(1, 0, 0);
     }
 
     public PointLight(Vector3f color, Vector3f position, float intensity, Attenuation attenuation) {
@@ -38,9 +35,7 @@ public class PointLight {
     public static class Attenuation {
 
         private float constant;
-
         private float linear;
-
         private float exponent;
 
         public Attenuation(float constant, float linear, float exponent) {

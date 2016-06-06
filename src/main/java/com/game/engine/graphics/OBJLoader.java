@@ -107,11 +107,8 @@ public class OBJLoader {
         }
     }
 
-    protected static class Face {
+    private static class Face {
 
-        /**
-         * List of idxGroup groups for a face triangle (3 vertices per face).
-         */
         private IdxGroup[] idxGroups = new IdxGroup[3];
 
         public Face(String v1, String v2, String v3) {
@@ -150,9 +147,7 @@ public class OBJLoader {
         public static final int NO_VALUE = -1;
 
         public int idxPos;
-
         public int idxTextCoord;
-
         public int idxVecNormal;
 
         public IdxGroup() {

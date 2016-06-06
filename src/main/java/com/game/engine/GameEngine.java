@@ -37,10 +37,6 @@ public class GameEngine implements Runnable {
         }
     }
 
-    private void cleanup() {
-        gameLogic.cleanup();
-    }
-
     protected void init() throws Exception {
         window.init();
         timer.init();
@@ -73,19 +69,23 @@ public class GameEngine implements Runnable {
         }
     }
 
-    protected void input() {
+    private void input() {
         mouseInput.input(window);
         gameLogic.input(window, mouseInput);
     }
 
-    protected void update(float interval) {
+    private void update(float interval) {
         gameLogic.update(interval, mouseInput);
     }
 
 
-    protected void render() {
+    private void render() {
         gameLogic.render(window);
         window.update();
+    }
+
+    private void cleanup() {
+        gameLogic.cleanup();
     }
 
     private void sync() {

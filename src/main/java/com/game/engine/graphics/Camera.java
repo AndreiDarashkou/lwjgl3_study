@@ -1,7 +1,9 @@
 package com.game.engine.graphics;
 
+import lombok.Getter;
 import org.joml.Vector3f;
 
+@Getter
 public class Camera {
 
     private final Vector3f position;
@@ -37,18 +39,10 @@ public class Camera {
         position.y += offsetY;
     }
 
-    public Vector3f getPosition() {
-        return position;
-    }
-
     public void setPosition(float x, float y, float z) {
         position.x = x;
         position.y = y;
         position.z = z;
-    }
-
-    public Vector3f getRotation() {
-        return rotation;
     }
 
     public void setRotation(float x, float y, float z) {
