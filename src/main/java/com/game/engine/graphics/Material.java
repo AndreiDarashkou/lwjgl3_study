@@ -30,6 +30,10 @@ public class Material {
         this.texture = texture;
         this.reflectance = reflectance;
     }
+    public Material(Texture texture) {
+        this();
+        this.texture = texture;
+    }
 
     public boolean isTextured() {
         return this.texture != null;

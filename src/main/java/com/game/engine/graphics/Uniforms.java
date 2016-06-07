@@ -1,4 +1,4 @@
-package com.game.test_game;
+package com.game.engine.graphics;
 
 public class Uniforms {
 
@@ -12,5 +12,9 @@ public class Uniforms {
     public static final String POINT_LIGHTS = "pointLights";
     public static final String SPOT_LIGHTS = "spotLights";
     public static final String DIRECTIONAL_LIGHT = "directionalLight";
+
+    public static final String PROJECTION_MODEL_MATRIX = "projModelMatrix";
+    public static final String COLOUR = "colour";
+    public static final String HAS_TEXTURE = "hasTexture";
 
 }

@@ -8,10 +8,16 @@ import org.joml.Vector3f;
 @Setter
 public class GameItem {
 
-    private final Mesh mesh;
-    private final Vector3f position;
-    private final Vector3f rotation;
+    private Mesh mesh;
+    private Vector3f position;
+    private Vector3f rotation;
     private float scale;
+
+    public GameItem(){
+        position = new Vector3f(0, 0, 0);
+        scale = 1;
+        rotation = new Vector3f(0, 0, 0);
+    }
 
     public GameItem(Mesh mesh) {
         this.mesh = mesh;

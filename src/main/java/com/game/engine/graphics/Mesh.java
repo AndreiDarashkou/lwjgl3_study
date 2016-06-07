@@ -179,4 +179,16 @@ public class Mesh {
         glDeleteVertexArrays(vertexArrayId);
     }
 
+    public void deleteBuffers() {
+        glDisableVertexAttribArray(0);
+
+        // Delete the VBOs
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        bufferIdList.forEach(bufferId -> glDeleteBuffers(bufferId));
+
+        // Delete the VAO
+        glBindVertexArray(0);
+        glDeleteVertexArrays(vertexArrayId);
+    }
+
 }

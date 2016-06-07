@@ -74,13 +74,12 @@ public class OBJLoader {
         for (Face face : facesList) {
             IdxGroup[] faceVertexIndices = face.getFaceVertexIndices();
             for (IdxGroup indValue : faceVertexIndices) {
-                processFaceVertex(indValue, textCoordList, normList,
-                        indices, textCoordArr, normArr);
+                processFaceVertex(indValue, textCoordList, normList, indices, textCoordArr, normArr);
             }
         }
-        int[] indicesArr = new int[indices.size()];
-        indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
+        int[] indicesArr = indices.stream().mapToInt((Integer v) -> v).toArray();
         Mesh mesh = new Mesh(posArr, textCoordArr, normArr, indicesArr);
+
         return mesh;
     }
 
