@@ -29,15 +29,10 @@ public class Renderer {
     private static final int MAX_POINT_LIGHTS = 5;
     private static final int MAX_SPOT_LIGHTS = 5;
 
-    private final Transformation transformation;
+    private final Transformation transformation = new Transformation();
     private ShaderProgram sceneShaderProgram;
     private ShaderProgram hudShaderProgram;
-    private final float specularPower;
-
-    public Renderer() {
-        transformation = new Transformation();
-        specularPower = 10f;
-    }
+    private final float specularPower = 10f;
 
     public void init() throws Exception {
         setupSceneShader();
@@ -104,14 +99,13 @@ public class Renderer {
         renderLights(viewMatrix, sceneLight);
 
         sceneShaderProgram.setUniform(TEXTURE_SAMPLER, 0);
-        // Render each gameItem
+
         for (GameItem gameItem : gameItems) {
             Mesh mesh = gameItem.getMesh();
-            // Set model view matrix for this item
             Matrix4f modelViewMatrix = transformation.getModelViewMatrix(gameItem, viewMatrix);
             sceneShaderProgram.setUniform(MODEL_VIEW_MATRIX, modelViewMatrix);
-            // Render the mesh for this game item
             sceneShaderProgram.setUniform(MATERIAL, mesh.getMaterial());
+
             mesh.render();
         }
 
@@ -175,13 +169,12 @@ public class Renderer {
         Matrix4f ortho = transformation.getOrthoProjectionMatrix(0, window.getWidth(), window.getHeight(), 0);
         for (GameItem gameItem : hud.getGameItems()) {
             Mesh mesh = gameItem.getMesh();
-            // Set ortohtaphic and model matrix for this HUD item
+
             Matrix4f projModelMatrix = transformation.getOrtoProjModelMatrix(gameItem, ortho);
-            hudShaderProgram.setUniform("projModelMatrix", projModelMatrix);
+            hudShaderProgram.setUniform(PROJECTION_MODEL_MATRIX, projModelMatrix);
             hudShaderProgram.setUniform(COLOUR, gameItem.getMesh().getMaterial().getColour());
             hudShaderProgram.setUniform(HAS_TEXTURE, gameItem.getMesh().getMaterial().isTextured() ? 1 : 0);
 
-            // Render the mesh for this HUD item
             mesh.render();
         }
 

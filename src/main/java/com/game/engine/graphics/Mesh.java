@@ -28,7 +28,7 @@ import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
- * Part of a test_game. Defines the vertices of a object.
+ * Part of a model. Defines the vertices of a object.
  */
 @Getter
 @Setter
@@ -43,14 +43,14 @@ public class Mesh {
     private Vector3f colour;
     private Material material;
 
-    public Mesh(float[] positions, float[] textCoords, float[] normals, int[] indices) {
+    public Mesh(float[] positions, float[] textureCoordinates, float[] normals, int[] indices) {
         colour = DEFAULT_COLOUR;
         vertexCount = indices.length;
         vertexArrayId = glGenVertexArrays();
         glBindVertexArray(vertexArrayId);
 
         initPositionBuffer(positions);
-        initTextureBuffer(textCoords);
+        initTextureBuffer(textureCoordinates);
         initNormalsBuffer(normals);
         initIndexBuffer(indices);
 
@@ -66,21 +66,6 @@ public class Mesh {
         initPositionBuffer(vertices);
         initIndexBuffer(indices);
         initColourBuffer(colour);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-    }
-
-    public Mesh(float[] positions, float[] textureCoordinates, int[] indices, Texture texture) {
-        material.setTexture(texture);
-
-        vertexCount = indices.length;
-        vertexArrayId = glGenVertexArrays();
-        glBindVertexArray(vertexArrayId);
-
-        initPositionBuffer(positions);
-        initTextureBuffer(textureCoordinates);
-        initIndexBuffer(indices);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);

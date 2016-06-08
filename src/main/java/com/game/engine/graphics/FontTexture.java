@@ -23,8 +23,9 @@ public class FontTexture {
 
     private static final String IMAGE_FORMAT = "png";
     private final Font font;
+    private Color color = Color.WHITE;
     private final String charSetName;
-    private final Map<Character, CharInfo> charMap;
+    private final Map<Character, CharInfo> charMap = new HashMap<>();
     private Texture texture;
     private int height;
     private int width;
@@ -32,21 +33,27 @@ public class FontTexture {
     public FontTexture(Font font, String charSetName) throws Exception {
         this.font = font;
         this.charSetName = charSetName;
-        charMap = new HashMap<>();
-
         buildTexture();
     }
+
+    public FontTexture(Font font, Color color, String charSetName) throws Exception {
+        this.font = font;
+        this.charSetName = charSetName;
+        this.color = color;
+        buildTexture();
+    }
+
 
     public CharInfo getCharInfo(char c) {
         return charMap.get(c);
     }
 
     private String getAllAvailableChars(String charsetName) {
-        CharsetEncoder ce = Charset.forName(charsetName).newEncoder();
+        CharsetEncoder encoder = Charset.forName(charsetName).newEncoder();
         StringBuilder result = new StringBuilder();
-        for (char c = 0; c < Character.MAX_VALUE; c++) {
-            if (ce.canEncode(c)) {
-                result.append(c);
+        for (char ch = 0; ch < Character.MAX_VALUE; ch++) {
+            if (encoder.canEncode(ch)) {
+                result.append(ch);
             }
         }
         return result.toString();
@@ -77,20 +84,19 @@ public class FontTexture {
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2D.setFont(font);
         fontMetrics = g2D.getFontMetrics();
-        g2D.setColor(Color.WHITE);
+        g2D.setColor(color);
         g2D.drawString(allChars, 0, fontMetrics.getAscent());
         g2D.dispose();
 
         // Dump image to a byte buffer
-        InputStream is;
-        try (
-                ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+        InputStream textureInputStream;
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             ImageIO.write(img, IMAGE_FORMAT, out);
             out.flush();
-            is = new ByteArrayInputStream(out.toByteArray());
+            textureInputStream = new ByteArrayInputStream(out.toByteArray());
         }
 
-        texture = new Texture(is);
+        texture = new Texture(textureInputStream);
     }
 
     @Getter
