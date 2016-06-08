@@ -4,20 +4,14 @@ import com.game.engine.GameLogic;
 import com.game.engine.Window;
 import com.game.engine.graphics.*;
 import com.game.engine.graphics.light.DirectionalLight;
-import com.game.engine.graphics.light.PointLight;
 import com.game.engine.graphics.light.SceneLight;
-import com.game.engine.graphics.light.SpotLight;
 import com.game.engine.input.MouseInput;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import static com.game.test_game.TextureConstants.*;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
+import static com.game.test_game.TextureConstants.CUBE;
+import static com.game.test_game.TextureConstants.GRASS_BLOCK;
+import static org.lwjgl.glfw.GLFW.*;
 
 public class TestGameLogic implements GameLogic {
 
@@ -26,13 +20,10 @@ public class TestGameLogic implements GameLogic {
 
     private final Vector3f cameraInc = new Vector3f();
     private final Renderer renderer;
-    private GameItem[] gameItems;
+    private Scene scene = new Scene();
     private Camera camera = new Camera();
 
     private TestHud testHud;
-
-    private SceneLight sceneLight = new SceneLight();
-
     private float lightAngle;
 
     public TestGameLogic() {
@@ -48,37 +39,65 @@ public class TestGameLogic implements GameLogic {
         Mesh mesh = OBJLoader.loadMesh(CUBE);
         Texture texture = new Texture(GRASS_BLOCK);
         Material material = new Material(texture, reflectance);
-
         mesh.setMaterial(material);
-        GameItem gameItem = new GameItem(mesh);
-        gameItem.setScale(0.5f);
-        gameItem.setPosition(0, 0, -2);
-        gameItems = new GameItem[]{gameItem};
 
-        sceneLight = new SceneLight();
+        float blockScale = 0.5f;
+        float skyBoxScale = 10.0f;
+        float extension = 2.0f;
 
-        sceneLight.setAmbientLight(new Vector3f(0.3f, 0.3f, 0.3f));
+        float startx = extension * (-skyBoxScale + blockScale);
+        float startz = extension * (skyBoxScale - blockScale);
+        float starty = -1.0f;
+        float inc = blockScale * 2;
 
-        Vector3f lightPosition = new Vector3f(0, 0, 1);
-        float lightIntensity = 1.0f;
-        PointLight pointLight = new PointLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity);
-        PointLight.Attenuation att = new PointLight.Attenuation(0.0f, 0.0f, 1.0f);
-        pointLight.setAttenuation(att);
-        sceneLight.setPointLightList(new PointLight[]{pointLight});
+        float posx = startx;
+        float posz = startz;
+        float incy = 0.0f;
+        int NUM_ROWS = (int)(extension * skyBoxScale * 2 / inc);
+        int NUM_COLS = (int)(extension * skyBoxScale * 2/ inc);
+        GameItem[] gameItems  = new GameItem[NUM_ROWS * NUM_COLS];
+        for(int i=0; i<NUM_ROWS; i++) {
+            for(int j=0; j<NUM_COLS; j++) {
+                GameItem gameItem = new GameItem(mesh);
+                gameItem.setScale(blockScale);
+                incy = Math.random() > 0.9f ? blockScale * 2 : 0f;
+                gameItem.setPosition(posx, starty + incy, posz);
+                gameItems[i*NUM_COLS + j] = gameItem;
 
-        lightPosition = new Vector3f(0, 0.0f, 10f);
-        pointLight = new PointLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity);
-        att = new PointLight.Attenuation(0.0f, 0.0f, 0.02f);
-        pointLight.setAttenuation(att);
-        Vector3f coneDir = new Vector3f(0, 0, -1);
-        float cutoff = (float) Math.cos(Math.toRadians(140));
-        SpotLight spotLight = new SpotLight(pointLight, coneDir, cutoff);
-        sceneLight.setSpotLightList(new SpotLight[]{spotLight, new SpotLight(spotLight)});
+                posx += inc;
+            }
+            posx = startx;
+            posz -= inc;
+        }
+        scene.setGameItems(gameItems);
 
-        lightPosition = new Vector3f(-1, 0, 0);
-        sceneLight.setDirectionalLight(new DirectionalLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity));
+        // Setup  SkyBox
+        SkyBox skyBox = new SkyBox("/models/skybox.obj", "/textures/skybox.png");
+        skyBox.setScale(skyBoxScale);
+        scene.setSkyBox(skyBox);
+
+        // Setup Lights
+        setupLights();
 
         testHud = new TestHud("DEMO");
+
+        camera.getPosition().x = 0.65f;
+        camera.getPosition().y = 1.15f;
+        camera.getPosition().y = 4.34f;
+
+    }
+
+    private void setupLights() {
+        SceneLight sceneLight = new SceneLight();
+        scene.setSceneLight(sceneLight);
+
+        // Ambient Light
+        sceneLight.setAmbientLight(new Vector3f(1.0f, 1.0f, 1.0f));
+
+        // Directional Light
+        float lightIntensity = 1.0f;
+        Vector3f lightPosition = new Vector3f(-1, 0, 0);
+        sceneLight.setDirectionalLight(new DirectionalLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity));
     }
 
     @Override
@@ -112,7 +131,7 @@ public class TestGameLogic implements GameLogic {
         }
 
         lightAngle += 0.5f;
-        DirectionalLight directionalLight = sceneLight.getDirectionalLight();
+        DirectionalLight directionalLight = scene.getSceneLight().getDirectionalLight();
         if (lightAngle > 90) {
             directionalLight.setIntensity(0);
             if (lightAngle >= 360) {
@@ -137,13 +156,13 @@ public class TestGameLogic implements GameLogic {
     @Override
     public void render(Window window) {
         testHud.updateSize(window);
-        renderer.render(window, camera, gameItems, sceneLight, testHud);
+        renderer.render(window, camera, scene, testHud);
     }
 
     @Override
     public void cleanup() {
         renderer.cleanup();
-        for (GameItem gameItem : gameItems) {
+        for (GameItem gameItem : scene.getGameItems()) {
             gameItem.getMesh().cleanUp();
         }
         testHud.cleanup();
