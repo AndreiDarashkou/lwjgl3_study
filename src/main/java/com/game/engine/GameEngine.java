@@ -4,7 +4,7 @@ import com.game.engine.input.MouseInput;
 
 public class GameEngine implements Runnable {
 
-    private static final int TARGET_FPS = 75;
+    private static final int TARGET_FPS = 60;
     private static final int TARGET_UPS = 60;
 
     private final Thread gameLoopThread;
@@ -51,6 +51,7 @@ public class GameEngine implements Runnable {
         float interval = 1f / TARGET_UPS;
 
         while (!window.windowShouldClose()) {
+          // System.gc();
             elapsedTime = timer.getElapsedTime();
             accumulator += elapsedTime;
 
@@ -62,6 +63,8 @@ public class GameEngine implements Runnable {
             }
 
             render();
+
+            System.out.println(1/elapsedTime);
 
             if (!window.isVSync()) {
                 sync();

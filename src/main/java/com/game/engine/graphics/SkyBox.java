@@ -1,7 +1,5 @@
 package com.game.engine.graphics;
 
-import com.game.engine.graphics.*;
-
 public class SkyBox extends GameItem {
 
     public SkyBox(String objModel, String textureFile) throws Exception {

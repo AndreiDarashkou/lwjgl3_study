@@ -9,8 +9,10 @@ import com.game.engine.input.MouseInput;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import static com.game.test_game.TextureConstants.CUBE;
-import static com.game.test_game.TextureConstants.GRASS_BLOCK;
+import java.util.List;
+import java.util.Map;
+
+import static com.game.test_game.TextureConstants.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class TestGameLogic implements GameLogic {
@@ -42,7 +44,7 @@ public class TestGameLogic implements GameLogic {
         mesh.setMaterial(material);
 
         float blockScale = 0.5f;
-        float skyBoxScale = 10.0f;
+        float skyBoxScale = 20.0f;
         float extension = 2.0f;
 
         float startx = extension * (-skyBoxScale + blockScale);
@@ -52,7 +54,7 @@ public class TestGameLogic implements GameLogic {
 
         float posx = startx;
         float posz = startz;
-        float incy = 0.0f;
+        float incy;
         int NUM_ROWS = (int)(extension * skyBoxScale * 2 / inc);
         int NUM_COLS = (int)(extension * skyBoxScale * 2/ inc);
         GameItem[] gameItems  = new GameItem[NUM_ROWS * NUM_COLS];
@@ -72,7 +74,7 @@ public class TestGameLogic implements GameLogic {
         scene.setGameItems(gameItems);
 
         // Setup  SkyBox
-        SkyBox skyBox = new SkyBox("/models/skybox.obj", "/textures/skybox.png");
+        SkyBox skyBox = new SkyBox(SKY_BOX, SKY_BOX_PNG);
         skyBox.setScale(skyBoxScale);
         scene.setSkyBox(skyBox);
 
@@ -89,15 +91,13 @@ public class TestGameLogic implements GameLogic {
 
     private void setupLights() {
         SceneLight sceneLight = new SceneLight();
-        scene.setSceneLight(sceneLight);
 
-        // Ambient Light
         sceneLight.setAmbientLight(new Vector3f(1.0f, 1.0f, 1.0f));
-
-        // Directional Light
-        float lightIntensity = 1.0f;
         Vector3f lightPosition = new Vector3f(-1, 0, 0);
+        float lightIntensity = 1.0f;
         sceneLight.setDirectionalLight(new DirectionalLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity));
+
+        scene.setSceneLight(sceneLight);
     }
 
     @Override
@@ -162,9 +162,8 @@ public class TestGameLogic implements GameLogic {
     @Override
     public void cleanup() {
         renderer.cleanup();
-        for (GameItem gameItem : scene.getGameItems()) {
-            gameItem.getMesh().cleanUp();
-        }
+        Map<Mesh, List<GameItem>> mapMeshes = scene.getMeshMap();
+        mapMeshes.keySet().forEach(Mesh::cleanUp);
         testHud.cleanup();
     }
 }
