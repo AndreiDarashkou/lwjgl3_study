@@ -1,103 +1,91 @@
 package com.game.test_game;
 
 import com.game.engine.GameLogic;
+import com.game.engine.Scene;
 import com.game.engine.Window;
 import com.game.engine.graphics.*;
+import com.game.engine.items.GameItem;
+import com.game.engine.items.SkyBox;
 import com.game.engine.graphics.light.DirectionalLight;
 import com.game.engine.graphics.light.SceneLight;
 import com.game.engine.input.MouseInput;
+import com.game.engine.items.Terrain;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import java.util.List;
-import java.util.Map;
-
-import static com.game.test_game.TextureConstants.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class TestGameLogic implements GameLogic {
 
     private static final float MOUSE_SENSITIVITY = 0.2f;
-    private static final float CAMERA_POS_STEP = 0.15f;
+    private static final float CAMERA_POS_STEP = 0.05f;
 
-    private final Vector3f cameraInc = new Vector3f();
+    private final Vector3f cameraInc;
     private final Renderer renderer;
     private Scene scene = new Scene();
     private Camera camera = new Camera();
 
     private TestHud testHud;
     private float lightAngle;
+    private Terrain terrain;
 
     public TestGameLogic() {
         renderer = new Renderer();
-        lightAngle = -90;
+        cameraInc = new Vector3f(0.0f, 0.0f, 0.0f);
+        lightAngle = -35;
     }
 
     @Override
     public void init() throws Exception {
         renderer.init();
-        float reflectance = 1f;
 
-        Mesh mesh = OBJLoader.loadMesh(CUBE);
-        Texture texture = new Texture(GRASS_BLOCK);
-        Material material = new Material(texture, reflectance);
-        mesh.setMaterial(material);
+        scene = new Scene();
 
-        float blockScale = 0.5f;
-        float skyBoxScale = 20.0f;
-        float extension = 2.0f;
+        // Setup  GameItems
+        float reflectance = 0.65f;
 
-        float startx = extension * (-skyBoxScale + blockScale);
-        float startz = extension * (skyBoxScale - blockScale);
-        float starty = -1.0f;
-        float inc = blockScale * 2;
+        Mesh quadMesh1 = OBJLoader.loadMesh("/models/quad.obj");
+        Texture texture = new Texture("/textures/rock.png");
+        Material quadMaterial1 = new Material(texture, reflectance);
+        quadMesh1.setMaterial(quadMaterial1);
+        GameItem quadGameItem1 = new GameItem(quadMesh1);
+        quadGameItem1.setPosition(-3f, 0, 0);
+        quadGameItem1.setScale(2.0f);
+        quadGameItem1.setRotation(90, 0, 0);
 
-        float posx = startx;
-        float posz = startz;
-        float incy;
-        int NUM_ROWS = (int)(extension * skyBoxScale * 2 / inc);
-        int NUM_COLS = (int)(extension * skyBoxScale * 2/ inc);
-        GameItem[] gameItems  = new GameItem[NUM_ROWS * NUM_COLS];
-        for(int i=0; i<NUM_ROWS; i++) {
-            for(int j=0; j<NUM_COLS; j++) {
-                GameItem gameItem = new GameItem(mesh);
-                gameItem.setScale(blockScale);
-                incy = Math.random() > 0.9f ? blockScale * 2 : 0f;
-                gameItem.setPosition(posx, starty + incy, posz);
-                gameItems[i*NUM_COLS + j] = gameItem;
+        Mesh quadMesh2 = OBJLoader.loadMesh("/models/quad.obj");
+        Material quadMaterial2 = new Material(texture, reflectance);
 
-                posx += inc;
-            }
-            posx = startx;
-            posz -= inc;
-        }
-        scene.setGameItems(gameItems);
+        Texture normalMap = new Texture("/textures/rock_normals.png");
+        quadMaterial2.setNormalMap(normalMap);
+        quadMesh2.setMaterial(quadMaterial2);
+        GameItem quadGameItem2 = new GameItem(quadMesh2);
+        quadGameItem2.setPosition(3f, 0, 0);
+        quadGameItem2.setScale(2.0f);
+        quadGameItem2.setRotation(90, 0, 0);
 
-        // Setup  SkyBox
-        SkyBox skyBox = new SkyBox(SKY_BOX, SKY_BOX_PNG);
-        skyBox.setScale(skyBoxScale);
-        scene.setSkyBox(skyBox);
+        scene.setGameItems(new GameItem[]{quadGameItem1, quadGameItem2});
 
         // Setup Lights
         setupLights();
 
-        testHud = new TestHud("DEMO");
-
-        camera.getPosition().x = 0.65f;
-        camera.getPosition().y = 1.15f;
-        camera.getPosition().y = 4.34f;
+        camera.getPosition().y = 5.0f;
+        camera.getRotation().x = 90;
 
     }
 
     private void setupLights() {
         SceneLight sceneLight = new SceneLight();
-
-        sceneLight.setAmbientLight(new Vector3f(1.0f, 1.0f, 1.0f));
-        Vector3f lightPosition = new Vector3f(-1, 0, 0);
-        float lightIntensity = 1.0f;
-        sceneLight.setDirectionalLight(new DirectionalLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity));
-
         scene.setSceneLight(sceneLight);
+
+        // Ambient Light
+        sceneLight.setAmbientLight(new Vector3f(0.3f, 0.3f, 0.3f));
+        sceneLight.setSkyBoxLight(new Vector3f(1.0f, 1.0f, 1.0f));
+
+        // Directional Light
+        float lightIntensity = 1.0f;
+        Vector3f lightPosition = new Vector3f(1, 1, 0);
+        sceneLight.setDirectionalLight(new DirectionalLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity));
     }
 
     @Override
@@ -118,36 +106,42 @@ public class TestGameLogic implements GameLogic {
         } else if (window.isKeyPressed(GLFW_KEY_X)) {
             cameraInc.y = 1;
         }
+        if (window.isKeyPressed(GLFW_KEY_LEFT)) {
+            lightAngle -= 2.5f;
+            if (lightAngle < -90) {
+                lightAngle = -90;
+            }
+        } else if (window.isKeyPressed(GLFW_KEY_RIGHT)) {
+            lightAngle += 2.5f;
+            if (lightAngle > 90) {
+                lightAngle = 90;
+            }
+        }
     }
 
     @Override
     public void update(float interval, MouseInput mouseInput) {
-        camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
 
+        // Update camera based on mouse
         if (mouseInput.isRightButtonPressed()) {
             Vector2f rotVec = mouseInput.getDisplayVector();
             camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
-            testHud.rotateCompass(camera.getRotation().y);
         }
 
-        lightAngle += 0.5f;
-        DirectionalLight directionalLight = scene.getSceneLight().getDirectionalLight();
-        if (lightAngle > 90) {
-            directionalLight.setIntensity(0);
-            if (lightAngle >= 360) {
-                lightAngle = -90;
-            }
-        } else if (lightAngle <= -90 || lightAngle >= 90) {
-            float factor = 1 - (Math.abs(lightAngle) - 90) / 10.0f;
-            directionalLight.setIntensity(factor);
-            directionalLight.getColor().y = Math.max(factor, 0.9f);
-            directionalLight.getColor().z = Math.max(factor, 0.5f);
-        } else {
-            directionalLight.setIntensity(1);
-            directionalLight.getColor().x = 1;
-            directionalLight.getColor().y = 1;
-            directionalLight.getColor().z = 1;
+        // Update camera position
+        Vector3f prevPos = new Vector3f(camera.getPosition());
+        camera.movePosition(cameraInc.x * CAMERA_POS_STEP, cameraInc.y * CAMERA_POS_STEP, cameraInc.z * CAMERA_POS_STEP);
+        // Check if there has been a collision. If true, set the y position to
+        // the maximum height
+        float height = terrain != null ? terrain.getHeight(camera.getPosition()) : -Float.MAX_VALUE;
+        if (camera.getPosition().y - 0.2f <= height) {
+            camera.setPosition(camera.getPosition().x, height + 0.2f, camera.getPosition().z);
         }
+
+
+        // Update directional light direction, intensity and colour
+        SceneLight sceneLight = scene.getSceneLight();
+        DirectionalLight directionalLight = sceneLight.getDirectionalLight();
         double angRad = Math.toRadians(lightAngle);
         directionalLight.getDirection().x = (float) Math.sin(angRad);
         directionalLight.getDirection().y = (float) Math.cos(angRad);
@@ -155,15 +149,14 @@ public class TestGameLogic implements GameLogic {
 
     @Override
     public void render(Window window) {
-        testHud.updateSize(window);
+        //testHud.updateSize(window);
         renderer.render(window, camera, scene, testHud);
     }
 
     @Override
     public void cleanup() {
         renderer.cleanup();
-        Map<Mesh, List<GameItem>> mapMeshes = scene.getMeshMap();
-        mapMeshes.keySet().forEach(Mesh::cleanUp);
-        testHud.cleanup();
+        scene.cleanup();
+        //testHud.cleanup();
     }
 }

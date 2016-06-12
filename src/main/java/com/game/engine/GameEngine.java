@@ -64,7 +64,7 @@ public class GameEngine implements Runnable {
 
             render();
 
-            System.out.println(1/elapsedTime);
+            //System.out.println(1/elapsedTime);
 
             if (!window.isVSync()) {
                 sync();

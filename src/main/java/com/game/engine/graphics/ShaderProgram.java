@@ -54,7 +54,8 @@ public class ShaderProgram {
 
     public void createMaterialUniform(String uniformName) throws Exception {
         createUniform(uniformName + ".colour");
-        createUniform(uniformName + ".useColour");
+        createUniform(uniformName + ".hasTexture");
+        createUniform(uniformName + ".hasNormalMap");
         createUniform(uniformName + ".reflectance");
     }
 
@@ -82,6 +83,19 @@ public class ShaderProgram {
         createUniform(uniformName + ".intensity");
     }
 
+    public void setUniform(String uniformName, Fog fog) {
+        setUniform(uniformName + ".isActive", fog.isActive() ? 1 : 0);
+        setUniform(uniformName + ".colour", fog.getColour());
+        setUniform(uniformName + ".density", fog.getDensity());
+    }
+
+    public void createFogUniform(String uniformName) throws Exception {
+        createUniform(uniformName + ".isActive");
+        createUniform(uniformName + ".colour");
+        createUniform(uniformName + ".density");
+    }
+
+
     public void setUniform(String uniformName, Matrix4f matrix4f) {
         FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(16);
         matrix4f.get(floatBuffer);
@@ -97,11 +111,11 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, Vector3f value) {
-        glUniform3f(uniformsMap.get(uniformName), value.x, value.y, value.z );
+        glUniform3f(uniformsMap.get(uniformName), value.x, value.y, value.z);
     }
 
     public void setUniform(String uniformName, PointLight pointLight) {
-        setUniform(uniformName + ".colour", pointLight.getColor() );
+        setUniform(uniformName + ".colour", pointLight.getColor());
         setUniform(uniformName + ".position", pointLight.getPosition());
         setUniform(uniformName + ".intensity", pointLight.getIntensity());
 
@@ -112,10 +126,12 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, Material material) {
-        setUniform(uniformName + ".colour", material.getColour() );
-        setUniform(uniformName + ".useColour", material.isTextured() ? 0 : 1);
+        setUniform(uniformName + ".colour", material.getColour());
+        setUniform(uniformName + ".hasTexture", material.isTextured() ? 1 : 0);
+        setUniform(uniformName + ".hasNormalMap", material.hasNormalMap() ? 1 : 0);
         setUniform(uniformName + ".reflectance", material.getReflectance());
     }
+
 
     public void setUniform(String uniformName, SpotLight[] spotLights) {
         int numLights = spotLights != null ? spotLights.length : 0;

@@ -1,5 +1,6 @@
 package com.game.engine.graphics;
 
+import com.game.engine.items.GameItem;
 import lombok.Getter;
 import lombok.Setter;
 import org.joml.Vector3f;
@@ -13,6 +14,7 @@ import java.util.function.Consumer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
@@ -150,6 +152,13 @@ public class Mesh {
         if (texture != null) {
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture.getId());
+        }
+        Texture normalMap = material.getNormalMap();
+        if ( normalMap != null ) {
+            // Activate first texture bank
+            glActiveTexture(GL_TEXTURE1);
+            // Bind the texture
+            glBindTexture(GL_TEXTURE_2D, normalMap.getId());
         }
         // Draw the mesh
         glBindVertexArray(getVertexArrayId());

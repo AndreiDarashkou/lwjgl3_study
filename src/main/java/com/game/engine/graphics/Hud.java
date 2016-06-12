@@ -1,6 +1,8 @@
 package com.game.engine.graphics;
 
-public interface IHud {
+import com.game.engine.items.GameItem;
+
+public interface Hud {
 
     GameItem[] getGameItems();
 

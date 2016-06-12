@@ -1,4 +1,9 @@
-package com.game.engine.graphics;
+package com.game.engine.items;
+
+import com.game.engine.graphics.Material;
+import com.game.engine.graphics.Mesh;
+import com.game.engine.graphics.OBJLoader;
+import com.game.engine.graphics.Texture;
 
 public class SkyBox extends GameItem {
 

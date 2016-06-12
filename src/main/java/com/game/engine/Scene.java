@@ -1,5 +1,9 @@
-package com.game.engine.graphics;
+package com.game.engine;
 
+import com.game.engine.graphics.Fog;
+import com.game.engine.graphics.Mesh;
+import com.game.engine.items.GameItem;
+import com.game.engine.items.SkyBox;
 import com.game.engine.graphics.light.SceneLight;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +20,7 @@ public class Scene {
     private GameItem[] gameItems;
     private SkyBox skyBox;
     private SceneLight sceneLight;
+    private Fog fog = Fog.NOFOG;;
 
     public void setGameItems(GameItem[] gameItems) {
         int numGameItems = gameItems != null ? gameItems.length : 0;
@@ -29,5 +34,9 @@ public class Scene {
             }
             list.add(gameItem);
         }
+    }
+
+    public void cleanup() {
+        meshMap.keySet().forEach(Mesh::cleanUp);
     }
 }

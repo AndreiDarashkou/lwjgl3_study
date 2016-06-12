@@ -1,5 +1,6 @@
-package com.game.engine.graphics;
+package com.game.engine.items;
 
+import com.game.engine.graphics.Mesh;
 import lombok.Getter;
 import lombok.Setter;
 import org.joml.Vector3f;

@@ -11,4 +11,5 @@ public class SceneLight {
     private DirectionalLight directionalLight;
     private PointLight[] pointLightList;
     private SpotLight[] spotLightList;
+    private Vector3f skyBoxLight;
 }

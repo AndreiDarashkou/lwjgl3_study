@@ -13,6 +13,7 @@ public class Material {
     private Vector3f colour;
     private float reflectance;
     private Texture texture;
+    private Texture normalMap;
 
     public Material() {
         colour = DEFAULT_COLOUR;
@@ -25,17 +26,23 @@ public class Material {
         this.reflectance = reflectance;
     }
 
-    public Material(Texture texture, float reflectance) {
-        this();
-        this.texture = texture;
-        this.reflectance = reflectance;
-    }
     public Material(Texture texture) {
         this();
         this.texture = texture;
     }
 
+    public Material(Texture texture, float reflectance) {
+        this();
+        this.texture = texture;
+        this.reflectance = reflectance;
+    }
+
     public boolean isTextured() {
         return this.texture != null;
     }
+
+    public boolean hasNormalMap() {
+        return this.normalMap != null;
+    }
+
 }

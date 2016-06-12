@@ -4,11 +4,13 @@ import java.awt.Font;
 
 import com.game.engine.Window;
 import com.game.engine.graphics.*;
+import com.game.engine.items.GameItem;
+import com.game.engine.items.TextItem;
 import org.joml.Vector3f;
 
 import static com.game.test_game.TextureConstants.COMPASS;
 
-public class TestHud implements IHud {
+public class TestHud implements Hud {
 
     private static final Font FONT = new Font("Arial", Font.PLAIN, 20);
     private static final String CHARSET = "ISO-8859-1";

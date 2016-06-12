@@ -1,7 +1,10 @@
 package com.game.engine.graphics;
 
 
+import com.game.engine.Scene;
 import com.game.engine.Window;
+import com.game.engine.items.GameItem;
+import com.game.engine.items.SkyBox;
 import com.game.engine.graphics.light.DirectionalLight;
 import com.game.engine.graphics.light.PointLight;
 import com.game.engine.graphics.light.SceneLight;
@@ -29,7 +32,7 @@ public class Renderer {
     private static final String SKY_BOX_VERTEX = "/shaders/sb_vertex.glsl";
     private static final String SKY_BOX_FRAGMENT = "/shaders/sb_fragment.glsl";
 
-    private static final float FOV = (float) Math.toRadians(60.0f);
+    private static final float FOV = (float) Math.toRadians(90.0f);
     private static final float Z_NEAR = 0.01f;
     private static final float Z_FAR = 1000.f;
     private static final int MAX_POINT_LIGHTS = 5;
@@ -54,6 +57,7 @@ public class Renderer {
         sceneShaderProgram.createUniform(PROJECTION_MATRIX);
         sceneShaderProgram.createUniform(MODEL_VIEW_MATRIX);
         sceneShaderProgram.createUniform(TEXTURE_SAMPLER);
+        sceneShaderProgram.createUniform("normalMap");
 
         sceneShaderProgram.createMaterialUniform(MATERIAL);
         sceneShaderProgram.createUniform(CAMERA_POSITION);
@@ -63,6 +67,7 @@ public class Renderer {
         sceneShaderProgram.createPointLightListUniform(POINT_LIGHTS, MAX_POINT_LIGHTS);
         sceneShaderProgram.createSpotLightListUniform(SPOT_LIGHTS, MAX_SPOT_LIGHTS);
         sceneShaderProgram.createDirectionalLightUniform(DIRECTIONAL_LIGHT);
+        sceneShaderProgram.createFogUniform("fog");
     }
 
     private void setupHudShader() throws Exception {
@@ -95,7 +100,7 @@ public class Renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    public void render(Window window, Camera camera, Scene scene, IHud hud) {
+    public void render(Window window, Camera camera, Scene scene, Hud hud) {
         clear();
 
         if (window.isResized()) {
@@ -106,7 +111,7 @@ public class Renderer {
         transformation.updateViewMatrix(camera);
 
         renderScene(camera, scene);
-        renderHud(window, hud);
+        //renderHud(window, hud);
         renderSkyBox(window, camera, scene);
     }
 
@@ -121,7 +126,8 @@ public class Renderer {
         renderLights(viewMatrix, scene.getSceneLight());
 
         sceneShaderProgram.setUniform(TEXTURE_SAMPLER, 0);
-
+        sceneShaderProgram.setUniform("fog", scene.getFog());
+        sceneShaderProgram.setUniform("normalMap", 1);
         // Render each mesh with the associated game Items
         Map<Mesh, List<GameItem>> mapMeshes = scene.getMeshMap();
         for (Mesh mesh : mapMeshes.keySet()) {
@@ -187,7 +193,7 @@ public class Renderer {
         }
     }
 
-    private void renderHud(Window window, IHud hud) {
+    private void renderHud(Window window, Hud hud) {
         hudShaderProgram.bind();
 
         Matrix4f ortho = transformation.getOrthoProjectionMatrix(0, window.getWidth(), window.getHeight(), 0);
@@ -206,25 +212,28 @@ public class Renderer {
     }
 
     private void renderSkyBox(Window window, Camera camera, Scene scene) {
-        skyBoxShaderProgram.bind();
-
-        skyBoxShaderProgram.setUniform(TEXTURE_SAMPLER, 0);
-
-        Matrix4f projectionMatrix = transformation.getProjectionMatrix();
-        skyBoxShaderProgram.setUniform(PROJECTION_MATRIX, projectionMatrix);
-
         SkyBox skyBox = scene.getSkyBox();
-        Matrix4f viewMatrix = transformation.getViewMatrix();
-        viewMatrix.m30 = 0;
-        viewMatrix.m31 = 0;
-        viewMatrix.m32 = 0;
-        Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(skyBox, viewMatrix);
-        skyBoxShaderProgram.setUniform(MODEL_VIEW_MATRIX, modelViewMatrix);
-        skyBoxShaderProgram.setUniform(AMBIENT_LIGHT, scene.getSceneLight().getAmbientLight());
+        if (skyBox != null) {
+            skyBoxShaderProgram.bind();
 
-        scene.getSkyBox().getMesh().render();
+            skyBoxShaderProgram.setUniform(TEXTURE_SAMPLER, 0);
 
-        skyBoxShaderProgram.unbind();
+            Matrix4f projectionMatrix = transformation.getProjectionMatrix();
+            skyBoxShaderProgram.setUniform(PROJECTION_MATRIX, projectionMatrix);
+
+            skyBox = scene.getSkyBox();
+            Matrix4f viewMatrix = transformation.getViewMatrix();
+            viewMatrix.m30 = 0;
+            viewMatrix.m31 = 0;
+            viewMatrix.m32 = 0;
+            Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(skyBox, viewMatrix);
+            skyBoxShaderProgram.setUniform(MODEL_VIEW_MATRIX, modelViewMatrix);
+            skyBoxShaderProgram.setUniform(AMBIENT_LIGHT, scene.getSceneLight().getAmbientLight());
+
+            scene.getSkyBox().getMesh().render();
+
+            skyBoxShaderProgram.unbind();
+        }
     }
 
 
