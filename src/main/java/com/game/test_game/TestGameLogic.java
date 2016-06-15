@@ -28,11 +28,13 @@ public class TestGameLogic implements GameLogic {
     private TestHud testHud;
     private float lightAngle;
     private Terrain terrain;
+    private GameItem cubeGameItem;
+    private float angleInc = 0;
 
     public TestGameLogic() {
         renderer = new Renderer();
         cameraInc = new Vector3f(0.0f, 0.0f, 0.0f);
-        lightAngle = -35;
+        lightAngle = 45;
     }
 
     @Override
@@ -42,36 +44,28 @@ public class TestGameLogic implements GameLogic {
         scene = new Scene();
 
         // Setup  GameItems
-        float reflectance = 0.65f;
+        float reflectance = 1f;
+        Mesh cubeMesh = OBJLoader.loadMesh("/models/cube.obj");
+        Material cubeMaterial = new Material(new Vector3f(0, 1, 0), reflectance);
+        cubeMesh.setMaterial(cubeMaterial);
+        cubeGameItem = new GameItem(cubeMesh);
+        cubeGameItem.setPosition(0, 0, 0);
+        cubeGameItem.setScale(0.5f);
 
-        Mesh quadMesh1 = OBJLoader.loadMesh("/models/quad.obj");
-        Texture texture = new Texture("/textures/rock.png");
-        Material quadMaterial1 = new Material(texture, reflectance);
-        quadMesh1.setMaterial(quadMaterial1);
-        GameItem quadGameItem1 = new GameItem(quadMesh1);
-        quadGameItem1.setPosition(-3f, 0, 0);
-        quadGameItem1.setScale(2.0f);
-        quadGameItem1.setRotation(90, 0, 0);
+        Mesh quadMesh = OBJLoader.loadMesh("/models/plane.obj");
+        Material quadMaterial = new Material(new Vector3f(0.0f, 0.0f, 1.0f), reflectance);
+        quadMesh.setMaterial(quadMaterial);
+        GameItem quadGameItem = new GameItem(quadMesh);
+        quadGameItem.setPosition(0, -1, 0);
+        quadGameItem.setScale(2.5f);
 
-        Mesh quadMesh2 = OBJLoader.loadMesh("/models/quad.obj");
-        Material quadMaterial2 = new Material(texture, reflectance);
-
-        Texture normalMap = new Texture("/textures/rock_normals.png");
-        quadMaterial2.setNormalMap(normalMap);
-        quadMesh2.setMaterial(quadMaterial2);
-        GameItem quadGameItem2 = new GameItem(quadMesh2);
-        quadGameItem2.setPosition(3f, 0, 0);
-        quadGameItem2.setScale(2.0f);
-        quadGameItem2.setRotation(90, 0, 0);
-
-        scene.setGameItems(new GameItem[]{quadGameItem1, quadGameItem2});
+        scene.setGameItems(new GameItem[]{cubeGameItem, quadGameItem});
 
         // Setup Lights
         setupLights();
 
-        camera.getPosition().y = 5.0f;
-        camera.getRotation().x = 90;
-
+        camera.getPosition().z = 2;
+        testHud = new TestHud("");
     }
 
     private void setupLights() {
@@ -84,8 +78,11 @@ public class TestGameLogic implements GameLogic {
 
         // Directional Light
         float lightIntensity = 1.0f;
-        Vector3f lightPosition = new Vector3f(1, 1, 0);
-        sceneLight.setDirectionalLight(new DirectionalLight(new Vector3f(1, 1, 1), lightPosition, lightIntensity));
+        Vector3f lightDirection = new Vector3f(0, 1, 1);
+        DirectionalLight directionalLight = new DirectionalLight(new Vector3f(1, 1, 1), lightDirection, lightIntensity);
+        directionalLight.setShadowPosMult(5);
+        directionalLight.setOrthoCords(-10.0f, 10.0f, -10.0f, 10.0f, -1.0f, 20.0f);
+        sceneLight.setDirectionalLight(directionalLight);
     }
 
     @Override
@@ -107,22 +104,17 @@ public class TestGameLogic implements GameLogic {
             cameraInc.y = 1;
         }
         if (window.isKeyPressed(GLFW_KEY_LEFT)) {
-            lightAngle -= 2.5f;
-            if (lightAngle < -90) {
-                lightAngle = -90;
-            }
+            angleInc -= 0.05f;
         } else if (window.isKeyPressed(GLFW_KEY_RIGHT)) {
-            lightAngle += 2.5f;
-            if (lightAngle > 90) {
-                lightAngle = 90;
-            }
+            angleInc += 0.05f;
+        } else {
+            angleInc = 0;
         }
     }
 
     @Override
     public void update(float interval, MouseInput mouseInput) {
-
-        // Update camera based on mouse
+// Update camera based on mouse
         if (mouseInput.isRightButtonPressed()) {
             Vector2f rotVec = mouseInput.getDisplayVector();
             camera.moveRotation(rotVec.x * MOUSE_SENSITIVITY, rotVec.y * MOUSE_SENSITIVITY, 0);
@@ -134,22 +126,39 @@ public class TestGameLogic implements GameLogic {
         // Check if there has been a collision. If true, set the y position to
         // the maximum height
         float height = terrain != null ? terrain.getHeight(camera.getPosition()) : -Float.MAX_VALUE;
-        if (camera.getPosition().y - 0.2f <= height) {
-            camera.setPosition(camera.getPosition().x, height + 0.2f, camera.getPosition().z);
+        if (camera.getPosition().y <= height) {
+            camera.setPosition(prevPos.x, prevPos.y, prevPos.z);
         }
 
+        float rotY = cubeGameItem.getRotation().y;
+        rotY += 0.5f;
+        if ( rotY >= 360 ) {
+            rotY -= 360;
+        }
+        cubeGameItem.getRotation().y = rotY;
 
-        // Update directional light direction, intensity and colour
-        SceneLight sceneLight = scene.getSceneLight();
-        DirectionalLight directionalLight = sceneLight.getDirectionalLight();
-        double angRad = Math.toRadians(lightAngle);
-        directionalLight.getDirection().x = (float) Math.sin(angRad);
-        directionalLight.getDirection().y = (float) Math.cos(angRad);
+        lightAngle += angleInc;
+        if ( lightAngle < 0 ) {
+            lightAngle = 0;
+        } else if (lightAngle > 180 ) {
+            lightAngle = 180;
+        }
+        float zValue = (float)Math.cos(Math.toRadians(lightAngle));
+        float yValue = (float)Math.sin(Math.toRadians(lightAngle));
+        Vector3f lightDirection = this.scene.getSceneLight().getDirectionalLight().getDirection();
+        lightDirection.x = 0;
+        lightDirection.y = yValue;
+        lightDirection.z = zValue;
+        lightDirection.normalize();
+        float lightAngle = (float)Math.toDegrees(Math.acos(lightDirection.z));
+        testHud.setStatusText("LightAngle: " + lightAngle);
     }
 
     @Override
     public void render(Window window) {
-        //testHud.updateSize(window);
+        if (testHud != null) {
+            testHud.updateSize(window);
+        }
         renderer.render(window, camera, scene, testHud);
     }
 
@@ -157,6 +166,8 @@ public class TestGameLogic implements GameLogic {
     public void cleanup() {
         renderer.cleanup();
         scene.cleanup();
-        //testHud.cleanup();
+        if (testHud != null) {
+            testHud.cleanup();
+        }
     }
 }

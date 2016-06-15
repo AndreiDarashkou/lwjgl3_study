@@ -7,6 +7,7 @@ in vec2 outTexCoord;
 in vec3 mvVertexNormal;
 in vec3 mvVertexPos;
 in mat4 outModelViewMatrix;
+in vec4 mLightviewVertexPos;
 
 out vec4 fragColor;
 
@@ -65,6 +66,7 @@ uniform SpotLight spotLights[MAX_SPOT_LIGHTS];
 uniform DirectionalLight directionalLight;
 uniform vec3 camera_pos;
 uniform Fog fog;
+uniform sampler2D shadowMap;
 
 vec4 calcLightColour(vec3 light_colour, float light_intensity, vec3 position, vec3 to_light_dir, vec3 normal)
 {
@@ -158,13 +160,27 @@ vec3 calcNormal(Material material, vec3 normal, vec2 text_coord, mat4 modelViewM
     return newNormal;
 }
 
+float calcShadow(vec4 position)
+{
+    float shadowFactor = 1.0;
+    vec3 projCoords = position.xyz;
+    // Transform from screen coordinates to texture coordinates
+    projCoords = projCoords * 0.5 + 0.5;
+    if ( projCoords.z < texture(shadowMap, projCoords.xy).r )
+    {
+        // Current fragment is not in shade
+        shadowFactor = 0;
+    }
+
+    return 1 - shadowFactor;
+}
+
 void main()
 {
-    vec4 baseColour = calcBaseColour(material, outTexCoord);
+ vec4 baseColour = calcBaseColour(material, outTexCoord);
     vec3 currNomal = calcNormal(material, mvVertexNormal, outTexCoord, outModelViewMatrix);
 
-    vec4 totalLight = vec4(ambientLight, 1.0);
-    totalLight += calcDirectionalLight(directionalLight, mvVertexPos, currNomal);
+    vec4 totalLight = calcDirectionalLight(directionalLight, mvVertexPos, currNomal);
 
     for (int i=0; i<MAX_POINT_LIGHTS; i++)
     {
@@ -182,7 +198,8 @@ void main()
         }
     }
 
-    fragColor = baseColour * clamp(totalLight,0, 1);
+    float shadow = calcShadow(mLightviewVertexPos);
+    fragColor = baseColour * ( vec4(ambientLight, 1.0) + totalLight * shadow );
 
     if ( fog.isActive == 1 )
     {
