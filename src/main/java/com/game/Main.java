@@ -4,13 +4,16 @@ import com.game.engine.GameEngine;
 import com.game.engine.GameLogic;
 import com.game.test_game.TestGameLogic;
 
+import java.awt.*;
+
 public class Main {
 
     public static void main(String[] args) {
         try {
             boolean vSync = true;
             GameLogic gameLogic = new TestGameLogic();
-            GameEngine gameEngine = new GameEngine("GAME", 1440, 900, vSync, gameLogic);
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            GameEngine gameEngine = new GameEngine("GAME", (int)dim.getWidth() - 470, (int)dim.getHeight() -270, vSync, gameLogic);
             gameEngine.start();
         } catch (Exception exception) {
             exception.printStackTrace();
