@@ -38,8 +38,8 @@ public class TestGameLogic implements GameLogic {
     }
 
     @Override
-    public void init() throws Exception {
-        renderer.init();
+    public void init(Window window) throws Exception {
+        renderer.init(window);
 
         scene = new Scene();
 
