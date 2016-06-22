@@ -21,7 +21,6 @@ public class DirectionalLight {
         this.color = color;
         this.direction = direction;
         this.intensity = intensity;
-        shadowPosMult = 1;
     }
 
     public DirectionalLight(DirectionalLight light) {

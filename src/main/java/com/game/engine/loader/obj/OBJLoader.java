@@ -1,8 +1,9 @@
-package com.game.engine.graphics;
+package com.game.engine.loader.obj;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.game.engine.graphics.Mesh;
 import com.game.engine.util.Utils;
 import org.joml.Vector2f;
 import org.joml.Vector3f;

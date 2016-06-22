@@ -6,6 +6,7 @@ import com.game.engine.Window;
 import com.game.engine.graphics.*;
 import com.game.engine.items.GameItem;
 import com.game.engine.items.TextItem;
+import com.game.engine.loader.obj.OBJLoader;
 import org.joml.Vector3f;
 
 import static com.game.test_game.TextureConstants.COMPASS;

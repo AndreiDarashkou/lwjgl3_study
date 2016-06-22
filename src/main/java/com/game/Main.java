@@ -13,7 +13,7 @@ public class Main {
             boolean vSync = true;
             GameLogic gameLogic = new TestGameLogic();
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            GameEngine gameEngine = new GameEngine("GAME", (int)dim.getWidth() - 470, (int)dim.getHeight() -270, vSync, gameLogic);
+            GameEngine gameEngine = new GameEngine("GAME", 1024, 768, vSync, gameLogic);
             gameEngine.start();
         } catch (Exception exception) {
             exception.printStackTrace();
