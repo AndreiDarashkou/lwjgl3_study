@@ -11,6 +11,7 @@ import com.game.engine.graphics.light.SceneLight;
 import com.game.engine.input.MouseInput;
 import com.game.engine.items.GameItem;
 import com.game.engine.loader.obj.OBJLoader;
+import com.game.test_game.GameState;
 import com.game.test_game.MainGameLogic;
 import com.game.test_game.configuration.GameConfiguration;
 import org.joml.Quaternionf;
@@ -60,7 +61,7 @@ class GarageGameLogic extends AbstractGameLogic {
     }
 
     @Override
-    public void input(Window window, MouseInput mouseInput) {
+    public void input(Window window, MouseInput mouseInput) throws Exception {
         cameraInc.set(0, 0, 0);
         if (window.isKeyPressed(GLFW_KEY_W)) {
             cameraInc.z = -1;
@@ -76,6 +77,10 @@ class GarageGameLogic extends AbstractGameLogic {
             cameraInc.y = -1;
         } else if (window.isKeyPressed(GLFW_KEY_X)) {
             cameraInc.y = 1;
+        }
+        if (window.isKeyPressed(GLFW_KEY_ESCAPE)) {
+            MainGameLogic.gameState = GameState.MENU;
+            MainGameLogic.changeGameLogic(window);
         }
     }
 
@@ -99,6 +104,7 @@ class GarageGameLogic extends AbstractGameLogic {
     @Override
     public void cleanup() {
         super.cleanup();
+        scene.getGameItems();
     }
 
 }

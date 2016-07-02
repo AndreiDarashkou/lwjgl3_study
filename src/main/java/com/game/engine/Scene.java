@@ -23,6 +23,7 @@ public class Scene {
     private Fog fog = Fog.NO_FOG;
 
     public void setGameItems(GameItem[] gameItems) {
+        meshMap.clear();
         int numGameItems = gameItems != null ? gameItems.length : 0;
 
         for (int i = 0; i < numGameItems; i++) {

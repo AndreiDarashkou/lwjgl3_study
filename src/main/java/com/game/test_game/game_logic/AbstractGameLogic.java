@@ -11,7 +11,7 @@ import com.game.engine.input.MouseInput;
 import com.game.test_game.GameState;
 import org.joml.Vector3f;
 
-class AbstractGameLogic implements GameLogic {
+abstract class AbstractGameLogic implements GameLogic {
     public static GameState gameState = GameState.MENU;
 
     protected final Renderer renderer = new Renderer();
@@ -23,6 +23,7 @@ class AbstractGameLogic implements GameLogic {
     public void init(Window window) throws Exception {
         renderer.init(window);
         this.window = window;
+        setupLights();
     }
 
     @Override

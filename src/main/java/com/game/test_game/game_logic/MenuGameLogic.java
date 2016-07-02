@@ -1,40 +1,39 @@
 package com.game.test_game.game_logic;
 
-import com.game.engine.GameLogic;
 import com.game.engine.Window;
 import com.game.engine.input.MouseInput;
-import com.game.test_game.MainGameLogic;
-import com.game.test_game.menu.MenuHud;
+import com.game.test_game.game_logic.menu.GameMenuHud;
+import com.game.test_game.game_logic.menu.MenuHud;
 
 class MenuGameLogic extends AbstractGameLogic {
-    private MenuHud menuHud;
+
+    private GameMenuHud gameMenuHud;
 
     @Override
     public void init(Window window) throws Exception {
         super.init(window);
-        menuHud = new MenuHud();
-        setupLights();
+        gameMenuHud = new GameMenuHud();
+        gameMenuHud.getCurrentMenu();
     }
 
     @Override
     public void input(Window window, MouseInput mouseInput) throws Exception {
-        menuHud.update(window, mouseInput);
+        gameMenuHud.getCurrentMenu().update(window, mouseInput);
     }
 
     @Override
     public void update(float interval, MouseInput mouseInput) throws Exception {
-        menuHud.update(window, mouseInput);
     }
 
     @Override
     public void render() {
-        menuHud.updateSize(window);
-        renderer.render(window, camera, scene, menuHud);
+        gameMenuHud.getCurrentMenu().updateSize(window);
+        renderer.render(window, camera, scene, gameMenuHud.getCurrentMenu());
     }
 
     @Override
     public void cleanup() {
-        menuHud.cleanup();
+        gameMenuHud.cleanup();
     }
 
 }

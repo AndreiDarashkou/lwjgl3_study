@@ -38,19 +38,27 @@ public class MainGameLogic implements GameLogic {
     public static void changeGameLogic(Window window) throws Exception {
         switch (gameState) {
             case MENU:
-                currentGameLogic.cleanup();
-                currentGameLogic = GameLogicType.MENU;
+                setGameLogic(GameLogicType.MENU, window);
                 break;
             case RACE:
-                currentGameLogic.cleanup();
-                currentGameLogic = GameLogicType.RACE;
+                setGameLogic(GameLogicType.RACE, window);
                 break;
             case GARAGE:
-                currentGameLogic.cleanup();
-                currentGameLogic = GameLogicType.GARAGE;
+                setGameLogic(GameLogicType.GARAGE, window);
+                break;
+            case EXIT:
+                window.close();
                 break;
         }
-        currentGameLogic.init(window);
     }
+
+    private static void setGameLogic(GameLogicType logic, Window window) throws Exception {
+        if (currentGameLogic != logic) {
+            currentGameLogic.cleanup();
+            currentGameLogic = logic;
+            currentGameLogic.init(window);
+        }
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.game.engine.input;
 
 import com.game.engine.Window;
 import lombok.Getter;
+import lombok.Setter;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
 
@@ -18,8 +19,13 @@ public class MouseInput {
     private final Vector2d currentPos;
     private final Vector2f displayVector;
     private boolean inWindow = false;
+    private boolean leftButtonReleased = false;
+    private boolean rightButtonReleased = false;
     private boolean leftButtonPressed = false;
     private boolean rightButtonPressed = false;
+
+    @Setter
+    private boolean leftButtonClicked = false;
 
     //we should keep links or collector will destroy them
     private GLFWCursorPosCallback cursorPosCallback;
@@ -34,7 +40,7 @@ public class MouseInput {
 
     public void init(Window window) {
         //moved
-        glfwSetCursorPosCallback(window.getWindowHandler(), cursorPosCallback = new GLFWCursorPosCallback() {
+        glfwSetCursorPosCallback(window.getWindowHandle(), cursorPosCallback = new GLFWCursorPosCallback() {
             @Override
             public void invoke(long window, double xpos, double ypos) {
                 currentPos.x = xpos;
@@ -42,24 +48,25 @@ public class MouseInput {
             }
         });
         //track position in our window
-        glfwSetCursorEnterCallback(window.getWindowHandler(), cursorEnterCallback = new GLFWCursorEnterCallback() {
+        glfwSetCursorEnterCallback(window.getWindowHandle(), cursorEnterCallback = new GLFWCursorEnterCallback() {
             @Override
             public void invoke(long window, boolean entered) {
                 inWindow = entered;
             }
         });
         //button pressed
-        glfwSetMouseButtonCallback(window.getWindowHandler(), mouseButtonCallback = new GLFWMouseButtonCallback() {
+        glfwSetMouseButtonCallback(window.getWindowHandle(), mouseButtonCallback = new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long window, int button, int action, int mods) {
+                leftButtonReleased = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_RELEASE;
+                rightButtonReleased = button == GLFW_MOUSE_BUTTON_2 && action == GLFW_RELEASE;
+
+                leftButtonClicked = leftButtonPressed && leftButtonReleased;
+
                 leftButtonPressed = button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS;
                 rightButtonPressed = button == GLFW_MOUSE_BUTTON_2 && action == GLFW_PRESS;
             }
         });
-    }
-
-    public Vector2f getDisplayVector() {
-        return displayVector;
     }
 
     public void input(Window window) {
@@ -81,11 +88,12 @@ public class MouseInput {
         previousPos.y = currentPos.y;
     }
 
-    public boolean isLeftButtonPressed() {
-        return leftButtonPressed;
+    public boolean isLeftButtonClicked() {
+        if (leftButtonClicked) {
+            leftButtonClicked = false;
+            return true;
+        }
+        return false;
     }
 
-    public boolean isRightButtonPressed() {
-        return rightButtonPressed;
-    }
 }

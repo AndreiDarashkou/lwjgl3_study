@@ -1,4 +1,4 @@
-package com.game.test_game.menu.command;
+package com.game.test_game.game_logic.menu.command;
 
 import com.game.engine.Window;
 

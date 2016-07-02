@@ -1,8 +1,8 @@
-package com.game.test_game.menu;
+package com.game.test_game.game_logic.menu;
 
 import com.game.engine.graphics.FontTexture;
 import com.game.engine.items.TextItem;
-import com.game.test_game.menu.command.Command;
+import com.game.test_game.game_logic.menu.command.Command;
 import lombok.Getter;
 import lombok.Setter;
 import org.joml.Vector3f;
