@@ -20,7 +20,7 @@ public class Scene {
     private GameItem[] gameItems;
     private SkyBox skyBox;
     private SceneLight sceneLight;
-    private Fog fog = Fog.NOFOG;
+    private Fog fog = Fog.NO_FOG;
 
     public void setGameItems(GameItem[] gameItems) {
         int numGameItems = gameItems != null ? gameItems.length : 0;

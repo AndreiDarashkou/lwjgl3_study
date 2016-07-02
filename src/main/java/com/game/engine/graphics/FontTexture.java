@@ -2,6 +2,7 @@ package com.game.engine.graphics;
 
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -19,6 +20,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 @Getter
+@Setter
 public class FontTexture {
 
     private static final String IMAGE_FORMAT = "png";

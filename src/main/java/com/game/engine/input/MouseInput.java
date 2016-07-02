@@ -1,6 +1,7 @@
 package com.game.engine.input;
 
 import com.game.engine.Window;
+import lombok.Getter;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
 
@@ -10,6 +11,7 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWCursorEnterCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 
+@Getter
 public class MouseInput {
 
     private final Vector2d previousPos;

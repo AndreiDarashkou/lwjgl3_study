@@ -3,6 +3,7 @@ package com.game.engine.graphics;
 
 import com.game.engine.items.GameItem;
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class Transformation {
@@ -95,6 +96,16 @@ public class Transformation {
                 rotateX((float)Math.toRadians(-rotation.x)).
                 rotateY((float)Math.toRadians(-rotation.y)).
                 rotateZ((float)Math.toRadians(-rotation.z)).
+                scale(gameItem.getScale());
+        modelViewMatrix.set(matrix);
+        return modelViewMatrix.mul(modelMatrix);
+    }
+
+    public Matrix4f buildModelViewMatrixUsingQuaternion(GameItem gameItem, Matrix4f matrix) {
+        Quaternionf quaternion = gameItem.getQuaternion();//.normalize();
+
+        modelMatrix.identity().translate(gameItem.getPosition()).
+                rotate(quaternion).
                 scale(gameItem.getScale());
         modelViewMatrix.set(matrix);
         return modelViewMatrix.mul(modelMatrix);

@@ -176,7 +176,7 @@ float calcShadow(vec4 position)
 
 void main()
 {
- vec4 baseColour = calcBaseColour(material, outTexCoord);
+    vec4 baseColour = calcBaseColour(material, outTexCoord);
     vec3 currNomal = calcNormal(material, mvVertexNormal, outTexCoord, outModelViewMatrix);
 
     vec4 totalLight = calcDirectionalLight(directionalLight, mvVertexPos, currNomal);

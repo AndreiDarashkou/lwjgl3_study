@@ -5,10 +5,12 @@ import com.game.engine.graphics.FontTexture;
 import com.game.engine.graphics.Material;
 import com.game.engine.graphics.Mesh;
 import com.game.engine.util.Utils;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class TextItem extends GameItem {
 
     private static final float ZPOS = 0.0f;

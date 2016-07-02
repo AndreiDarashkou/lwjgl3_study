@@ -15,18 +15,6 @@ public class MD5Model {
     private MD5JointInfo jointInfo;
     private List<MD5Mesh> meshes = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder("MD5MeshModel: " + System.lineSeparator());
-        str.append(getHeader()).append(System.lineSeparator());
-        str.append(getJointInfo()).append(System.lineSeparator());
-
-        for (MD5Mesh mesh : meshes) {
-            str.append(mesh).append(System.lineSeparator());
-        }
-        return str.toString();
-    }
-
     public static MD5Model parse(String meshModelFile) throws Exception {
         List<String> lines = Utils.readAllLines(meshModelFile);
 
@@ -72,6 +60,18 @@ public class MD5Model {
         return result;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder str = new StringBuilder("MD5MeshModel: " + System.lineSeparator());
+        str.append(getHeader()).append(System.lineSeparator());
+        str.append(getJointInfo()).append(System.lineSeparator());
+
+        for (MD5Mesh mesh : meshes) {
+            str.append(mesh).append(System.lineSeparator());
+        }
+        return str.toString();
+    }
+
     private static void parseBlock(MD5Model model, String blockId, List<String> blockBody) throws Exception {
         switch (blockId) {
             case "joints":
@@ -86,4 +86,5 @@ public class MD5Model {
                 break;
         }
     }
+
 }

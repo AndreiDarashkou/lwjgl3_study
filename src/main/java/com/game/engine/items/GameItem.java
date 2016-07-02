@@ -3,6 +3,7 @@ package com.game.engine.items;
 import com.game.engine.graphics.Mesh;
 import lombok.Getter;
 import lombok.Setter;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 @Getter
@@ -12,6 +13,7 @@ public class GameItem {
     private Mesh[] meshes;
     private Vector3f position;
     private Vector3f rotation;
+    private Quaternionf quaternion;
     private float scale;
 
     public GameItem(){

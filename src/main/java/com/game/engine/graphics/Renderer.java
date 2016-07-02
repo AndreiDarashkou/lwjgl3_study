@@ -56,7 +56,7 @@ public class Renderer {
     private final float specularPower = 10f;
 
     public void init(Window window) throws Exception {
-        shadowMap = new ShadowMap();
+        //shadowMap = new ShadowMap();
 
         //  setupDepthShader();
         setupSceneShader();
@@ -124,7 +124,7 @@ public class Renderer {
         return shader;
     }
 
-    public void render(Window window, Camera camera, Scene scene, Hud hud) {
+    public void render(Window window, Camera camera, Scene scene) {
         clear();
 
         // renderDepthMap(scene);
@@ -138,11 +138,11 @@ public class Renderer {
 
         renderScene(camera, scene);
         renderSkyBox(window, camera, scene);
-        if (hud != null) {
-            renderHud(window, hud);
-        }
+    }
 
-        //renderAxes(camera);
+    public void render(Window window, Camera camera, Scene scene, Hud hud) {
+        render(window, camera, scene);
+        renderHud(window, hud);
     }
 
     private void renderDepthMap(Scene scene) {
@@ -202,7 +202,8 @@ public class Renderer {
             glActiveTexture(GL_TEXTURE2);
             // glBindTexture(GL_TEXTURE_2D, shadowMap.getDepthMapTexture().getId());
             mesh.renderList(mapMeshes.get(mesh), (GameItem gameItem) -> {
-                        Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(gameItem, viewMatrix);
+                        //Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(gameItem, viewMatrix);
+                        Matrix4f modelViewMatrix = transformation.buildModelViewMatrixUsingQuaternion(gameItem, viewMatrix);
                         sceneShaderProgram.setUniform(MODEL_VIEW_MATRIX, modelViewMatrix);
                         // Matrix4f modelLightViewMatrix = transformation.buildModelLightViewMatrix(gameItem, lightViewMatrix);
                         // sceneShaderProgram.setUniform(MODEL_LIGHT_VIEW_MATRIX, modelLightViewMatrix);

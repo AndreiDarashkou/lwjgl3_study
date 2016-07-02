@@ -97,6 +97,10 @@ public class Window {
         return glfwWindowShouldClose(windowHandler);
     }
 
+    public void destroyWindow() {
+        glfwDestroyWindow(windowHandler);
+    }
+
     public void update() {
         glfwSwapBuffers(windowHandler);
         glfwPollEvents();

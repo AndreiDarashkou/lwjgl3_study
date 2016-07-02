@@ -10,7 +10,7 @@ public class Fog {
 
     private float density;
 
-    public static Fog NOFOG = new Fog();
+    public static final Fog NO_FOG = new Fog();
     
     public Fog() {
         active = false;
