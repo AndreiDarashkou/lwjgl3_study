@@ -4,7 +4,6 @@ import com.game.engine.Window;
 import com.game.engine.graphics.Hud;
 import com.game.engine.input.MouseInput;
 import com.game.engine.items.GameItem;
-import com.game.test_game.MainGameLogic;
 
 public class MenuHud implements Hud {
 
@@ -25,7 +24,7 @@ public class MenuHud implements Hud {
 
         for (int i = 0; i < menuItems.length; i++) {
             MenuTextItem item = menuItems[i];
-            item.setPosition(width / 2 - item.getWidth() / 2, height / 3 + item.getHeight() * i, 0);
+            item.setPosition(width / 2 - item.getWidth() / 2, height / 3 + item.getHeight() * i);
         }
     }
 
@@ -39,7 +38,6 @@ public class MenuHud implements Hud {
             for (MenuTextItem item : menuItems) {
                 if (item.isHover()) {
                     item.execute();
-                    MainGameLogic.changeGameLogic(window);
                     return;
                 }
             }

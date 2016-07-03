@@ -10,6 +10,9 @@ import org.joml.Vector3f;
 
 public class OBJLoader {
 
+    public static float offsetX;
+    public static float offsetY;
+
     public static Mesh loadMesh(String fileName) throws Exception {
         List<String> lines = Utils.readAllLines(fileName);
         //TODO set initial size
@@ -31,9 +34,12 @@ public class OBJLoader {
                     break;
                 case "vt":
                     // Texture coordinate
+                    float textureX = Float.parseFloat(tokens[1]) + offsetX;
+                    float textureY = Float.parseFloat(tokens[2]) + offsetY;
+
                     Vector2f vec2f = new Vector2f(
-                            Float.parseFloat(tokens[1]),
-                            Float.parseFloat(tokens[2]));
+                            textureX >= 0 ? textureX : 0,
+                            textureY >= 0 ? textureY : 0);
                     textures.add(vec2f);
                     break;
                 case "vn":
@@ -53,8 +59,16 @@ public class OBJLoader {
                     break;
             }
         }
+        setOffset(0, 0);
+
         return reorderLists(vertices, textures, normals, faces);
     }
+
+    public static void setOffset(float x, float y) {
+        offsetX = x;
+        offsetY = y;
+    }
+
 
     private static Mesh reorderLists(List<Vector3f> posList, List<Vector2f> textCoordList,
                                      List<Vector3f> normList, List<Face> facesList) {

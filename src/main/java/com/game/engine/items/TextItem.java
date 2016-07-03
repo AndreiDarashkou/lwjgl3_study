@@ -6,7 +6,9 @@ import com.game.engine.graphics.Material;
 import com.game.engine.graphics.Mesh;
 import com.game.engine.util.Utils;
 import lombok.Getter;
+import org.joml.Vector3f;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,5 +92,9 @@ public class TextItem extends GameItem {
         this.text = text;
         this.getMesh().deleteBuffers();
         this.setMesh(buildMesh());
+    }
+
+    public void setColor(Color color) {
+        this.getMesh().getMaterial().setColour(new Vector3f((float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255));
     }
 }

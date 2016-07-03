@@ -11,22 +11,16 @@ import org.joml.Vector3f;
 public class GameItem {
 
     private Mesh[] meshes;
-    private Vector3f position;
-    private Vector3f rotation;
+    private Vector3f position = new Vector3f(0, 0, 0);
+    private Vector3f rotation = new Vector3f(0, 0, 0);
     private Quaternionf quaternion;
-    private float scale;
+    private Vector3f scale = new Vector3f(1, 1, 1);
 
-    public GameItem(){
-        position = new Vector3f(0, 0, 0);
-        scale = 1;
-        rotation = new Vector3f(0, 0, 0);
+    public GameItem() {
     }
 
     public GameItem(Mesh mesh) {
         setMesh(mesh);
-        position = new Vector3f(0, 0, 0);
-        scale = 1;
-        rotation = new Vector3f(0, 0, 0);
     }
 
     public GameItem(Mesh[] meshes) {
@@ -42,6 +36,12 @@ public class GameItem {
         this.position.x = x;
         this.position.y = y;
         this.position.z = z;
+    }
+
+    public void setPosition(float x, float y) {
+        this.position.x = x;
+        this.position.y = y;
+        this.position.z = 0f;
     }
 
     public void setRotation(float x, float y, float z) {
@@ -61,6 +61,14 @@ public class GameItem {
             }
         }
         this.meshes = new Mesh[]{mesh};
+    }
+
+    public void setScale(float x, float y, float z) {
+        this.scale.set(x, y, z);
+    }
+
+    public void setScale(float scale) {
+        this.scale.set(scale, scale, scale);
     }
 
 }

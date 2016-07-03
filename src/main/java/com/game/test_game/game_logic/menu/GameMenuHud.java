@@ -24,6 +24,23 @@ public class GameMenuHud {
         setMainMenu(true);
     }
 
+    public MenuHud getCurrentMenu() {
+        return currentMenu;
+    }
+
+    public static void setMainMenu(boolean isMainMenu) {
+        if (isMainMenu) {
+            currentMenu = mainMenu;
+        } else {
+            currentMenu = configurationMenu;
+        }
+    }
+
+    public void cleanup() {
+        mainMenu.cleanup();
+        configurationMenu.cleanup();
+    }
+
     private void initMainMenu() throws Exception {
         MenuTextItem newGame = new MenuTextItem(" New Game  ", font, Commands.NEW_GAME);
         MenuTextItem loadGame = new MenuTextItem(" Load Game ", font, Commands.LOAD_GAME);
@@ -39,22 +56,5 @@ public class GameMenuHud {
         MenuTextItem back = new MenuTextItem("Back", font, Commands.BACK);
 
         configurationMenu = new MenuHud(new MenuTextItem[]{sound, resolution, back});
-    }
-
-    public void cleanup() {
-        mainMenu.cleanup();
-        configurationMenu.cleanup();
-    }
-
-    public MenuHud getCurrentMenu() {
-        return currentMenu;
-    }
-
-    public static void setMainMenu(boolean isMainMenu) {
-        if (isMainMenu) {
-            currentMenu = mainMenu;
-        } else {
-            currentMenu = configurationMenu;
-        }
     }
 }

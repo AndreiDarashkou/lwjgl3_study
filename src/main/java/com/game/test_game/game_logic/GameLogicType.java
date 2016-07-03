@@ -3,8 +3,10 @@ package com.game.test_game.game_logic;
 import com.game.engine.GameLogic;
 import com.game.engine.Window;
 import com.game.engine.input.MouseInput;
+import lombok.Getter;
 
-public enum GameLogicType implements GameLogic{
+@Getter
+public enum GameLogicType implements GameLogic {
     MENU(new MenuGameLogic()),
     GARAGE(new GarageGameLogic()),
     RACE(new RaceGameLogic());

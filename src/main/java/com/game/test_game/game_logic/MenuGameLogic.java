@@ -13,7 +13,6 @@ class MenuGameLogic extends AbstractGameLogic {
     public void init(Window window) throws Exception {
         super.init(window);
         gameMenuHud = new GameMenuHud();
-        gameMenuHud.getCurrentMenu();
     }
 
     @Override

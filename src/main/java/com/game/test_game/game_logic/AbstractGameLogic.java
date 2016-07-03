@@ -12,7 +12,6 @@ import com.game.test_game.GameState;
 import org.joml.Vector3f;
 
 abstract class AbstractGameLogic implements GameLogic {
-    public static GameState gameState = GameState.MENU;
 
     protected final Renderer renderer = new Renderer();
     protected Camera camera = new Camera();

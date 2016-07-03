@@ -1,10 +1,12 @@
 package com.game.test_game.game_logic.menu.command;
 
-class ResolutionCommand implements Command{
+import com.game.test_game.configuration.GameConfiguration;
+
+class ResolutionCommand implements Command {
 
     @Override
     public void execute() {
-        //MainGameLogic.gameState = GameState.MENU;
+        //GameConfiguration.windowHeight = 1000;
     }
 
 }
