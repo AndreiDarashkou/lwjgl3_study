@@ -29,14 +29,19 @@ public class DescriptionCarItem {
 
         font = new FontTexture(FONT, CHARSET);
         characteristic = new TextItem(characteristicName, font);
+        scaleRectangle = new GameItem();
 
+        updateMesh(scaleFilling);
+    }
+
+    public void updateMesh(float scaleFilling) throws Exception {
+        //TODO use color instead of texture
         Material material = new Material(new Texture(TextureConstants.GRADIENT_RECT_PNG), 1f);
-
         OBJLoader.setOffset(-(100f - scaleFilling)/100f, 0);
         Mesh mesh = OBJLoader.loadMesh(ObjConstants.FILLING_RECTANGLE);
         mesh.setMaterial(material);
 
-        scaleRectangle = new GameItem(mesh);
+        scaleRectangle.setMesh(mesh);
         scaleRectangle.setScale(scaleFilling, 80, 1);
     }
 

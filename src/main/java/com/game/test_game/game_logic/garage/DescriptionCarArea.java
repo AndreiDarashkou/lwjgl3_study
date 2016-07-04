@@ -70,27 +70,13 @@ public class DescriptionCarArea {
 
     public void updateScale() throws Exception {
         if (maxSpeedItem.getScaleFilling() != maxSpeed) {
-            Vector3f oldScale = maxSpeedItem.getScaleRectangle().getScale();
-            oldScale.x = maxSpeed;
-            maxSpeedItem.getScaleRectangle().setScale(oldScale.x, oldScale.y, oldScale.z);
+            maxSpeedItem.updateMesh(controllability);
         }
         if (accelerationItem.getScaleFilling() != acceleration) {
-            Vector3f oldScale = accelerationItem.getScaleRectangle().getScale();
-            oldScale.x = acceleration;
-            accelerationItem.getScaleRectangle().setScale(oldScale.x, oldScale.y, oldScale.z);
+            accelerationItem.updateMesh(controllability);
         }
         if (controllabilityItem.getScaleFilling() != controllability) {
-            //TODO terribly
-            Vector3f oldScale = controllabilityItem.getScaleRectangle().getScale();
-            oldScale.x = controllability;
-
-            Material material = new Material(new Texture(TextureConstants.GRADIENT_RECT_PNG), 1f);
-
-            OBJLoader.setOffset(-(100f - controllability)/100f, 0);
-            Mesh mesh = OBJLoader.loadMesh(ObjConstants.FILLING_RECTANGLE);
-            mesh.setMaterial(material);
-            controllabilityItem.getScaleRectangle().setMesh(mesh);
-            controllabilityItem.getScaleRectangle().setScale(oldScale.x, oldScale.y, oldScale.z);
+            controllabilityItem.updateMesh(controllability);
         }
     }
 

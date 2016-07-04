@@ -9,9 +9,11 @@ import lombok.Getter;
 public class GarageHud implements Hud {
 
     private DescriptionCarArea descriptionCarArea;
+    private ScrollBarArea scrollBarArea;
 
     public GarageHud() throws Exception {
         descriptionCarArea = new DescriptionCarArea();
+        scrollBarArea = new ScrollBarArea();
     }
 
     @Override
