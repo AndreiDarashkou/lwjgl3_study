@@ -38,11 +38,11 @@ public class DescriptionCarItem {
         //TODO use color instead of texture
         Material material = new Material(new Texture(TextureConstants.GRADIENT_RECT_PNG), 1f);
         OBJLoader.setOffset(-(100f - scaleFilling)/100f, 0);
-        Mesh mesh = OBJLoader.loadMesh(ObjConstants.FILLING_RECTANGLE);
+        Mesh mesh = OBJLoader.loadMesh(ObjConstants.RECTANGLE);
         mesh.setMaterial(material);
 
         scaleRectangle.setMesh(mesh);
-        scaleRectangle.setScale(scaleFilling, 80, 1);
+        scaleRectangle.setScale(scaleFilling, 5, 1);
     }
 
     public GameItem[] getItems() {

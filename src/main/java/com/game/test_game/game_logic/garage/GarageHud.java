@@ -18,6 +18,9 @@ public class GarageHud implements Hud {
 
     @Override
     public GameItem[] getGameItems() {
+        GameItem[] desc = descriptionCarArea.getAllDescriptionItems();
+        GameItem[] scroll = scrollBarArea.getAllScrollItems();
+        //TODO
         return descriptionCarArea.getAllDescriptionItems();
     }
 

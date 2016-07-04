@@ -18,7 +18,12 @@ public class ScrollBarArea {
         Texture buttonUpTexture = new Texture(TextureConstants.ARROW_UP);
         Material material = new Material(buttonUpTexture, 1.0f);
 
-        Mesh buttonUp = OBJLoader.loadMesh(ObjConstants.COMPASS);
+        Mesh buttonUpMesh = OBJLoader.loadMesh(ObjConstants.RECTANGLE);
+        buttonUpMesh.setMaterial(material);
+
+        GameItem buttonUpItem = new GameItem(buttonUpMesh);
+
+        allScrollItems = new GameItem[]{buttonUpItem};
     }
 
 }
