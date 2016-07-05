@@ -44,7 +44,7 @@ public class Mesh {
 
     private List<Integer> bufferIdList = new ArrayList<>();
     private Vector3f colour;
-    private Material material;
+    private Material material = new Material();
 
     public Mesh(float[] positions, float[] textureCoordinates, float[] normals, int[] indices) {
         colour = DEFAULT_COLOUR;

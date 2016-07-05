@@ -43,6 +43,12 @@
             <artifactId>pngdecoder</artifactId>
             <version>${pngdecoder.version}</version>
         </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.3</version>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -11,6 +11,7 @@ class NewGameCommand implements Command {
         try {
             MainGameLogic.INSTANCE.updateGameState(GameState.GARAGE);
         } catch (Exception e) {
+            e.printStackTrace();
             throw  new CommandException(e, "New game Command Exception");
         }
     }

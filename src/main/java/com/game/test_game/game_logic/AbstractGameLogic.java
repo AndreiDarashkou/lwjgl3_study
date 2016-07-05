@@ -52,7 +52,7 @@ abstract class AbstractGameLogic implements GameLogic {
 
         // Directional Light
         float lightIntensity = 2.0f;
-        Vector3f lightDirection = new Vector3f(0, 1, 1);
+        Vector3f lightDirection = new Vector3f(0, 0, 1);
         DirectionalLight directionalLight = new DirectionalLight(new Vector3f(1, 1, 1), lightDirection, lightIntensity);
         directionalLight.setShadowPosMult(5);
         directionalLight.setOrthoCords(-10.0f, 10.0f, -10.0f, 10.0f, -1.0f, 20.0f);

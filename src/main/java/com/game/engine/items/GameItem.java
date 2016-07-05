@@ -51,7 +51,7 @@ public class GameItem {
     }
 
     public Mesh getMesh() {
-        return meshes[0] == null ? null : meshes[0];
+        return meshes == null ? null : meshes[0];
     }
 
     public void setMesh(Mesh mesh) {

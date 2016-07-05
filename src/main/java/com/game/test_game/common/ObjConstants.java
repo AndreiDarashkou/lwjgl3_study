@@ -5,4 +5,5 @@ public class ObjConstants {
     public static final String COMPASS = "/models/compass.obj";
     public static final String SKY_BOX = "/models/skybox.obj";
     public static final String RECTANGLE = "/models/garage/rectangle.obj";
+    public static final String TRIANGLE = "/models/garage/triangle.obj";
 }

@@ -56,15 +56,15 @@ public class DescriptionCarArea {
 
     public void updateSize(Window window) {
         int indentText = DescriptionCarItem.FONT.getSize() + 5;
-        int heightIndent = window.getHeight() / 12;
-        int widthIndentText = window.getWidth()/20;
+        int heightIndent = 20;
+        int widthIndentText = 20;
 
         for (int i = 0; i < descriptionCarItems.length; i++) {
             DescriptionCarItem item = descriptionCarItems[i];
             item.getCharacteristic().setPosition(widthIndentText, heightIndent + indentText * i);
 
             float scaleX = item.getScaleRectangle().getScale().x;
-            item.getScaleRectangle().setPosition(200f + scaleX, heightIndent + indentText * i + 10, 0);
+            item.getScaleRectangle().setPosition(widthIndentText + 150f + scaleX, heightIndent + indentText * i + 10, 0);
         }
     }
 

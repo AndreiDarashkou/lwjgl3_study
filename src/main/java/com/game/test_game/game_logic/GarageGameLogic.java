@@ -33,7 +33,7 @@ class GarageGameLogic extends AbstractGameLogic {
     @Override
     public void init(Window window) throws Exception {
         super.init(window);
-        garageHud = new GarageHud();
+        garageHud = new GarageHud(window);
 //        Vector3f vector3f = new Vector3f(12f, 0f, 0f).normalize(); // axis
 //
 //        float reflectance = 1f;
