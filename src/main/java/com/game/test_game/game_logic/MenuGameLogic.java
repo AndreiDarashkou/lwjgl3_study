@@ -17,13 +17,12 @@ class MenuGameLogic extends AbstractGameLogic {
 
     @Override
     public void input(Window window, MouseInput mouseInput) throws Exception {
-        gameMenuHud.getCurrentMenu().update(window, mouseInput);
+        gameMenuHud.update(window, mouseInput);
     }
 
     @Override
     public void update(float interval, MouseInput mouseInput) throws Exception {
-        gameMenuHud.getCurrentMenu().updateSize(window);
-        hud = gameMenuHud.getCurrentMenu();
+        gameMenuHud.updateSize(window);
     }
 
     @Override

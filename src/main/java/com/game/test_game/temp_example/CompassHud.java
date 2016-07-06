@@ -1,6 +1,8 @@
 package com.game.test_game.temp_example;
 
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.game.engine.Window;
 import com.game.engine.graphics.*;
@@ -15,7 +17,6 @@ public class CompassHud implements Hud {
 
     private static final Font FONT = new Font("Arial", Font.PLAIN, 20);
     private static final String CHARSET = "ISO-8859-1";
-    private final GameItem[] gameItems;
     private final GameItem compassItem;
 
     public CompassHud(String statusText) throws Exception {
@@ -26,8 +27,6 @@ public class CompassHud implements Hud {
         compassItem = new GameItem(mesh);
         compassItem.setScale(40.0f);
         compassItem.setRotation(0f, 0f, 180f);
-
-        gameItems = new GameItem[]{ compassItem};
     }
 
     public void rotateCompass(float angle) {
@@ -35,8 +34,11 @@ public class CompassHud implements Hud {
     }
 
     @Override
-    public GameItem[] getGameItems() {
-        return gameItems;
+    public List<GameItem> getGameItems() {
+        ArrayList<GameItem> list = new ArrayList<GameItem>();
+        list.add(compassItem);
+
+        return list;
     }
 
     @Override

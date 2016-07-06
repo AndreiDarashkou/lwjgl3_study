@@ -11,9 +11,9 @@ public enum GameLogicType implements GameLogic {
     GARAGE(new GarageGameLogic()),
     RACE(new RaceGameLogic());
 
-    GameLogic gameLogic;
+    AbstractGameLogic gameLogic;
 
-    GameLogicType(GameLogic gameLogic) {
+    GameLogicType(AbstractGameLogic gameLogic) {
         this.gameLogic = gameLogic;
     }
 

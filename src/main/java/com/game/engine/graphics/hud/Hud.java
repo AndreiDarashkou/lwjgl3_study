@@ -2,16 +2,17 @@ package com.game.engine.graphics.hud;
 
 import com.game.engine.items.GameItem;
 
+import java.util.List;
+
 public interface Hud {
 
-    GameItem[] getGameItems();
+    List<GameItem> getGameItems();
 
     void addGameItem(GameItem item);
 
     default void cleanup() {
-        GameItem[] gameItems = getGameItems();
-        for (GameItem gameItem : gameItems) {
-            gameItem.getMesh().cleanUp();
-        }
+        List<GameItem> gameItems = getGameItems();
+        gameItems.forEach(item -> item.getMesh().cleanUp());
     }
+    
 }

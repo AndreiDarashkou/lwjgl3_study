@@ -1,22 +1,22 @@
-package com.game.engine.graphics.hud;
-
-import com.game.engine.items.GameItem;
-import org.apache.commons.lang.ArrayUtils;
+package com.game.engine.items;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractHud implements Hud {
+public class CompositeGameItem {
 
     protected List<GameItem> itemsList = new ArrayList();
 
-    @Override
     public void addGameItem(GameItem item) {
         itemsList.add(item);
     }
 
-    @Override
     public List<GameItem> getGameItems(){
         return itemsList;
     }
+
+    public void cleanup() {
+        itemsList.forEach(item -> item.getMesh().cleanUp());
+    }
+
 }

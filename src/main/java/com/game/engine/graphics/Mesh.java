@@ -103,7 +103,7 @@ public class Mesh {
         int bufferId = glGenBuffers();
         bufferIdList.add(bufferId);
         glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-        glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(textureCoordinates), GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(textureCoordinates), GL_STATIC_DRAW);
         glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
     }
 

@@ -1,13 +1,20 @@
 package com.game.test_game.game_logic.menu;
 
+import com.game.engine.Window;
 import com.game.engine.graphics.FontTexture;
+import com.game.engine.graphics.hud.AbstractHud;
+import com.game.engine.graphics.hud.Hud;
+import com.game.engine.input.MouseInput;
+import com.game.engine.items.GameItem;
+import com.game.test_game.game_logic.GameLogicType;
 import com.game.test_game.game_logic.menu.command.Commands;
 import lombok.Getter;
 
-import java.awt.*;
+import java.awt.Font;
+import java.util.List;
 
 @Getter
-public class GameMenuHud {
+public class GameMenuHud extends AbstractHud {
 
     private static final Font FONT = new Font("Cooper Black", Font.PLAIN, 32);
     private static final String CHARSET = "ISO-8859-1";
@@ -24,21 +31,30 @@ public class GameMenuHud {
         setMainMenu(true);
     }
 
-    public MenuHud getCurrentMenu() {
-        return currentMenu;
-    }
-
     public static void setMainMenu(boolean isMainMenu) {
         if (isMainMenu) {
             currentMenu = mainMenu;
         } else {
             currentMenu = configurationMenu;
         }
+        GameLogicType.MENU.getGameLogic().setHud(currentMenu);
+    }
+
+    public void update(Window window, MouseInput mouseInput) throws Exception {
+        currentMenu.update(window, mouseInput);
+    }
+
+    public void updateSize(Window window) {
+        currentMenu.updateSize(window);
     }
 
     public void cleanup() {
         mainMenu.cleanup();
         configurationMenu.cleanup();
+    }
+
+    public static MenuHud getCurrentMenu() {
+        return currentMenu;
     }
 
     private void initMainMenu() throws Exception {

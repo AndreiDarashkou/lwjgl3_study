@@ -4,6 +4,7 @@ package com.game.engine.items;
 import com.game.engine.graphics.FontTexture;
 import com.game.engine.graphics.Material;
 import com.game.engine.graphics.Mesh;
+import com.game.engine.graphics.texture.Texture;
 import com.game.engine.util.Utils;
 import lombok.Getter;
 import org.joml.Vector3f;
@@ -20,12 +21,24 @@ public class TextItem extends GameItem {
     private final FontTexture fontTexture;
 
     private String text;
+    Material material;
 
     public TextItem(String text, FontTexture fontTexture) throws Exception {
         super();
         this.text = text;
         this.fontTexture = fontTexture;
+        material = new Material(fontTexture.getTexture());
         setMesh(buildMesh());
+    }
+
+    public void setText(String text) {
+        this.text = text;
+        this.getMesh().deleteBuffers();
+        this.setMesh(buildMesh());
+    }
+
+    public void setColor(Color color) {
+        this.getMesh().getMaterial().setColour(new Vector3f((float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255));
     }
 
     private Mesh buildMesh() {
@@ -77,7 +90,7 @@ public class TextItem extends GameItem {
         float[] textCoordsArr = Utils.listToArray(textCoords);
         int[] indicesArr = indices.stream().mapToInt(i -> i).toArray();
         Mesh mesh = new Mesh(posArr, textCoordsArr, normals, indicesArr);
-        mesh.setMaterial(new Material(fontTexture.getTexture()));
+        mesh.setMaterial(material);
 
         return mesh;
     }
@@ -88,13 +101,4 @@ public class TextItem extends GameItem {
         positions.add(ZPOS);   //z
     }
 
-    public void setText(String text) {
-        this.text = text;
-        this.getMesh().deleteBuffers();
-        this.setMesh(buildMesh());
-    }
-
-    public void setColor(Color color) {
-        this.getMesh().getMaterial().setColour(new Vector3f((float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255));
-    }
 }

@@ -6,6 +6,7 @@ import com.game.engine.graphics.Mesh;
 import com.game.engine.graphics.texture.Texture;
 import com.game.engine.graphics.texture.TextureSetting;
 import com.game.engine.input.MouseInput;
+import com.game.engine.items.CompositeGameItem;
 import com.game.engine.items.GameItem;
 import com.game.engine.loader.obj.OBJLoader;
 import com.game.test_game.common.ObjConstants;
@@ -14,9 +15,7 @@ import lombok.Getter;
 import org.joml.Vector2f;
 
 @Getter
-public class ScrollBarArea {
-
-    private GameItem[] allScrollItems;
+public class ScrollBarArea extends CompositeGameItem {
 
     private GameItem buttonUpItem;
     private GameItem buttonDownItem;
@@ -32,7 +31,9 @@ public class ScrollBarArea {
 
         updateSize(window);
 
-        allScrollItems = new GameItem[]{buttonUpItem, buttonDownItem, carsScrollItem};
+        itemsList.add(buttonUpItem);
+        itemsList.add(buttonDownItem);
+        itemsList.add(carsScrollItem);
     }
 
     private static float delta;

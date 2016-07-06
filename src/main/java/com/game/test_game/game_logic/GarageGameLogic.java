@@ -18,8 +18,6 @@ class GarageGameLogic extends AbstractGameLogic {
     private GameItem quadGameItem;
     private float rotY = 0.05f;
 
-    //private GarageHud garageHud;
-
     @Override
     public void init(Window window) throws Exception {
         super.init(window);
@@ -58,7 +56,8 @@ class GarageGameLogic extends AbstractGameLogic {
     private static boolean testReverse = true;
 
     @Override
-    public void update(float interval, MouseInput mouseInput) {
+    public void update(float interval, MouseInput mouseInput) throws Exception {
+        super.update(interval, mouseInput);
 
         GarageHud garageHud = (GarageHud) hud;
         garageHud.updateSize(window);
@@ -86,11 +85,6 @@ class GarageGameLogic extends AbstractGameLogic {
 //        camera.movePosition(cameraInc.x * GameConfiguration.CAMERA_POS_STEP, cameraInc.y * GameConfiguration.CAMERA_POS_STEP, cameraInc.z * GameConfiguration.CAMERA_POS_STEP);
 //
 //        quadGameItem.getQuaternion().rotateY(rotY);
-    }
-
-    @Override
-    public void cleanup() {
-        super.cleanup();
     }
 
 }

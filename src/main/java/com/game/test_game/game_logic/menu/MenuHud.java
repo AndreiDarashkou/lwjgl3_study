@@ -4,23 +4,21 @@ import com.game.engine.Window;
 import com.game.engine.graphics.hud.AbstractHud;
 import com.game.engine.graphics.hud.Hud;
 import com.game.engine.input.MouseInput;
+import com.game.engine.items.CompositeGameItem;
 import com.game.engine.items.GameItem;
 
-public class MenuHud extends AbstractHud {
+public class MenuHud extends CompositeGameItem implements Hud {
 
     MenuTextItem[] menuItems;
 
     protected MenuHud(MenuTextItem[] menuItems) throws Exception {
         this.menuItems = menuItems;
+        for (MenuTextItem item : menuItems) {
+            itemsList.add(item);
+        }
     }
 
-    @Override
-    public GameItem[] getGameItems() {
-        //TODO
-        return menuItems;
-    }
-
-    public void updateSize(com.game.engine.Window window) {
+    public void updateSize(Window window) {
         int width = window.getWidth();
         int height = window.getHeight();
 
@@ -66,19 +64,4 @@ public class MenuHud extends AbstractHud {
         }
     }
 
-    private MenuTextItem getSelected() {
-        for (MenuTextItem menuItem : menuItems) {
-            if (menuItem.isSelected()) {
-                return menuItem;
-            }
-        }
-        return null;
-    }
-
-    private void resetSelected() {
-        for (MenuTextItem menuItem : menuItems) {
-            menuItem.setHover(false);
-            menuItem.setSelected(false);
-        }
-    }
 }

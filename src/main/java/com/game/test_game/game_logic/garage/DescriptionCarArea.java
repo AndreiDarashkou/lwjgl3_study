@@ -1,7 +1,7 @@
 package com.game.test_game.game_logic.garage;
 
 import com.game.engine.Window;
-import com.game.engine.items.GameItem;
+import com.game.engine.items.CompositeGameItem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,14 +10,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
-public class DescriptionCarArea {
+public class DescriptionCarArea extends CompositeGameItem {
 
     private DescriptionCarItem maxSpeedItem;
     private DescriptionCarItem accelerationItem;
     private DescriptionCarItem controllabilityItem;
 
-    private GameItem[] allDescriptionItems;
-    private DescriptionCarItem[] descriptionCarItems;
+    private List<DescriptionCarItem> descriptionCarItems = new ArrayList<>();
 
     @Setter
     private float maxSpeed = 100f;
@@ -27,23 +26,24 @@ public class DescriptionCarArea {
     private float controllability = 1f;
 
     public DescriptionCarArea() throws Exception {
+        initDescriptionCarItems();
+        initItemList();
+    }
+
+    private void initDescriptionCarItems() throws Exception {
         maxSpeedItem = new DescriptionCarItem("Max speed", maxSpeed);
         accelerationItem = new DescriptionCarItem("Acceleration", acceleration);
         controllabilityItem = new DescriptionCarItem("Controllability", controllability);
 
-        descriptionCarItems = new DescriptionCarItem[]{maxSpeedItem, accelerationItem, controllabilityItem};
-
-        initItems();
+        descriptionCarItems.add(maxSpeedItem);
+        descriptionCarItems.add(accelerationItem);
+        descriptionCarItems.add(controllabilityItem);
     }
 
-    private void initItems() {
-        List<GameItem> allItems = new ArrayList();
-
+    private void initItemList() {
         for (DescriptionCarItem item : descriptionCarItems) {
-            allItems.addAll(Arrays.asList(item.getItems()));
+            itemsList.addAll(Arrays.asList(item.getItems()));
         }
-        GameItem[] stockArr = new GameItem[allItems.size()];
-        allDescriptionItems = allItems.toArray(stockArr);
     }
 
 
@@ -52,8 +52,8 @@ public class DescriptionCarArea {
         int heightIndent = 20;
         int widthIndentText = 20;
 
-        for (int i = 0; i < descriptionCarItems.length; i++) {
-            DescriptionCarItem item = descriptionCarItems[i];
+        for (int i = 0; i < descriptionCarItems.size(); i++) {
+            DescriptionCarItem item = descriptionCarItems.get(i);
             item.getCharacteristic().setPosition(widthIndentText, heightIndent + indentText * i);
 
             float scaleX = item.getScaleRectangle().getScale().x;
@@ -73,10 +73,4 @@ public class DescriptionCarArea {
         }
     }
 
-    public void cleanup() {
-        GameItem[] gameItems = getAllDescriptionItems();
-        for (GameItem gameItem : gameItems) {
-            gameItem.getMesh().cleanUp();
-        }
-    }
 }
