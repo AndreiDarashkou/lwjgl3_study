@@ -3,13 +3,15 @@ package com.game.test_game.game_logic.garage;
 import com.game.engine.graphics.FontTexture;
 import com.game.engine.graphics.Material;
 import com.game.engine.graphics.Mesh;
-import com.game.engine.graphics.Texture;
+import com.game.engine.graphics.texture.Texture;
+import com.game.engine.graphics.texture.TextureSetting;
 import com.game.engine.items.GameItem;
 import com.game.engine.items.TextItem;
 import com.game.engine.loader.obj.OBJLoader;
 import com.game.test_game.common.ObjConstants;
 import com.game.test_game.common.TextureConstants;
 import lombok.Getter;
+import org.joml.Vector2f;
 
 import java.awt.Font;
 
@@ -35,11 +37,15 @@ public class DescriptionCarItem {
     }
 
     public void updateMesh(float scaleFilling) throws Exception {
-        //TODO use color instead of texture
-        Material material = new Material(new Texture(TextureConstants.GRADIENT_RECT_PNG), 1f);
-        OBJLoader.setOffset(-(100f - scaleFilling)/100f, 0);
+
+        TextureSetting setting = new TextureSetting();
+        setting.setOffset(new Vector2f(-(1f - scaleFilling/100f), 0f));
+
+        Texture texture = new Texture(TextureConstants.GRADIENT_RECT_PNG);
+        texture.setTextureSetting(setting);
+
         Mesh mesh = OBJLoader.loadMesh(ObjConstants.RECTANGLE);
-        mesh.setMaterial(material);
+        mesh.setMaterial(new Material(texture, 1f));
 
         scaleRectangle.setMesh(mesh);
         scaleRectangle.setScale(scaleFilling, 5, 1);

@@ -1,26 +1,16 @@
 package com.game.test_game.game_logic;
 
 import com.game.engine.Window;
-import com.game.engine.graphics.Material;
-import com.game.engine.graphics.Mesh;
-import com.game.engine.graphics.Texture;
 import com.game.engine.input.MouseInput;
 import com.game.engine.items.GameItem;
-import com.game.engine.loader.obj.OBJLoader;
 import com.game.test_game.GameState;
 import com.game.test_game.MainGameLogic;
-import com.game.test_game.configuration.GameConfiguration;
 import com.game.test_game.game_logic.garage.DescriptionCarArea;
 import com.game.test_game.game_logic.garage.GarageHud;
-import org.joml.Quaternionf;
-import org.joml.Vector2f;
+import org.apache.commons.lang.ArrayUtils;
 import org.joml.Vector3f;
 
-import static com.game.test_game.common.ObjConstants.CUBE;
-import static com.game.test_game.common.TextureConstants.GRASS_BLOCK;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_X;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Z;
 
 class GarageGameLogic extends AbstractGameLogic {
 
@@ -28,12 +18,12 @@ class GarageGameLogic extends AbstractGameLogic {
     private GameItem quadGameItem;
     private float rotY = 0.05f;
 
-    private GarageHud garageHud;
+    //private GarageHud garageHud;
 
     @Override
     public void init(Window window) throws Exception {
         super.init(window);
-        garageHud = new GarageHud(window);
+        hud = new GarageHud(window);
 //        Vector3f vector3f = new Vector3f(12f, 0f, 0f).normalize(); // axis
 //
 //        float reflectance = 1f;
@@ -69,6 +59,8 @@ class GarageGameLogic extends AbstractGameLogic {
 
     @Override
     public void update(float interval, MouseInput mouseInput) {
+
+        GarageHud garageHud = (GarageHud) hud;
         garageHud.updateSize(window);
 
         DescriptionCarArea area = garageHud.getDescriptionCarArea();
@@ -97,14 +89,8 @@ class GarageGameLogic extends AbstractGameLogic {
     }
 
     @Override
-    public void render() {
-        renderer.render(window, camera, scene, garageHud);
-    }
-
-    @Override
     public void cleanup() {
         super.cleanup();
-        garageHud.cleanup();
     }
 
 }

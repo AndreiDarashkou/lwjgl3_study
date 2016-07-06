@@ -1,6 +1,7 @@
 package com.game.engine.graphics;
 
 
+import com.game.engine.graphics.texture.Texture;
 import lombok.Getter;
 import lombok.Setter;
 

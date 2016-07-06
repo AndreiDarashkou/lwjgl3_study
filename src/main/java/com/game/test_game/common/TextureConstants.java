@@ -7,4 +7,6 @@ public class TextureConstants {
     public static final String ARROW_UP = "/textures/arrow-up.png";
     public static final String ARROW_DOWN = "/textures/arrow-down.png";
     public static final String GARAGE = "/textures/garage.png";
+
+    public static final String CARS_SCROLL = "/textures/garage/cars_scroll.png";
 }

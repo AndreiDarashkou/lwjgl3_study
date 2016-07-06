@@ -1,11 +1,12 @@
 package com.game.test_game.game_logic.menu;
 
 import com.game.engine.Window;
-import com.game.engine.graphics.Hud;
+import com.game.engine.graphics.hud.AbstractHud;
+import com.game.engine.graphics.hud.Hud;
 import com.game.engine.input.MouseInput;
 import com.game.engine.items.GameItem;
 
-public class MenuHud implements Hud {
+public class MenuHud extends AbstractHud {
 
     MenuTextItem[] menuItems;
 
@@ -15,6 +16,7 @@ public class MenuHud implements Hud {
 
     @Override
     public GameItem[] getGameItems() {
+        //TODO
         return menuItems;
     }
 

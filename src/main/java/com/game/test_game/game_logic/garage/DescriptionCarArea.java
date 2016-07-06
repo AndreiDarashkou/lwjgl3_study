@@ -1,16 +1,9 @@
 package com.game.test_game.game_logic.garage;
 
 import com.game.engine.Window;
-import com.game.engine.graphics.Material;
-import com.game.engine.graphics.Mesh;
-import com.game.engine.graphics.Texture;
 import com.game.engine.items.GameItem;
-import com.game.engine.loader.obj.OBJLoader;
-import com.game.test_game.common.ObjConstants;
-import com.game.test_game.common.TextureConstants;
 import lombok.Getter;
 import lombok.Setter;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Arrays;

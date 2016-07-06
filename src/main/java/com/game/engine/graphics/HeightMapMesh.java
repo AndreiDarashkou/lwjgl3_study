@@ -1,5 +1,6 @@
 package com.game.engine.graphics;
 
+import com.game.engine.graphics.texture.Texture;
 import com.game.engine.util.Utils;
 import lombok.Getter;
 import org.joml.Vector3f;

@@ -3,7 +3,9 @@ package com.game.engine.graphics;
 import com.game.engine.graphics.light.PointLight;
 import com.game.engine.graphics.light.DirectionalLight;
 import com.game.engine.graphics.light.SpotLight;
+import com.game.engine.graphics.texture.TextureSetting;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
@@ -57,6 +59,13 @@ public class ShaderProgram {
         createUniform(uniformName + ".hasTexture");
         createUniform(uniformName + ".hasNormalMap");
         createUniform(uniformName + ".reflectance");
+    }
+
+    public void createTextureSettingUniform(String uniformName) throws Exception {
+        createUniform(uniformName + ".offset");
+        createUniform(uniformName + ".visibleMin");
+        createUniform(uniformName + ".visibleMax");
+        createUniform(uniformName + ".isUsed");
     }
 
     public void createPointLightListUniform(String uniformName, int size) throws Exception {
@@ -114,6 +123,10 @@ public class ShaderProgram {
         glUniform3f(uniformsMap.get(uniformName), value.x, value.y, value.z);
     }
 
+    public void setUniform(String uniformName, Vector2f value) {
+        glUniform2f(uniformsMap.get(uniformName), value.x, value.y);
+    }
+
     public void setUniform(String uniformName, PointLight pointLight) {
         setUniform(uniformName + ".colour", pointLight.getColor());
         setUniform(uniformName + ".position", pointLight.getPosition());
@@ -165,6 +178,13 @@ public class ShaderProgram {
 
     public void setUniform(String uniformName, PointLight pointLight, int pos) {
         setUniform(uniformName + "[" + pos + "]", pointLight);
+    }
+
+    public void setUniform(String uniformName, TextureSetting textureSetting) {
+        setUniform(uniformName + ".offset", textureSetting.getOffset());
+        setUniform(uniformName + ".visibleMin", textureSetting.getVisibleMin());
+        setUniform(uniformName + ".visibleMax", textureSetting.getVisibleMax());
+        setUniform(uniformName + ".isUsed", textureSetting.isUsed() ? 1 : 0);
     }
 
     public void link() throws Exception {

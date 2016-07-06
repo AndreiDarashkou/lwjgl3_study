@@ -22,12 +22,8 @@ class MenuGameLogic extends AbstractGameLogic {
 
     @Override
     public void update(float interval, MouseInput mouseInput) throws Exception {
-    }
-
-    @Override
-    public void render() {
         gameMenuHud.getCurrentMenu().updateSize(window);
-        renderer.render(window, camera, scene, gameMenuHud.getCurrentMenu());
+        hud = gameMenuHud.getCurrentMenu();
     }
 
     @Override

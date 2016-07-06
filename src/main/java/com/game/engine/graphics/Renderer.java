@@ -3,6 +3,7 @@ package com.game.engine.graphics;
 
 import com.game.engine.Scene;
 import com.game.engine.Window;
+import com.game.engine.graphics.hud.Hud;
 import com.game.engine.items.GameItem;
 import com.game.engine.items.SkyBox;
 import com.game.engine.graphics.light.DirectionalLight;
@@ -104,6 +105,7 @@ public class Renderer {
         hudShaderProgram.createUniform(PROJECTION_MODEL_MATRIX);
         hudShaderProgram.createUniform(COLOUR);
         hudShaderProgram.createUniform(HAS_TEXTURE);
+        hudShaderProgram.createTextureSettingUniform(TEXTURE_SET);
     }
 
     private void setupSkyBoxShader() throws Exception {
@@ -113,6 +115,12 @@ public class Renderer {
         skyBoxShaderProgram.createUniform(MODEL_VIEW_MATRIX);
         skyBoxShaderProgram.createUniform(TEXTURE_SAMPLER);
         skyBoxShaderProgram.createUniform(AMBIENT_LIGHT);
+    }
+    //TODO
+    private void setupShader(ShaderProgram program, String... uniforms) throws Exception {
+        for (String uniform : uniforms) {
+            program.createUniform(uniform);
+        }
     }
 
     private ShaderProgram createShaderProgram(String vertex, String fragment) throws Exception {
@@ -142,7 +150,9 @@ public class Renderer {
 
     public void render(Window window, Camera camera, Scene scene, Hud hud) {
         render(window, camera, scene);
-        renderHud(window, hud);
+        if (hud != null) {
+            renderHud(window, hud);
+        }
     }
 
     private void renderDepthMap(Scene scene) {
@@ -278,6 +288,7 @@ public class Renderer {
             hudShaderProgram.setUniform(PROJECTION_MODEL_MATRIX, projModelMatrix);
             hudShaderProgram.setUniform(COLOUR, gameItem.getMesh().getMaterial().getColour());
             hudShaderProgram.setUniform(HAS_TEXTURE, gameItem.getMesh().getMaterial().isTextured() ? 1 : 0);
+            hudShaderProgram.setUniform(TEXTURE_SET, gameItem.getMesh().getMaterial().getTexture().getTextureSetting());
 
             mesh.render();
         }

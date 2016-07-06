@@ -4,8 +4,8 @@ import java.awt.Font;
 
 import com.game.engine.Window;
 import com.game.engine.graphics.*;
+import com.game.engine.graphics.hud.Hud;
 import com.game.engine.items.GameItem;
-import com.game.engine.items.TextItem;
 import com.game.engine.loader.obj.OBJLoader;
 import org.joml.Vector3f;
 
@@ -37,6 +37,11 @@ public class CompassHud implements Hud {
     @Override
     public GameItem[] getGameItems() {
         return gameItems;
+    }
+
+    @Override
+    public void addGameItem(GameItem item) {
+
     }
 
     public void updateSize(Window window) {

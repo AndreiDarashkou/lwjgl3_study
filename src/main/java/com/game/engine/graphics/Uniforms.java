@@ -16,6 +16,7 @@ class Uniforms {
     static final String PROJECTION_MODEL_MATRIX = "projModelMatrix";
     static final String COLOUR = "colour";
     static final String HAS_TEXTURE = "hasTexture";
+    static final String TEXTURE_SET = "textureSet";
 
     static final String NORMAL_MAP = "normalMap";
     static final String SHADOW_MAP = "shadowMap";

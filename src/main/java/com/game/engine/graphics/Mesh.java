@@ -1,5 +1,6 @@
 package com.game.engine.graphics;
 
+import com.game.engine.graphics.texture.Texture;
 import com.game.engine.items.GameItem;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
@@ -101,7 +103,7 @@ public class Mesh {
         int bufferId = glGenBuffers();
         bufferIdList.add(bufferId);
         glBindBuffer(GL_ARRAY_BUFFER, bufferId);
-        glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(textureCoordinates), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, createFloatBuffer(textureCoordinates), GL_DYNAMIC_DRAW);
         glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
     }
 

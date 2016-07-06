@@ -2,7 +2,7 @@ package com.game.engine.loader.md5;
 
 import com.game.engine.graphics.Material;
 import com.game.engine.graphics.Mesh;
-import com.game.engine.graphics.Texture;
+import com.game.engine.graphics.texture.Texture;
 import com.game.engine.items.GameItem;
 import com.game.engine.util.Utils;
 import org.joml.Vector2f;

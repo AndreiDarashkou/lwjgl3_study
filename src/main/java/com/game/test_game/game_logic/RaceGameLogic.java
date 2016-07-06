@@ -22,11 +22,6 @@ class RaceGameLogic extends AbstractGameLogic {
     }
 
     @Override
-    public void render() {
-
-    }
-
-    @Override
     public void cleanup() {
 
     }
