@@ -13,11 +13,15 @@ import com.game.engine.graphics.light.SceneLight;
 import com.game.engine.input.MouseInput;
 import com.game.engine.items.GameItem;
 import com.game.engine.items.TextItem;
+import com.game.test_game.game_logic.menu.MenuHud;
 import lombok.Getter;
 import lombok.Setter;
 import org.joml.Vector3f;
 
 import java.awt.Font;
+
+import static com.game.test_game.game_logic.garage.DescriptionCarItem.CHARSET;
+import static com.game.test_game.game_logic.garage.DescriptionCarItem.FONT;
 
 @Getter
 public abstract class AbstractGameLogic implements GameLogic {
@@ -25,18 +29,17 @@ public abstract class AbstractGameLogic implements GameLogic {
     protected final Renderer renderer = new Renderer();
     protected Camera camera = new Camera();
     protected Scene scene = new Scene();
-    @Setter
     protected Hud hud;
     protected Window window;
-    //private TextItem fpsItem;
+
+    private TextItem fpsItem;
 
     @Override
     public void init(Window window) throws Exception {
         renderer.init(window);
         this.window = window;
         setupLights();
-        //font = new FontTexture(FONT, CHARSET);
-        //updateFpsItem();
+        fpsItem = new TextItem("FPS: 0", new FontTexture(FONT, CHARSET));
     }
 
     @Override
@@ -45,6 +48,7 @@ public abstract class AbstractGameLogic implements GameLogic {
 
     @Override
     public void update(float interval, MouseInput mouseInput) throws Exception {
+        updateFpsItem(window);
     }
 
     @Override
@@ -79,16 +83,14 @@ public abstract class AbstractGameLogic implements GameLogic {
         scene.setSceneLight(sceneLight);
     }
 
-//    Font FONT = new Font("Cooper Black", Font.ITALIC, 16);
-//    String CHARSET = "ISO-8859-1";
-//
-//    FontTexture font;
-//
-//    public void updateFpsItem() throws Exception {
-//        fpsItem = new TextItem("FPS: " + GameEngine.currentFPS, font);
-//        fpsItem.getPosition().y = window.getHeight() - 50;
-//        fpsItem.getPosition().x = 50;
-//        fpsItem.getPosition().z = 0.1f;
-//    }
+    protected void updateFpsItem(Window window) {
+        fpsItem.setText("FPS: " + GameEngine.currentFPS);
+        fpsItem.getPosition().y = window.getHeight() - 50;
+        fpsItem.getPosition().x = 50;
+        fpsItem.getPosition().z = 0.1f;
+    }
 
+    public void setHud(MenuHud hud) {
+        this.hud = hud;
+    }
 }

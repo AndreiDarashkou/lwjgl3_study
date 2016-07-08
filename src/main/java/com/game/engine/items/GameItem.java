@@ -57,7 +57,7 @@ public class GameItem {
     public void setMesh(Mesh mesh) {
         if (this.meshes != null) {
             for (Mesh currMesh : meshes) {
-                currMesh.cleanUp();
+                currMesh.cleanup();
             }
         }
         this.meshes = new Mesh[]{mesh};

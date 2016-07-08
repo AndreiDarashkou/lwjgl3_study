@@ -39,6 +39,6 @@ public class Scene {
     }
 
     public void cleanup() {
-        meshMap.keySet().forEach(Mesh::cleanUp);
+        meshMap.keySet().forEach(Mesh::cleanup);
     }
 }

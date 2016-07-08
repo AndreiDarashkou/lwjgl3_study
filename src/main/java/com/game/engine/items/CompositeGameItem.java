@@ -16,7 +16,7 @@ public class CompositeGameItem {
     }
 
     public void cleanup() {
-        itemsList.forEach(item -> item.getMesh().cleanUp());
+        itemsList.forEach(item -> item.getMesh().cleanup());
     }
 
 }

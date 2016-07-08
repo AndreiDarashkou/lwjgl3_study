@@ -19,7 +19,7 @@ import java.awt.Font;
 public class DescriptionCarItem {
 
     public static final Font FONT = new Font("Cooper Black", Font.ITALIC, 16);
-    private static final String CHARSET = "ISO-8859-1";
+    public static final String CHARSET = "ISO-8859-1";
     private final FontTexture font;
 
     private TextItem characteristic;
@@ -56,7 +56,7 @@ public class DescriptionCarItem {
     }
 
     public void cleanup() {
-        characteristic.getMesh().cleanUp();
-        scaleRectangle.getMesh().cleanUp();
+        characteristic.getMesh().cleanup();
+        scaleRectangle.getMesh().cleanup();
     }
 }

@@ -12,7 +12,7 @@ public interface Hud {
 
     default void cleanup() {
         List<GameItem> gameItems = getGameItems();
-        gameItems.forEach(item -> item.getMesh().cleanUp());
+        gameItems.forEach(item -> item.getMesh().cleanup());
     }
     
 }

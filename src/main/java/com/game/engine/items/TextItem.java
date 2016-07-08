@@ -1,6 +1,5 @@
 package com.game.engine.items;
 
-
 import com.game.engine.graphics.FontTexture;
 import com.game.engine.graphics.Material;
 import com.game.engine.graphics.Mesh;

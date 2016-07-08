@@ -22,12 +22,11 @@ public class ScrollBarArea extends CompositeGameItem {
     private GameItem carsScrollItem;
 
     public ScrollBarArea(Window window) throws Exception {
+
         buttonUpItem = createButton();
-
+        buttonUpItem.setRotation(0, 0, 180);
         buttonDownItem = createButton();
-        buttonDownItem.setRotation(0, 0, 180);
-
-        carsScrollItem = createCarsScroll();
+        carsScrollItem = createCarsScroll(window);
 
         updateSize(window);
 
@@ -39,16 +38,19 @@ public class ScrollBarArea extends CompositeGameItem {
     private static float delta;
 
     public void updateSize(Window window) {
-        buttonUpItem.setPosition(window.getWidth() - 110, 720);
-        buttonDownItem.setPosition(window.getWidth() - 110, 60);
-        carsScrollItem.setPosition(window.getWidth() - 110, 390);
+        buttonUpItem.setPosition(window.getWidth() - 110, window.getHeight() / 12);
+        buttonDownItem.setPosition(window.getWidth() - 110, 11 * window.getHeight() / 12);
+        carsScrollItem.setPosition(window.getWidth() - 110, window.getHeight() / 2);
 
-        delta -= 0.001f;
+        //delta -= 0.001f;
+        int numCars = (window.getHeight()/2) / 100;
         TextureSetting setting = new TextureSetting();
         setting.setOffset(new Vector2f(0f, delta));
         setting.setVisibleMin(new Vector2f(0.0f, 0.0f + delta));
-        setting.setVisibleMax(new Vector2f(1.0f, 0.5f + delta));
+        setting.setVisibleMax(new Vector2f(1.0f, ((float) numCars / 6) + delta));
         carsScrollItem.getMesh().getMaterial().getTexture().setTextureSetting(setting);
+        carsScrollItem.setScale(100, numCars * 80, 0);
+        System.out.println(numCars);
     }
 
     private void checkMouseHoverScroll(Window window, MouseInput mouseInput) {
@@ -63,18 +65,18 @@ public class ScrollBarArea extends CompositeGameItem {
         button.setMaterial(material);
 
         GameItem buttonItem = new GameItem(button);
-        buttonItem.setScale(100, 20, 0);
+        buttonItem.setScale(80, 20, 0);
 
         return buttonItem;
     }
 
-    private GameItem createCarsScroll() throws Exception {
+    private GameItem createCarsScroll(Window window) throws Exception {
         Mesh carsScroll = OBJLoader.loadMesh(ObjConstants.RECTANGLE);
         Material material = new Material(new Texture(TextureConstants.CARS_SCROLL), 1f);
         carsScroll.setMaterial(material);
 
         GameItem scrollItem = new GameItem(carsScroll);
-        scrollItem.setScale(100, 300, 0);
+        scrollItem.setScale(100, window.getHeight() / 3, 0);
 
         return scrollItem;
     }
