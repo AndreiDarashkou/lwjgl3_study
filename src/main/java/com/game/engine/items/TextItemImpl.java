@@ -37,7 +37,7 @@ public class TextItemImpl extends HudGameItemImpl implements TextItem {
     }
 
     public void setColor(Color color) {
-        this.getMesh().getMaterial().setColour(new Vector3f((float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255));
+        this.getMesh().getMaterial().setColor(new Vector3f((float) color.getRed() / 255, (float) color.getGreen() / 255, (float) color.getBlue() / 255));
     }
 
     private Mesh buildMesh() {

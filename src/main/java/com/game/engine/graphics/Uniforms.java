@@ -14,7 +14,7 @@ class Uniforms {
     static final String DIRECTIONAL_LIGHT = "directionalLight";
 
     static final String PROJECTION_MODEL_MATRIX = "projModelMatrix";
-    static final String COLOUR = "colour";
+    static final String COLOUR = "color";
     static final String HAS_TEXTURE = "hasTexture";
     static final String TEXTURE_SET = "textureSet";
 

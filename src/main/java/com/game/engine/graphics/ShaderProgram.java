@@ -46,7 +46,7 @@ public class ShaderProgram {
     }
 
     public void createPointLightUniform(String uniformName) throws Exception {
-        createUniform(uniformName + ".colour");
+        createUniform(uniformName + ".color");
         createUniform(uniformName + ".position");
         createUniform(uniformName + ".intensity");
         createUniform(uniformName + ".att.constant");
@@ -55,7 +55,7 @@ public class ShaderProgram {
     }
 
     public void createMaterialUniform(String uniformName) throws Exception {
-        createUniform(uniformName + ".colour");
+        createUniform(uniformName + ".color");
         createUniform(uniformName + ".hasTexture");
         createUniform(uniformName + ".hasNormalMap");
         createUniform(uniformName + ".reflectance");
@@ -87,20 +87,20 @@ public class ShaderProgram {
     }
 
     public void createDirectionalLightUniform(String uniformName) throws Exception {
-        createUniform(uniformName + ".colour");
+        createUniform(uniformName + ".color");
         createUniform(uniformName + ".direction");
         createUniform(uniformName + ".intensity");
     }
 
     public void setUniform(String uniformName, Fog fog) {
         setUniform(uniformName + ".isActive", fog.isActive() ? 1 : 0);
-        setUniform(uniformName + ".colour", fog.getColour());
+        setUniform(uniformName + ".color", fog.getColour());
         setUniform(uniformName + ".density", fog.getDensity());
     }
 
     public void createFogUniform(String uniformName) throws Exception {
         createUniform(uniformName + ".isActive");
-        createUniform(uniformName + ".colour");
+        createUniform(uniformName + ".color");
         createUniform(uniformName + ".density");
     }
 
@@ -128,7 +128,7 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, PointLight pointLight) {
-        setUniform(uniformName + ".colour", pointLight.getColor());
+        setUniform(uniformName + ".color", pointLight.getColor());
         setUniform(uniformName + ".position", pointLight.getPosition());
         setUniform(uniformName + ".intensity", pointLight.getIntensity());
 
@@ -139,7 +139,7 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, Material material) {
-        setUniform(uniformName + ".colour", material.getColour());
+        setUniform(uniformName + ".color", material.getColor());
         setUniform(uniformName + ".hasTexture", material.isTextured() ? 1 : 0);
         setUniform(uniformName + ".hasNormalMap", material.hasNormalMap() ? 1 : 0);
         setUniform(uniformName + ".reflectance", material.getReflectance());
@@ -164,7 +164,7 @@ public class ShaderProgram {
     }
 
     public void setUniform(String uniformName, DirectionalLight dirLight) {
-        setUniform(uniformName + ".colour", dirLight.getColor());
+        setUniform(uniformName + ".color", dirLight.getColor());
         setUniform(uniformName + ".direction", dirLight.getDirection());
         setUniform(uniformName + ".intensity", dirLight.getIntensity());
     }

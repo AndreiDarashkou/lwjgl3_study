@@ -9,25 +9,29 @@ import com.game.engine.hud.AbstractHud;
 import com.game.engine.hud.HudGameItem;
 import com.game.engine.hud.HudGameItemImpl;
 import com.game.engine.input.MouseInput;
-import com.game.engine.items.CompositeGameItem;
-import com.game.engine.items.GameItemImpl;
 import com.game.engine.loader.obj.OBJLoader;
 import com.game.test_game.common.ObjConstants;
 import com.game.test_game.common.TextureConstants;
 import lombok.Getter;
 import org.joml.Vector2f;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 public class ScrollBarArea extends AbstractHud {
 
+    private static float delta;
+
     private HudGameItem buttonUpItem;
     private HudGameItem buttonDownItem;
     private HudGameItem carsScrollItem;
     private List<HudGameItem> scrollBorder;
-    private int numCars = 4;
+
+    private int visibleCars = 4;
+    private int allCars = 6;
+    private int currentCar = 0;
 
     public ScrollBarArea(Window window) throws Exception {
 
@@ -45,36 +49,53 @@ public class ScrollBarArea extends AbstractHud {
         itemsList.addAll(scrollBorder);
     }
 
-    private static float delta;
+    @Override
+    public void update(Window window, MouseInput mouseInput) throws Exception {
+        boolean isButtonUp = buttonUpItem.isHovered(mouseInput);
+        buttonUpItem.getMesh().getMaterial().setColor(isButtonUp ? Color.ORANGE : Color.GREEN);
+
+        boolean isButtonDown = buttonDownItem.isHovered(mouseInput);
+        buttonDownItem.getMesh().getMaterial().setColor(isButtonDown ? Color.ORANGE : Color.GREEN);
+
+        if ((isButtonUp || isButtonDown) && mouseInput.isLeftButtonClicked()) {
+            if (isButtonDown && currentCar < allCars - visibleCars) {
+                currentCar += 1;
+            } else if (isButtonUp && currentCar > 0) {
+                currentCar -= 1;
+            }
+            setActualCar();
+        }
+
+    }
 
     public void updateSize(Window window) {
         buttonUpItem.setPosition(window.getWidth() - 110, window.getHeight() / 12);
         buttonDownItem.setPosition(window.getWidth() - 110, 11 * window.getHeight() / 12);
         carsScrollItem.setPosition(window.getWidth() - 110, window.getHeight() / 2, 0.01f);
+        visibleCars = window.getHeight() / 200;
+        setActualCar();
+    }
 
-        //delta -= 0.005f;
-        //numCars = (window.getHeight() / 2) / 100;
+    private void setActualCar() {
+        delta = (float) currentCar / allCars;
         TextureSetting setting = new TextureSetting();
         setting.setOffset(new Vector2f(0f, delta));
         setting.setVisibleMin(new Vector2f(0.0f, 0.0f + delta));
-        setting.setVisibleMax(new Vector2f(1.0f, ((float) numCars / 6) + delta));
+        setting.setVisibleMax(new Vector2f(1.0f, ((float) visibleCars / allCars) + delta));
         carsScrollItem.getMesh().getMaterial().getTexture().setTextureSetting(setting);
-        carsScrollItem.setScale(90, numCars * 80, 0);
-    }
-
-    private void checkMouseHoverScroll(Window window, MouseInput mouseInput) {
-        //TODO
-        double mouseX = mouseInput.getCurrentPos().x;
-        double mouseY = mouseInput.getCurrentPos().y;
+        carsScrollItem.setScale(90, visibleCars * 80, 0);
     }
 
     private HudGameItem createButton() throws Exception {
         Mesh button = OBJLoader.loadMesh(ObjConstants.TRIANGLE);
-        Material material = new Material(new Texture(TextureConstants.GRADIENT_RECT_PNG), 1f);
+        Material material = new Material(Color.blue, 1f);
         button.setMaterial(material);
 
         HudGameItemImpl buttonItem = new HudGameItemImpl(button);
         buttonItem.setScale(80, 20, 0);
+        //TODO hmm
+        buttonItem.setWidth(80);
+        buttonItem.setHeight(25);
 
         return buttonItem;
     }
@@ -96,9 +117,9 @@ public class ScrollBarArea extends AbstractHud {
         border.setMaterial(material);
 
         List<HudGameItem> borders = new ArrayList<>();
-        for (int i = 0; i < numCars; i++) {
+        for (int i = 0; i < visibleCars; i++) {
             HudGameItemImpl borderItem = new HudGameItemImpl(border);
-            borderItem.setPosition(window.getWidth() - 110, window.getHeight() / 4 + i*160 - 20, 0.02f);
+            borderItem.setPosition(window.getWidth() - 110, window.getHeight() / 4 + i * 160 - 20, 0.02f);
             borderItem.setScale(100, 95, 0);
 
             borders.add(borderItem);

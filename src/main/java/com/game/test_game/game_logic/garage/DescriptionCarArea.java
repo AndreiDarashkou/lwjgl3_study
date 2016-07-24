@@ -2,6 +2,7 @@ package com.game.test_game.game_logic.garage;
 
 import com.game.engine.Window;
 import com.game.engine.hud.AbstractHud;
+import com.game.engine.input.MouseInput;
 import com.game.engine.items.CompositeGameItem;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,33 @@ public class DescriptionCarArea extends AbstractHud {
         initItemList();
     }
 
+    @Override
+    public void update(Window window, MouseInput mouseInput) throws Exception {
+        if (maxSpeedItem.getScaleFilling() != maxSpeed) {
+            maxSpeedItem.updateSize(maxSpeed);
+        }
+        if (accelerationItem.getScaleFilling() != acceleration) {
+            accelerationItem.updateSize(acceleration);
+        }
+        if (controllabilityItem.getScaleFilling() != controllability) {
+            controllabilityItem.updateSize(controllability);
+        }
+    }
+
+    public void updateSize(Window window) {
+        int indentText = DescriptionCarItem.FONT.getSize() + 5;
+        int heightIndent = 20;
+        int widthIndentText = 20;
+
+        for (int i = 0; i < descriptionCarItems.size(); i++) {
+            DescriptionCarItem item = descriptionCarItems.get(i);
+            item.getCharacteristic().setPosition(widthIndentText, heightIndent + indentText * i);
+
+            float scaleX = item.getScaleRectangle().getScale().x;
+            item.getScaleRectangle().setPosition(170f + scaleX, heightIndent + indentText * i + 10, 0);
+        }
+    }
+
     private void initDescriptionCarItems() throws Exception {
         maxSpeedItem = new DescriptionCarItem("Max speed", maxSpeed);
         accelerationItem = new DescriptionCarItem("Acceleration", acceleration);
@@ -47,31 +75,5 @@ public class DescriptionCarArea extends AbstractHud {
         }
     }
 
-
-    public void updateSize(Window window) {
-        int indentText = DescriptionCarItem.FONT.getSize() + 5;
-        int heightIndent = 20;
-        int widthIndentText = 20;
-
-        for (int i = 0; i < descriptionCarItems.size(); i++) {
-            DescriptionCarItem item = descriptionCarItems.get(i);
-            item.getCharacteristic().setPosition(widthIndentText, heightIndent + indentText * i);
-
-            float scaleX = item.getScaleRectangle().getScale().x;
-            item.getScaleRectangle().setPosition(170f + scaleX, heightIndent + indentText * i + 10, 0);
-        }
-    }
-
-    public void updateScale() throws Exception {
-        if (maxSpeedItem.getScaleFilling() != maxSpeed) {
-            maxSpeedItem.updateSize(maxSpeed);
-        }
-        if (accelerationItem.getScaleFilling() != acceleration) {
-            accelerationItem.updateSize(acceleration);
-        }
-        if (controllabilityItem.getScaleFilling() != controllability) {
-            controllabilityItem.updateSize(controllability);
-        }
-    }
 
 }

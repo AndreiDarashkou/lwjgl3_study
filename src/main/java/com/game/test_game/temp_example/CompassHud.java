@@ -7,11 +7,9 @@ import java.util.List;
 import com.game.engine.Window;
 import com.game.engine.graphics.*;
 import com.game.engine.hud.AbstractHud;
-import com.game.engine.hud.Hud;
 import com.game.engine.hud.HudGameItem;
 import com.game.engine.hud.HudGameItemImpl;
-import com.game.engine.items.GameItem;
-import com.game.engine.items.GameItemImpl;
+import com.game.engine.input.MouseInput;
 import com.game.engine.loader.obj.OBJLoader;
 import org.joml.Vector3f;
 
@@ -26,7 +24,7 @@ public class CompassHud extends AbstractHud {
     public CompassHud(String statusText) throws Exception {
         Mesh mesh = OBJLoader.loadMesh(COMPASS);
         Material material = new Material();
-        material.setColour(new Vector3f(1, 0, 0));
+        material.setColor(new Vector3f(1, 0, 0));
         mesh.setMaterial(material);
         compassItem = new HudGameItemImpl(mesh);
         compassItem.setScale(40.0f);
@@ -48,6 +46,10 @@ public class CompassHud extends AbstractHud {
     @Override
     public void addGameItem(HudGameItem item) {
 
+    }
+
+    @Override
+    public void update(Window window, MouseInput mouseInput) throws Exception {
     }
 
     public void updateSize(Window window) {

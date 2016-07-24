@@ -29,7 +29,7 @@ public class MenuTextItem extends TextItemImpl implements HudGameItem {
     }
 
     void setColor(float r, float g, float b) {
-        getMesh().getMaterial().setColour(new Vector3f(r, g, b));
+        getMesh().getMaterial().setColor(new Vector3f(r, g, b));
     }
 
     public void setHover(boolean isHover) {

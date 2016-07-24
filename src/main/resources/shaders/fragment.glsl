@@ -20,7 +20,7 @@ struct Attenuation
 
 struct PointLight
 {
-    vec3 colour;
+    vec3 color;
     // Light position is assumed to be in view coordinates
     vec3 position;
     float intensity;
@@ -36,14 +36,14 @@ struct SpotLight
 
 struct DirectionalLight
 {
-    vec3 colour;
+    vec3 color;
     vec3 direction;
     float intensity;
 };
 
 struct Material
 {
-    vec3 colour;
+    vec3 color;
     int hasTexture;
     int hasNormalMap;
     float reflectance;
@@ -52,7 +52,7 @@ struct Material
 struct Fog
 {
     int isActive;
-    vec3 colour;
+    vec3 color;
     float density;
 };
 
@@ -91,7 +91,7 @@ vec4 calcPointLight(PointLight light, vec3 position, vec3 normal)
 {
     vec3 light_direction = light.position - position;
     vec3 to_light_dir  = normalize(light_direction);
-    vec4 light_colour = calcLightColour(light.colour, light.intensity, position, to_light_dir, normal);
+    vec4 light_colour = calcLightColour(light.color, light.intensity, position, to_light_dir, normal);
 
     // Apply Attenuation
     float distance = length(light_direction);
@@ -119,11 +119,11 @@ vec4 calcSpotLight(SpotLight light, vec3 position, vec3 normal)
 
 vec4 calcDirectionalLight(DirectionalLight light, vec3 position, vec3 normal)
 {
-    return calcLightColour(light.colour, light.intensity, position, normalize(light.direction), normal);
+    return calcLightColour(light.color, light.intensity, position, normalize(light.direction), normal);
 }
 
 vec4 calculateFog(vec3 pos, vec4 colour, Fog fog, vec3 ambientLight, DirectionalLight dirLight) {
-    vec3 fogColor = fog.colour * (ambientLight + dirLight.colour * dirLight.intensity);
+    vec3 fogColor = fog.color * (ambientLight + dirLight.color * dirLight.intensity);
     float distance = length(pos);
     float fogFactor = 1.0 / exp( (distance * fog.density)* (distance * fog.density));
     fogFactor = clamp( fogFactor, 0.0, 1.0 );
@@ -142,7 +142,7 @@ vec4 calcBaseColour(Material material, vec2 text_coord)
     }
     else
     {
-        baseColour = vec4(material.colour, 1);
+        baseColour = vec4(material.color, 1);
     }
     return baseColour;
 }

@@ -16,8 +16,8 @@ public interface HudGameItem extends GameItem {
         double itemX = getPosition().x;
         double itemY = getPosition().y;
 
-        if (mouseX > itemX && mouseX < itemX + getWidth()) {
-            if (mouseY > itemY && mouseY < itemY + getHeight() ) {
+        if (mouseX > itemX - getWidth() && mouseX < itemX + getWidth()) {
+            if (mouseY > itemY - getHeight() && mouseY < itemY + getHeight() ) {
                return true;
             } else {
                 return false;

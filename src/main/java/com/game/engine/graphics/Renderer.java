@@ -3,6 +3,8 @@ package com.game.engine.graphics;
 
 import com.game.engine.Scene;
 import com.game.engine.Window;
+import com.game.engine.graphics.texture.Texture;
+import com.game.engine.graphics.texture.TextureSetting;
 import com.game.engine.hud.Hud;
 import com.game.engine.items.GameItem;
 import com.game.engine.items.GameItemImpl;
@@ -287,9 +289,14 @@ public class Renderer {
 
             Matrix4f projModelMatrix = transformation.buildOrtoProjModelMatrix(gameItem, ortho);
             hudShaderProgram.setUniform(PROJECTION_MODEL_MATRIX, projModelMatrix);
-            hudShaderProgram.setUniform(COLOUR, gameItem.getMesh().getMaterial().getColour());
+            hudShaderProgram.setUniform(COLOUR, gameItem.getMesh().getMaterial().getColor());
             hudShaderProgram.setUniform(HAS_TEXTURE, gameItem.getMesh().getMaterial().isTextured() ? 1 : 0);
-            hudShaderProgram.setUniform(TEXTURE_SET, gameItem.getMesh().getMaterial().getTexture().getTextureSetting());
+            Texture texture = gameItem.getMesh().getMaterial().getTexture();
+            if(texture != null) {
+                hudShaderProgram.setUniform(TEXTURE_SET, texture.getTextureSetting());
+            } else {
+                hudShaderProgram.setUniform(TEXTURE_SET, new TextureSetting());
+            }
 
             mesh.render();
         }

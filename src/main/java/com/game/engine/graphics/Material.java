@@ -5,27 +5,36 @@ import lombok.Getter;
 import lombok.Setter;
 import org.joml.Vector3f;
 
+import java.awt.Color;
+
 @Getter
 @Setter
 public class Material {
 
     private static final Vector3f DEFAULT_COLOUR = new Vector3f(1.0f, 1.0f, 1.0f);
 
-    private Vector3f colour;
+    private Vector3f color;
     private float reflectance;
     private Texture texture;
     private Texture normalMap;
 
     public Material() {
-        colour = DEFAULT_COLOUR;
+        color = DEFAULT_COLOUR;
         reflectance = 0;
     }
 
-    public Material(Vector3f colour, float reflectance) {
+    public Material(Vector3f color, float reflectance) {
         this();
-        this.colour = colour;
+        this.color = color;
         this.reflectance = reflectance;
     }
+
+    public Material(Color color, float reflectance) {
+        this();
+        this.color = new Vector3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+        this.reflectance = reflectance;
+    }
+
 
     public Material(Texture texture) {
         this();
@@ -46,4 +55,11 @@ public class Material {
         return this.normalMap != null;
     }
 
+    public void setColor(Vector3f color) {
+        this.color = color;
+    }
+
+    public void setColor(Color color) {
+        this.color = new Vector3f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+    }
 }

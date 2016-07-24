@@ -38,10 +38,10 @@ class GarageGameLogic extends AbstractGameLogic {
         super.update(interval, mouseInput);
 
         GarageHud garageHud = (GarageHud) hud;
-       // if (window.isResized()) {
-        //    window.setResized(false);
+        if (window.isResized()) {
+            window.setResized(false);
             garageHud.updateSize(window);
-       // }
+        }
 
         DescriptionCarArea area = garageHud.getDescriptionCarArea();
         float controllability = area.getControllability();
@@ -54,7 +54,7 @@ class GarageGameLogic extends AbstractGameLogic {
             area.setControllability(controllability - 1f);
         }
         try {
-            garageHud.updateState();
+            garageHud.update(window, mouseInput);
         } catch (Exception e) {
             e.printStackTrace();
         }
