@@ -2,6 +2,7 @@ package com.game.engine.graphics;
 
 
 import com.game.engine.items.GameItem;
+import com.game.engine.items.GameItemImpl;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -90,7 +91,7 @@ public class Transformation {
         return ortho2DMatrix;
     }
 
-    public Matrix4f buildModelViewMatrix(GameItem gameItem, Matrix4f matrix) {
+    public Matrix4f buildModelViewMatrix(GameItemImpl gameItem, Matrix4f matrix) {
         Vector3f rotation = gameItem.getRotation();
         modelMatrix.identity().translate(gameItem.getPosition()).
                 rotateX((float)Math.toRadians(-rotation.x)).
@@ -101,7 +102,7 @@ public class Transformation {
         return modelViewMatrix.mul(modelMatrix);
     }
 
-    public Matrix4f buildModelViewMatrixUsingQuaternion(GameItem gameItem, Matrix4f matrix) {
+    public Matrix4f buildModelViewMatrixUsingQuaternion(GameItemImpl gameItem, Matrix4f matrix) {
         Quaternionf quaternion = gameItem.getQuaternion();//.normalize();
 
         modelMatrix.identity().translate(gameItem.getPosition()).
@@ -111,7 +112,7 @@ public class Transformation {
         return modelViewMatrix.mul(modelMatrix);
     }
 
-    public Matrix4f buildModelLightViewMatrix(GameItem gameItem, Matrix4f matrix) {
+    public Matrix4f buildModelLightViewMatrix(GameItemImpl gameItem, Matrix4f matrix) {
         Vector3f rotation = gameItem.getRotation();
         modelLightMatrix.identity().translate(gameItem.getPosition()).
                 rotateX((float)Math.toRadians(-rotation.x)).

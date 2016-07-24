@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             boolean vSync = true;
-            GameEngine gameEngine = new GameEngine("TEST GAME", 1200, 900, vSync, MainGameLogic.INSTANCE);
+            GameEngine gameEngine = new GameEngine("TEST GAME", 1600, 900, vSync, MainGameLogic.INSTANCE);
             gameEngine.start();
         } catch (Exception exception) {
             exception.printStackTrace();

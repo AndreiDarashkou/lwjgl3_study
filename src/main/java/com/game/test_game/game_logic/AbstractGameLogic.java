@@ -6,19 +6,17 @@ import com.game.engine.Scene;
 import com.game.engine.Window;
 import com.game.engine.graphics.Camera;
 import com.game.engine.graphics.FontTexture;
-import com.game.engine.graphics.hud.Hud;
+import com.game.engine.hud.Hud;
 import com.game.engine.graphics.Renderer;
 import com.game.engine.graphics.light.DirectionalLight;
 import com.game.engine.graphics.light.SceneLight;
+import com.game.engine.hud.HudGameItem;
 import com.game.engine.input.MouseInput;
-import com.game.engine.items.GameItem;
 import com.game.engine.items.TextItem;
+import com.game.engine.items.TextItemImpl;
 import com.game.test_game.game_logic.menu.MenuHud;
 import lombok.Getter;
-import lombok.Setter;
 import org.joml.Vector3f;
-
-import java.awt.Font;
 
 import static com.game.test_game.game_logic.garage.DescriptionCarItem.CHARSET;
 import static com.game.test_game.game_logic.garage.DescriptionCarItem.FONT;
@@ -33,13 +31,14 @@ public abstract class AbstractGameLogic implements GameLogic {
     protected Window window;
 
     private TextItem fpsItem;
+    private static int fpsCount = 0;
 
     @Override
     public void init(Window window) throws Exception {
         renderer.init(window);
         this.window = window;
         setupLights();
-        fpsItem = new TextItem("FPS: 0", new FontTexture(FONT, CHARSET));
+        fpsItem = new TextItemImpl("FPS: 0", new FontTexture(FONT, CHARSET));
     }
 
     @Override
@@ -48,7 +47,11 @@ public abstract class AbstractGameLogic implements GameLogic {
 
     @Override
     public void update(float interval, MouseInput mouseInput) throws Exception {
-        updateFpsItem(window);
+        fpsCount++;
+        if (fpsCount % 10 == 0) {
+            updateFpsItem(window);
+            fpsCount = 0;
+        }
     }
 
     @Override

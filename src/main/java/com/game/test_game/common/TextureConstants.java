@@ -9,4 +9,5 @@ public class TextureConstants {
     public static final String GARAGE = "/textures/garage.png";
 
     public static final String CARS_SCROLL = "/textures/garage/cars_scroll.png";
+    public static final String SCROLL_BORDER = "/textures/garage/border.png";
 }

@@ -1,6 +1,7 @@
 package com.game.test_game.game_logic.garage;
 
 import com.game.engine.Window;
+import com.game.engine.hud.AbstractHud;
 import com.game.engine.items.CompositeGameItem;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Getter
-public class DescriptionCarArea extends CompositeGameItem {
+public class DescriptionCarArea extends AbstractHud {
 
     private DescriptionCarItem maxSpeedItem;
     private DescriptionCarItem accelerationItem;
@@ -57,19 +58,19 @@ public class DescriptionCarArea extends CompositeGameItem {
             item.getCharacteristic().setPosition(widthIndentText, heightIndent + indentText * i);
 
             float scaleX = item.getScaleRectangle().getScale().x;
-            item.getScaleRectangle().setPosition(widthIndentText + 150f + scaleX, heightIndent + indentText * i + 10, 0);
+            item.getScaleRectangle().setPosition(170f + scaleX, heightIndent + indentText * i + 10, 0);
         }
     }
 
     public void updateScale() throws Exception {
         if (maxSpeedItem.getScaleFilling() != maxSpeed) {
-            maxSpeedItem.updateMesh(controllability);
+            maxSpeedItem.updateSize(maxSpeed);
         }
         if (accelerationItem.getScaleFilling() != acceleration) {
-            accelerationItem.updateMesh(controllability);
+            accelerationItem.updateSize(acceleration);
         }
         if (controllabilityItem.getScaleFilling() != controllability) {
-            controllabilityItem.updateMesh(controllability);
+            controllabilityItem.updateSize(controllability);
         }
     }
 

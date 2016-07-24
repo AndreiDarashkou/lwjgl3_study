@@ -17,7 +17,7 @@ uniform mat4 orthoProjectionMatrix;
 
 void main()
 {
-    vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0); //position in camera*
+    vec4 modelViewPosition = modelViewMatrix * vec4(position, 1.0); //position in camera* (eyeCoords)
     gl_Position = projectionMatrix * modelViewPosition;             //position on display
     outTexCoord = texCoord;                                         //texture coodinates
 

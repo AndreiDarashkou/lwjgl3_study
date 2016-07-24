@@ -1,7 +1,7 @@
 package com.game.engine.graphics;
 
 import com.game.engine.graphics.texture.Texture;
-import com.game.engine.items.GameItem;
+import com.game.engine.items.GameItemImpl;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.BufferUtils;
@@ -102,10 +102,10 @@ public class Mesh {
     }
 
 
-    public void renderList(List<GameItem> gameItems, Consumer<GameItem> consumer) {
+    public void renderList(List<GameItemImpl> gameItems, Consumer<GameItemImpl> consumer) {
         initRender();
 
-        for (GameItem gameItem : gameItems) {
+        for (GameItemImpl gameItem : gameItems) {
             consumer.accept(gameItem);
             glDrawElements(GL_TRIANGLES, getVertexCount(), GL_UNSIGNED_INT, 0);
         }

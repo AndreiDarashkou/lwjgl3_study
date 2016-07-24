@@ -1,74 +1,35 @@
 package com.game.engine.items;
 
 import com.game.engine.graphics.Mesh;
-import lombok.Getter;
-import lombok.Setter;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-@Getter
-@Setter
-public class GameItem {
+public interface GameItem {
 
-    private Mesh[] meshes;
-    private Vector3f position = new Vector3f(0, 0, 0);
-    private Vector3f rotation = new Vector3f(0, 0, 0);
-    private Quaternionf quaternion;
-    private Vector3f scale = new Vector3f(1, 1, 1);
+    Vector3f getPosition();
 
-    public GameItem() {
-    }
+    void setPosition(float x, float y, float z);
 
-    public GameItem(Mesh mesh) {
-        setMesh(mesh);
-    }
+    void setPosition(float x, float y);
 
-    public GameItem(Mesh[] meshes) {
-        this();
-        this.meshes = meshes;
-    }
+    void setRotation(float x, float y, float z);
 
-    public Vector3f getPosition() {
-        return position;
-    }
+    Mesh getMesh();
 
-    public void setPosition(float x, float y, float z) {
-        this.position.x = x;
-        this.position.y = y;
-        this.position.z = z;
-    }
+    void setMesh(Mesh mesh);
 
-    public void setPosition(float x, float y) {
-        this.position.x = x;
-        this.position.y = y;
-        this.position.z = 0f;
-    }
+    void setScale(float x, float y, float z);
 
-    public void setRotation(float x, float y, float z) {
-        this.rotation.x = x;
-        this.rotation.y = y;
-        this.rotation.z = z;
-    }
+    void setScale(float scale);
 
-    public Mesh getMesh() {
-        return meshes == null ? null : meshes[0];
-    }
+    Vector3f getRotation();
 
-    public void setMesh(Mesh mesh) {
-        if (this.meshes != null) {
-            for (Mesh currMesh : meshes) {
-                currMesh.cleanup();
-            }
-        }
-        this.meshes = new Mesh[]{mesh};
-    }
+    void setRotation(Vector3f rotation);
 
-    public void setScale(float x, float y, float z) {
-        this.scale.set(x, y, z);
-    }
+    Vector3f getScale();
 
-    public void setScale(float scale) {
-        this.scale.set(scale, scale, scale);
-    }
+    Quaternionf getQuaternion();
+
+    void setQuaternion(Quaternionf quaternion);
 
 }

@@ -16,12 +16,12 @@ public class Terrain {
     private final int verticesPerCol;
     private final int verticesPerRow;
 
-    private final GameItem[] gameItems;
+    private final GameItemImpl[] gameItems;
     private final HeightMapMesh heightMapMesh;
     private final Rectangle2D.Float[][] boundingBoxes;
 
     /**
-     * A Terrain is composed by blocks, each block is a GameItem constructed
+     * A Terrain is composed by blocks, each block is a GameItemImpl constructed
      * from a HeightMap.
      *
      * @param terrainSize The number of blocks will be terrainSize * terrainSize
@@ -35,7 +35,7 @@ public class Terrain {
      */
     public Terrain(int terrainSize, float scale, float minY, float maxY, String heightMapFile, String textureFile, int textInc) throws Exception {
         this.terrainSize = terrainSize;
-        gameItems = new GameItem[terrainSize * terrainSize];
+        gameItems = new GameItemImpl[terrainSize * terrainSize];
 
         BufferedImage heightMapImage = ImageIO.read(getClass().getResourceAsStream(heightMapFile));
         verticesPerCol = heightMapImage.getWidth() - 1;
@@ -48,7 +48,7 @@ public class Terrain {
                 float xDisplacement = (col - ((float) terrainSize - 1) / (float) 2) * scale * HeightMapMesh.getXLength();
                 float zDisplacement = (row - ((float) terrainSize - 1) / (float) 2) * scale * HeightMapMesh.getZLength();
 
-                GameItem terrainBlock = new GameItem(heightMapMesh.getMesh());
+                GameItemImpl terrainBlock = new GameItemImpl(heightMapMesh.getMesh());
                 terrainBlock.setScale(scale);
                 terrainBlock.setPosition(xDisplacement, 0, zDisplacement);
                 gameItems[row * terrainSize + col] = terrainBlock;
@@ -63,7 +63,7 @@ public class Terrain {
         // and check if the position is contained in that bounding box
         Rectangle2D.Float boundingBox = null;
         boolean found = false;
-        GameItem terrainBlock = null;
+        GameItemImpl terrainBlock = null;
         for (int row = 0; row < terrainSize && !found; row++) {
             for (int col = 0; col < terrainSize && !found; col++) {
                 terrainBlock = gameItems[row * terrainSize + col];
@@ -83,7 +83,7 @@ public class Terrain {
         return result;
     }
 
-    protected Vector3f[] getTriangle(Vector3f position, Rectangle2D.Float boundingBox, GameItem terrainBlock) {
+    protected Vector3f[] getTriangle(Vector3f position, Rectangle2D.Float boundingBox, GameItemImpl terrainBlock) {
         // Get the column and row of the heightmap associated to the current position
         float cellWidth = boundingBox.width / (float) verticesPerCol;
         float cellHeight = boundingBox.height / (float) verticesPerRow;
@@ -121,7 +121,7 @@ public class Terrain {
         return z;
     }
 
-    protected float getWorldHeight(int row, int col, GameItem gameItem) {
+    protected float getWorldHeight(int row, int col, GameItemImpl gameItem) {
         float y = heightMapMesh.getHeight(row, col);
         return y * gameItem.getScale().y + gameItem.getPosition().y;
     }
@@ -140,10 +140,10 @@ public class Terrain {
     /**
      * Gets the bounding box of a terrain block
      *
-     * @param terrainBlock A GameItem instance that defines the terrain block
+     * @param terrainBlock A GameItemImpl instance that defines the terrain block
      * @return The boundingg box of the terrain block
      */
-    private Rectangle2D.Float getBoundingBox(GameItem terrainBlock) {
+    private Rectangle2D.Float getBoundingBox(GameItemImpl terrainBlock) {
         float scale = terrainBlock.getScale().x;
         Vector3f position = terrainBlock.getPosition();
 

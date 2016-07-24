@@ -1,7 +1,8 @@
 package com.game.test_game.game_logic.menu;
 
 import com.game.engine.graphics.FontTexture;
-import com.game.engine.items.TextItem;
+import com.game.engine.hud.HudGameItem;
+import com.game.engine.items.TextItemImpl;
 import com.game.test_game.game_logic.menu.command.Command;
 import com.game.test_game.game_logic.menu.command.exception.CommandException;
 import lombok.Getter;
@@ -12,10 +13,10 @@ import java.awt.*;
 
 @Getter
 @Setter
-public class MenuTextItem extends TextItem {
+public class MenuTextItem extends TextItemImpl implements HudGameItem {
 
-    private int width;
-    private int height;
+    private float width;
+    private float height;
     private boolean isHover;
     private boolean isSelected;
     private Command command;
@@ -44,4 +45,5 @@ public class MenuTextItem extends TextItem {
             throw new Exception(e);
         }
     }
+
 }

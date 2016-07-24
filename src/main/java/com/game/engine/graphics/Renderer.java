@@ -3,8 +3,9 @@ package com.game.engine.graphics;
 
 import com.game.engine.Scene;
 import com.game.engine.Window;
-import com.game.engine.graphics.hud.Hud;
+import com.game.engine.hud.Hud;
 import com.game.engine.items.GameItem;
+import com.game.engine.items.GameItemImpl;
 import com.game.engine.items.SkyBox;
 import com.game.engine.graphics.light.DirectionalLight;
 import com.game.engine.graphics.light.PointLight;
@@ -174,9 +175,9 @@ public class Renderer {
         Matrix4f orthoProjMatrix = transformation.updateOrthoProjectionMatrix(orthCoords.left, orthCoords.right, orthCoords.bottom, orthCoords.top, orthCoords.near, orthCoords.far);
 
         depthShaderProgram.setUniform(ORTHO_PROJECTION_MATRIX, orthoProjMatrix);
-        Map<Mesh, List<GameItem>> mapMeshes = scene.getMeshMap();
+        Map<Mesh, List<GameItemImpl>> mapMeshes = scene.getMeshMap();
         for (Mesh mesh : mapMeshes.keySet()) {
-            mesh.renderList(mapMeshes.get(mesh), (GameItem gameItem) -> {
+            mesh.renderList(mapMeshes.get(mesh), (GameItemImpl gameItem) -> {
                         Matrix4f modelLightViewMatrix = transformation.buildModelViewMatrix(gameItem, lightViewMatrix);
                         depthShaderProgram.setUniform(MODEL_LIGHT_VIEW_MATRIX, modelLightViewMatrix);
                     }
@@ -206,12 +207,12 @@ public class Renderer {
         sceneShaderProgram.setUniform(NORMAL_MAP, 1);
         //    sceneShaderProgram.setUniform(SHADOW_MAP, 2);
 
-        Map<Mesh, List<GameItem>> mapMeshes = scene.getMeshMap();
+        Map<Mesh, List<GameItemImpl>> mapMeshes = scene.getMeshMap();
         for (Mesh mesh : mapMeshes.keySet()) {
             sceneShaderProgram.setUniform(MATERIAL, mesh.getMaterial());
             glActiveTexture(GL_TEXTURE2);
             // glBindTexture(GL_TEXTURE_2D, shadowMap.getDepthMapTexture().getId());
-            mesh.renderList(mapMeshes.get(mesh), (GameItem gameItem) -> {
+            mesh.renderList(mapMeshes.get(mesh), (GameItemImpl gameItem) -> {
                         //Matrix4f modelViewMatrix = transformation.buildModelViewMatrix(gameItem, viewMatrix);
                         Matrix4f modelViewMatrix = transformation.buildModelViewMatrixUsingQuaternion(gameItem, viewMatrix);
                         sceneShaderProgram.setUniform(MODEL_VIEW_MATRIX, modelViewMatrix);

@@ -5,8 +5,10 @@ import com.game.engine.graphics.Material;
 import com.game.engine.graphics.Mesh;
 import com.game.engine.graphics.texture.Texture;
 import com.game.engine.graphics.texture.TextureSetting;
-import com.game.engine.items.GameItem;
-import com.game.engine.items.TextItem;
+import com.game.engine.hud.HudGameItem;
+import com.game.engine.hud.HudGameItemImpl;
+import com.game.engine.items.GameItemImpl;
+import com.game.engine.items.TextItemImpl;
 import com.game.engine.loader.obj.OBJLoader;
 import com.game.test_game.common.ObjConstants;
 import com.game.test_game.common.TextureConstants;
@@ -22,37 +24,37 @@ public class DescriptionCarItem {
     public static final String CHARSET = "ISO-8859-1";
     private final FontTexture font;
 
-    private TextItem characteristic;
-    private GameItem scaleRectangle;
+    private TextItemImpl characteristic;
+    private HudGameItem scaleRectangle;
     private double scaleFilling;
 
     public DescriptionCarItem(String characteristicName, float scaleFilling) throws Exception {
         this.scaleFilling = scaleFilling;
 
         font = new FontTexture(FONT, CHARSET);
-        characteristic = new TextItem(characteristicName, font);
-        scaleRectangle = new GameItem();
-
-        updateMesh(scaleFilling);
+        characteristic = new TextItemImpl(characteristicName, font);
+        createScaleRectangle();
     }
 
-    public void updateMesh(float scaleFilling) throws Exception {
-
-        TextureSetting setting = new TextureSetting();
-        setting.setOffset(new Vector2f(-(1f - scaleFilling/100f), 0f));
-
+    private void createScaleRectangle() throws Exception {
         Texture texture = new Texture(TextureConstants.GRADIENT_RECT_PNG);
-        texture.setTextureSetting(setting);
-
         Mesh mesh = OBJLoader.loadMesh(ObjConstants.RECTANGLE);
         mesh.setMaterial(new Material(texture, 1f));
-
-        scaleRectangle.setMesh(mesh);
-        scaleRectangle.setScale(scaleFilling, 5, 1);
+        scaleRectangle = new HudGameItemImpl(mesh);
+        scaleRectangle.setScale(100, 5, 0);
     }
 
-    public GameItem[] getItems() {
-        return new GameItem[]{characteristic, scaleRectangle};
+    public void updateSize(float scaleFilling) throws Exception {
+        TextureSetting setting = new TextureSetting();
+        setting.setOffset(new Vector2f(-(1f - scaleFilling / 100f), 0f));
+
+        scaleRectangle.getMesh().getMaterial().getTexture().setTextureSetting(setting);
+        scaleRectangle.setScale(scaleFilling, 5, 0);
+        scaleRectangle.getPosition().x = 170f + scaleFilling;
+    }
+
+    public HudGameItem[] getItems() {
+        return new HudGameItem[]{characteristic, scaleRectangle};
     }
 
     public void cleanup() {

@@ -5,7 +5,7 @@ import com.game.engine.graphics.Mesh;
 import com.game.engine.loader.obj.OBJLoader;
 import com.game.engine.graphics.texture.Texture;
 
-public class SkyBox extends GameItem {
+public class SkyBox extends GameItemImpl {
 
     public SkyBox(String objModel, String textureFile) throws Exception {
         super();

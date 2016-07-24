@@ -2,16 +2,13 @@ package com.game.test_game.game_logic.menu;
 
 import com.game.engine.Window;
 import com.game.engine.graphics.FontTexture;
-import com.game.engine.graphics.hud.AbstractHud;
-import com.game.engine.graphics.hud.Hud;
+import com.game.engine.hud.AbstractHud;
 import com.game.engine.input.MouseInput;
-import com.game.engine.items.GameItem;
 import com.game.test_game.game_logic.GameLogicType;
 import com.game.test_game.game_logic.menu.command.Commands;
 import lombok.Getter;
 
 import java.awt.Font;
-import java.util.List;
 
 @Getter
 public class GameMenuHud extends AbstractHud {

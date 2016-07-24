@@ -1,13 +1,12 @@
 package com.game.test_game.game_logic.menu;
 
 import com.game.engine.Window;
-import com.game.engine.graphics.hud.AbstractHud;
-import com.game.engine.graphics.hud.Hud;
+import com.game.engine.hud.AbstractHud;
+import com.game.engine.hud.Hud;
 import com.game.engine.input.MouseInput;
 import com.game.engine.items.CompositeGameItem;
-import com.game.engine.items.GameItem;
 
-public class MenuHud extends CompositeGameItem implements Hud {
+public class MenuHud extends AbstractHud {
 
     MenuTextItem[] menuItems;
 
@@ -19,8 +18,8 @@ public class MenuHud extends CompositeGameItem implements Hud {
     }
 
     public void updateSize(Window window) {
-        int width = window.getWidth();
-        int height = window.getHeight();
+        float width = window.getWidth();
+        float height = window.getHeight();
 
         for (int i = 0; i < menuItems.length; i++) {
             MenuTextItem item = menuItems[i];
@@ -29,11 +28,11 @@ public class MenuHud extends CompositeGameItem implements Hud {
     }
 
     public void update(Window window, MouseInput mouseInput) throws Exception {
-        checkMouseHoverMenu(window, mouseInput);
-        checkMouseClickMenu(window, mouseInput);
+        checkMouseHoverMenu(mouseInput);
+        checkMouseClickMenu(mouseInput);
     }
 
-    private void checkMouseClickMenu(Window window, MouseInput mouseInput) throws Exception {
+    protected void checkMouseClickMenu(MouseInput mouseInput) throws Exception {
         if (mouseInput.isLeftButtonClicked()) {
             for (MenuTextItem item : menuItems) {
                 if (item.isHover()) {
@@ -44,23 +43,12 @@ public class MenuHud extends CompositeGameItem implements Hud {
         }
     }
 
-    private void checkMouseHoverMenu(Window window, MouseInput mouseInput) {
+    protected void checkMouseHoverMenu(MouseInput mouseInput) {
         double mouseX = mouseInput.getCurrentPos().x;
         double mouseY = mouseInput.getCurrentPos().y;
 
         for (MenuTextItem item : menuItems) {
-            double itemX = item.getPosition().x;
-            double itemY = item.getPosition().y;
-
-            if (mouseX > itemX && mouseX < window.getWidth() / 2 + item.getWidth()) {
-                if (mouseY < itemY + item.getHeight() && mouseY > itemY) {
-                    item.setHover(true);
-                } else {
-                    item.setHover(false);
-                }
-            } else {
-                item.setHover(false);
-            }
+            item.setHover(item.isHovered(mouseInput));
         }
     }
 

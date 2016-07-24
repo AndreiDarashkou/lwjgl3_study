@@ -3,7 +3,7 @@ package com.game.engine.loader.md5;
 import com.game.engine.graphics.Material;
 import com.game.engine.graphics.Mesh;
 import com.game.engine.graphics.texture.Texture;
-import com.game.engine.items.GameItem;
+import com.game.engine.items.GameItemImpl;
 import com.game.engine.util.Utils;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -15,7 +15,7 @@ public class MD5Loader {
 
     private static final String NORMAL_FILE_SUFFIX = "_normal";
 
-    public static GameItem process(MD5Model md5Model, Vector3f defaultColour) throws Exception {
+    public static GameItemImpl process(MD5Model md5Model, Vector3f defaultColour) throws Exception {
         List<MD5Mesh> md5MeshList = md5Model.getMeshes();
 
         List<Mesh> list = new ArrayList<>();
@@ -26,7 +26,7 @@ public class MD5Loader {
         }
         Mesh[] meshes = new Mesh[list.size()];
         meshes = list.toArray(meshes);
-        GameItem gameItem = new GameItem(meshes);
+        GameItemImpl gameItem = new GameItemImpl(meshes);
 
         return gameItem;
     }

@@ -1,26 +1,20 @@
 package com.game.test_game.game_logic;
 
-import com.game.engine.GameEngine;
 import com.game.engine.Window;
-import com.game.engine.graphics.FontTexture;
 import com.game.engine.input.MouseInput;
-import com.game.engine.items.GameItem;
-import com.game.engine.items.TextItem;
+import com.game.engine.items.GameItemImpl;
 import com.game.test_game.GameState;
 import com.game.test_game.MainGameLogic;
 import com.game.test_game.game_logic.garage.DescriptionCarArea;
 import com.game.test_game.game_logic.garage.GarageHud;
-import org.apache.commons.lang.ArrayUtils;
 import org.joml.Vector3f;
-
-import java.awt.Font;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 class GarageGameLogic extends AbstractGameLogic {
 
     private final Vector3f cameraInc = new Vector3f(0.0f, 0.0f, 0.0f);
-    private GameItem quadGameItem;
+    private GameItemImpl quadGameItem;
     private float rotY = 0.05f;
 
     @Override
@@ -44,10 +38,10 @@ class GarageGameLogic extends AbstractGameLogic {
         super.update(interval, mouseInput);
 
         GarageHud garageHud = (GarageHud) hud;
-        if (window.isResized()) {
-            window.setResized(false);
+       // if (window.isResized()) {
+        //    window.setResized(false);
             garageHud.updateSize(window);
-        }
+       // }
 
         DescriptionCarArea area = garageHud.getDescriptionCarArea();
         float controllability = area.getControllability();
